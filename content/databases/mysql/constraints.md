@@ -4,3 +4,5 @@ linktitle: "Constraints"
 title: Constraints
 weight: 20240
 ---
+
+Supported MySQL Constraints

@@ -4,3 +4,5 @@ linktitle: "Column types"
 title: Column types
 weight: 20130
 ---
+
+# Supported Postgres Column Types

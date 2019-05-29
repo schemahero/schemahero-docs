@@ -4,3 +4,5 @@ linktitle: "Column Types"
 title: Column Types
 weight: 20230
 ---
+
+# Supported MySQL Column Types

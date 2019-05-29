@@ -4,3 +4,5 @@ linktitle: "Architecture"
 title: Architecture
 weight: 60100
 ---
+
+# Architecture
