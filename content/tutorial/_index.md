@@ -5,7 +5,7 @@ title: Tutorial
 weight: 1
 ---
 
-# Getting Started with SchemaHero
+# SchemaHero Tutorial
 
 This tutorial will walk you through deploying SchemaHero and a sample database. It will allow you to use SchemaHero to modify the schema of the sample database.
 
