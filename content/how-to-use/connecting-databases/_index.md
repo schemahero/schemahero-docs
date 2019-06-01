@@ -5,4 +5,4 @@ title: Connecting databases
 weight: 3000
 ---
 
-Connecting databases
+# Connecting databases

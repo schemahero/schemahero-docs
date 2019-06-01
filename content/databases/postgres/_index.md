@@ -6,3 +6,12 @@ weight: 20100
 ---
 
 # Postgres
+
+SchemaHero works various versions of Postgres.
+
+| Postgres Version | SchemaHero Version |
+|------------------|------------|
+| 11 | 0.1.0 / v1alpha1 |
+| 10 | 0.1.0 / v1alpha1 |
+| 9.6 | 0.1.0 / v1alpha1 |
+| 9.5 | 0.1.0 / v1alpha1 |

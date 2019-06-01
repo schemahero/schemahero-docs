@@ -23,7 +23,7 @@ There is an `:alpha` tag of these iamges. This is the latest commit to master. I
 
 ## Latest
 
-The `:latest` image points to the last stable release of the images.
+There is no `:latest` tag. Docker defaults to the `latest` tag, and this is clear what the expectation of pulling this tag is. SchemaHero chooses to not publish an image on this tag.
 
 ## major.minor.patch
 
