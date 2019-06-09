@@ -22,7 +22,7 @@ $ schemahero generate \
 or
 
 ```shell
-$ docker run -v `pwd`/imported:/out \
+$ docker run -e uid=$UID -v `pwd`/imported:/out \
     schemahero/schemahero:alpha \
     generate \
     --driver postgres \
