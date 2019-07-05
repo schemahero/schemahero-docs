@@ -1,1 +1,0 @@
-# SchemaHero Docs
