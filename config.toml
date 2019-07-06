@@ -73,7 +73,7 @@ version_menu = "Releases"
 
 github_docs_repo = "https://github.com/schemahero/schemahero-docs"
 # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
-github_repo = "https://github.com/schemahero/schemahero"
+github_repo = "https://github.com/schemahero/schemahero-docs"
 # An optional link to a related project repo. For example, the sibling repository where your product code lives.
 github_project_repo = "https://github.com/schemahero/schemahero"
 
