@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Primary keys"
 title: Primary keys
-weight: 40050
+weight: 40060
 ---
 
 SchemaHero can manage simple or composite primary keys. To create a primary key:

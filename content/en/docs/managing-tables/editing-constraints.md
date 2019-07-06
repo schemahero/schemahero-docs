@@ -1,6 +1,6 @@
 ---
 date: 2019-05-25
-linktitle: "Editing constraints"
-title: Editing constraints
-weight: 40080
+linktitle: "Editing Constraints"
+title: Editing Constraints
+weight: 40090
 ---

@@ -1,8 +1,8 @@
 ---
 date: 2019-05-25
-linktitle: "Foreign keys"
-title: Foreign keys
-weight: 40060
+linktitle: "Foreign Keys"
+title: Foreign Keys
+weight: 40070
 ---
 
 Support for creating, altering and dropping Foreign Keys was add to SchemaHero v1alpha2.
