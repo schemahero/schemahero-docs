@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Environment"
 title: Environment
-weight: 60210
+weight: 80210
 ---
 
 Contributions to SchemaHero are welcome! This document helps explain how to set up a local environment to run, test and validate a local copy before submitting a pull request. Because of the various databases and paths that SchemaHero supports, it would be a difficult task to manaually test all of the supported configurations. Therefore, we rely heavily on automation tests that are in the /integration directory. If it's not tested, it's not guaranteed to work.

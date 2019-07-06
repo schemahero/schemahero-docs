@@ -1,5 +1,5 @@
 ---
-date: 2019-05-25
+date: 2019-07-05
 linktitle: "Installing SchemaHero"
 title: Installing SchemaHero
 weight: 20010

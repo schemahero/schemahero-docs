@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Components"
 title: Components
-weight: 60110
+weight: 80110
 ---
 
 SchemaHero has several components, all created from the `schemahero/schemahero` repo. At build time, there are 2 different Docker iamges created, and this project as 2 different binaries that are created frmo it.

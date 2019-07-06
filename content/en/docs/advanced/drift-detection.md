@@ -1,5 +1,5 @@
 ---
-date: 2019-05-25
+date: 2019-07-05
 linktitle: "Drift Detection"
 title: Drift Detection
 weight: 50010

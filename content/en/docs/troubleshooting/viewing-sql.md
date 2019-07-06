@@ -1,8 +1,8 @@
 ---
-date: 2019-05-25
+date: 2019-07-05
 linktitle: "Viewing SQL statements"
 title: Viewing SQL statements
-weight: 50010
+weight: 70010
 ---
 
 {{% pageinfo %}}
