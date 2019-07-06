@@ -5,15 +5,15 @@ title: Primary keys
 weight: 40050
 ---
 
-SchemaHero can manage simple or composite primary keys. The syntax for this can vary a little by database, but:
+SchemaHero can manage simple or composite primary keys. To create a primary key:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha1
+apiVersion: schemas.schemahero.io/v1alpha2
 kind: Table
 metadata:
   name: flights
 spec:
-  database: my-databas
+  database: my-database
   name: flights
   schema:
     postgres:

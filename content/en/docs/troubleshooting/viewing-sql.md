@@ -5,6 +5,10 @@ title: Viewing SQL statements
 weight: 50010
 ---
 
+{{% pageinfo %}}
+Note: This is a planned feature, coming in v1alpha3. This feature is not yet available in the most recent version.
+{{% /pageinfo %}}
+
 When SchemaHero applies a migration, it gets the current state of the table/column and comares that to the desired state that's defined in the custom resource. SchemaHero then generates and applies SQL statements to create, drop, or alter a table or column.
 
 If something isn't working right, the best place to start debugging is to look at the generated SQL statements. The last executed SQL statement (and the result) is attached to the `table` object.

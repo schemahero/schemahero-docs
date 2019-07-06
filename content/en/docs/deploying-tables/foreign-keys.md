@@ -5,7 +5,7 @@ title: Foreign keys
 weight: 40060
 ---
 
-Support for creating, altering and dropping Foreign Keys is [in development](https://github.com/schemahero/schemahero/pull/43/files) and will be shipped in [v0.2.0](/roadmap/v0.2.0-v1alpha2/)
+Support for creating, altering and dropping Foreign Keys was add to SchemaHero v1alpha2.
 
 To define a foreign key on a table, use the `foreignKeys` field, as in this example:
 
@@ -17,7 +17,6 @@ metadata:
 spec:
   database: testdb
   name: projects
-  requires: []
   schema:
     postgres:
       primaryKey: [id]

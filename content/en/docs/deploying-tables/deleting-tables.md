@@ -9,7 +9,7 @@ By default, SchemaHero will not delete table table when you delete the `table` o
 
 This decision was made out of caution. Deployment pipelines can experience outages. There are many different types of workflows to deploy to Kubernetes, and the last thing anyone would expect is that an outage in a workflow will drop a table from a database.
 
-Additionally, without drift detection enabled in SchemaHero, there's no reliable way for the operator to know if the table should be deleted or not.
+Additionally, until SchemaHero adds support for [drift detection](/docs/advanced/drift-detection), there's no reliable way for the operator to know if the table should be deleted or not.
 
 Instead, we've taken the approach of _declaring_ that you want the table deleted by commiting it, specifying the desired (Deleted) state.
 
@@ -49,3 +49,6 @@ spec:
 ```
 
 This is a more intentional syntax, and doesn't result in accidental data loss.
+
+
+
