@@ -18,8 +18,8 @@ By default, this will install the latest version.
 To install a specific version, use the tag. For example:
 
 ```shell
-# Install SchemaHero v0.1.0
-export SCHEMAHERO_VERSION=v0.1.0
+# Install SchemaHero v0.2.0
+export SCHEMAHERO_VERSION=v0.2.0
 kubectl apply -f https://raw.githubusercontent.com/schemahero/schemahero/${SCHEMAHERO_VERSION}/install/schemahero/schemahero-operator.yaml
 ```
 
@@ -29,4 +29,10 @@ To verify the deployment, you can run:
 kubectl get pods -n schemahero-system
 ```
 
-There should be 2/2 pods running.
+There should be 1 pod running in this namespace:
+
+```shell
+$ kubectl get pods -n schemahero-system
+NAME                              READY   STATUS    RESTARTS   AGE
+schemahero-controller-manager-0   2/2     Running   0        3d2h
+```

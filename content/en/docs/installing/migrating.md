@@ -13,7 +13,7 @@ To start, get the `schemahero` binary (or use the Docker container) and provide 
 $ schemahero generate \
     --driver postgres \
     --uri postgres://user:pass@host:5432/dbname \
-    --dbname destired-schemahero-databasename \
+    --dbname desired-schemahero-databasename \
     --output-dir ./imported
 ```
 
@@ -29,5 +29,5 @@ $ docker run -e uid=$UID -v `pwd`/imported:/out \
     --output-dir /out
 ```
 
-This will create .yaml files (1 per table) that you can deploy to a cluster to recreate the schema
+This will create `.yaml` files (1 per table) that you can deploy to a cluster to recreate the schema.
 

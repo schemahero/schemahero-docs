@@ -5,19 +5,22 @@ title: Image Tags
 weight: 20020
 ---
 
-There are 2 images that are used in the SchemaHero Operator:
+SchemaHero builds and uses 2 different container images:
 
-schemahero/schemahero and `schemahero/schemahero-manager`.
+`schemahero/schemahero` and `schemahero/schemahero-manager`.
 
-The -manager image is the controller and manager for the operator. It runs in the cluster and handles the reconciliation of any deployed custom resources. When a database is deployed, the code to connect and monitor the connection is in the schemahero container. Both of these container images are built from this repo.
+The `schemahero-manager` image is the Kubernetes CRD controller and manager. It runs in the cluster and handles the reconciliation of any deployed custom resources. When a database or table custom resource is deployed, the code to connect to and monitor the connection is in the schemahero container. Both of these container images are built from this repo.
 
-The reason for this separation is to allow an easy way to run a schemahero binary also. This is useful in dev environment and migrations.
+There are several reasons for this separation:
 
-These two images are tagged and released at the same time.
+1. It's possible to run schemahero as a binary, outside of Kubernetes. As covered later in these docs, this is useful in testing and dev environments when creating fixtures.
+2. This separation enables SchemaHero to work in tightly controlled environments where it might not be possible to connect to the database from any pod on any node in the cluster. SchemaHero supports Kubernetes `nodeSelector` attribute at the database connection level, allowing the `schemahero-manager` to manage multiple databases.
+
+The two images are tagged and released at the same time, using the same versioning system
 
 ## Alpha
 
-There is an `:alpha` tag of these iamges. This is the latest commit to master. It may or may not be stable. It's not recommded to run `:alpha` on a production system.
+There is an `:alpha` tag of these iamges. This is the latest commit to master. This has the latest code, but also may have some issues. It's not recommended to use the `:alpha` tag in production.
 
 ## Latest
 
