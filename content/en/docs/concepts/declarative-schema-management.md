@@ -27,7 +27,7 @@ These tools work nicely at first, but over time create some operational challeng
 
 1. When a feature is no longer used, the database runtime must continue to support this to allow this migration to succeed. For example, if using Postgres and an extension is required and used, and then removed, the database migations will fail to run on a new database unless that extension is present, even though it's not needed in the end state.
 
-2. Performance starts to become slow on new environments. Eventually, in a rapid-iteration product, there can be hundreds of migrations. Replying these can be slow and any single failed migration will break the deployment.
+2. Performance starts to become slow on new environments. Eventually, in a rapid-iteration product, there can be hundreds of migrations. Replaying these can be slow and any single failed migration will break the deployment.
 
 3. Database upgrades create incompatible migrations. After upgrading a database version, the syntax supported may change. This can leave older migrations unable to be applied against the current version of the databse.
 
