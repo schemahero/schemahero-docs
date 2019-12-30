@@ -9,6 +9,6 @@ SchemaHero is a Kubernetes Operator that implements a new custom kind: `Table`. 
 
 img
 
-Once SchemaHero has the current schema, it can determine how to apply the `Table` YAML that was deployed. If the table does not already exist in the database, SchemaHero will translate the `Table` YAML into a `CREATE TABLE` statement and deploy it. If the table already exists, SchemaHero will diff the columns, types, indices and constraints of the current table with the desired table and create an `ALTER TABLE` statement. SchemaHero will then execute the `ALTER TABLE` statement agsinst the target database.
+Once SchemaHero has the current schema, it can determine how to apply the `Table` YAML that was deployed. If the table does not already exist in the database, SchemaHero will translate the `Table` YAML into a `CREATE TABLE` statement and deploy it. If the table already exists, SchemaHero will diff the columns, types, indices and constraints of the current table with the desired table and create an `ALTER TABLE` statement. SchemaHero will then execute the `ALTER TABLE` statement against the target database.
 
 img
