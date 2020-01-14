@@ -1,0 +1,38 @@
+baseURL: "https://schemahero.io"
+languageCode: "en-us"
+title: "schemahero.io"
+theme: "hugo-whisper-theme"
+metadataformat: "yaml"
+canonifyurls: true
+description: "Documentation for SchemaHero."
+googleAnalytics: ""
+
+
+# Hugo configuration
+pygmentsCodeFences: true
+pygmentsStyle: "monokai"
+
+staticDir:
+    - ./static
+
+Params:
+  author: "SchemaHero"
+  copyright: "Replicated, Inc"
+  homepage_intro: "Kubernetes-Native, Declarative Database Schema Management"
+
+  favicon: ""
+  pagetitle: "SchemaHero"
+  permalink: "#"
+  mainSections:
+    - docs
+    - tutorial
+    - community
+menu:
+  main:
+    - Name: "Documentation"
+      Weight: 1
+      URL: "/docs"
+    - Name: "Tutorial"
+      Weight: 2
+      URL: "/tutorial"
+---

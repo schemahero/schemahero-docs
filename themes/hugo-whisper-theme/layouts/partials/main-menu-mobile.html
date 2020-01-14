@@ -1,0 +1,21 @@
+<div id="main-menu-mobile" class="main-menu-mobile">
+  <ul>
+    {{ $currentPage := . }}
+    {{ range .Site.Menus.main }}
+    <li class="menu-item-{{ .Name | lower }}{{ if $currentPage.IsMenuCurrent "main" . }} active{{ end }}">
+      <a href="{{ .URL }}">
+        <span>{{ .Name }}</span>
+      </a>
+    </li>
+    {{end}}
+    <li class="menu-item-search">
+      <a href="/search">
+        <span>Search</span>
+      </a>
+    </li>
+    <li class="menu-item-github">
+      <a class="github-button" href="https://github.com/schemahero/schemahero" data-icon="octicon-star" data-size="large"
+        data-show-count="true" aria-label="Star schemahero/schemahero on GitHub">Star</a>
+    </li>
+  </ul>
+</div>
