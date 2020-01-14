@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "MySQL"
 title: MySQL
-weight: 20200
+weight: 8
 ---
 
 SchemaHero works various versions of Mysql.

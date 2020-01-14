@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Installing"
 title: Installing
-weight: 20000
+weight: 2
 ---
 
 There are several ways

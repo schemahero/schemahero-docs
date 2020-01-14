@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Postgres"
 title: Postgres
-weight: 20100
+weight: 7
 ---
 
 SchemaHero works various versions of Postgres.
