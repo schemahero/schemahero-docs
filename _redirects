@@ -1,0 +1,16 @@
+/docs/ /docs/installing/
+/databases/ /databases/postgres/
+/overview/ /overview/about/
+
+/docs/installing/ /docs/installing/kubectl
+/docs/connecting-databases/ /docs/connecting-databases/creating-db-resource/
+/docs/managing-tables/ /docs/managing-tables/creating-tables/
+/docs/advanced/ /docs/advanced/regenerating/
+/docs/troubleshooting/ /docs/troubleshooting/viewing-sql/
+
+/databases/postgres/ /databases/postgres/versions/
+/databases/mysql/ /databases/mysql/versions/
+/databases/cockroachdb/ /databases/cockroachdb/versions/
+
+/overview/about/ /overview/about/declarative-schema-management/
+/overview/migrating/ /overview/migrating/migrating/

@@ -1,6 +1,6 @@
 ---
 date: 2019-05-25
-linktitle: "Comparing SchemaHero to an ORM"
+linktitle: "SchemaHero vs ORM"
 title: Comparing SchemaHero to an ORM
 weight: 10030
 ---

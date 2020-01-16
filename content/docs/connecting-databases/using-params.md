@@ -1,8 +1,8 @@
 ---
 date: 2019-05-25
-linktitle: "Using params"
-title: Using params
-weight: 30040
+linktitle: "Using Params"
+title: Using Params
+weight: 4
 ---
 
 Finally, it's possible to connect to a database using parameters defined in YAML, if connection strings are not desirable.
@@ -10,7 +10,7 @@ Finally, it's possible to connect to a database using parameters defined in YAML
 An exmaple of connecting to postgres database using parameters is:
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha2
+apiVersion: databases.schemahero.io/v1alpha3
 kind: Database
 metadata:
   name: my-db
@@ -31,7 +31,7 @@ connection:
 Once again, it's possible to deliver sensitive fields using a Kubernetes secret, as in:
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha2
+apiVersion: databases.schemahero.io/v1alpha3
 kind: Database
 metadata:
   name: my-db

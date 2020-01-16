@@ -1,14 +1,14 @@
 ---
 date: 2019-05-25
-linktitle: "Schema vs Data Migrations"
-title: Schema vs Data Migrations
+linktitle: "Data Migrations"
+title: Data Migrations
 weight: 10020
 ---
 
 There are two types of migrations that have to be managed and deployed:
 
 1. Schema Migrations
-1. Data Migrations
+2. Data Migrations
 
 ## Schema Migrations
 

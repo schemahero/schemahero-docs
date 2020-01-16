@@ -2,14 +2,14 @@
 date: 2019-05-25
 linktitle: "Connecting"
 title: Connecting
-weight: 20120
+weight: 2
 ---
 
 SchemaHero accepts a standard Postgres `uri` field when connecting to a Postgres database. This connection string supports many options, and full documentation can be found here: https://github.com/go-sql-driver/mysql#dsn-data-source-name.
 
 The syntax of a Postgres connection URI is:
 
-```
+```shell
 postgresql://[user[:password]@][netloc][:port][,...][/dbname][?param1=value1&...]
 ```
 

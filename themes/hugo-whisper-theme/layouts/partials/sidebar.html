@@ -1,5 +1,4 @@
 {{ $currentNode := . }}
-
 <div class="docs-menu">
   <h3>
     <a href="{{ .FirstSection.Params.redirect }}">
@@ -7,9 +6,16 @@
         Documentation
       {{ else if eq .Section "tutorial" }}
         Tutorial
+      {{ else if eq .Section "overview" }}
+        Overview
+      {{ else if eq .Section "cli" }}
+        CLI Reference
+        {{ else if eq .Section "databases" }}
+        Databases
       {{ else }}
         {{ .Section | humanize }} Documentation
       {{ end }}
+    </a>
   </h3>
   <ul>
     {{ range .FirstSection.Pages }}

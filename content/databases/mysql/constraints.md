@@ -2,7 +2,7 @@
 date: 2019-07-05
 linktitle: "Constraints"
 title: Supported MySQL Constraints
-weight: 20240
+weight: 5
 ---
 
 The goal of SchemaHero is to support all supported Mysql constraints. If there's any missing, [open an issue](https://github.com/schemahero/schemahero/issues/new) to report it.

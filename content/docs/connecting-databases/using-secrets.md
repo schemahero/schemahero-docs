@@ -1,8 +1,8 @@
 ---
 date: 2019-05-25
-linktitle: "Kubernetes secrets"
-title: Kubernetes secrets
-weight: 30030
+linktitle: "Kubernetes Secrets"
+title: Kubernetes Secrets
+weight: 3
 ---
 
 Kubernetes Secrets are a good way to deliver sensitive data to the applications running in the cluster. SchemaHero supports reading parameters from secrets, using a syntax that's familiar to anyone who's written Kubernetes pods specs before.
@@ -10,7 +10,7 @@ Kubernetes Secrets are a good way to deliver sensitive data to the applications 
 To set up a connection to a postgres database using a connection URI stored in a secret:
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha2
+apiVersion: databases.schemahero.io/v1alpha3
 kind: Database
 metadata:
   name: my-pg

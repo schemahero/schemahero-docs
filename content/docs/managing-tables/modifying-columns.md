@@ -1,9 +1,8 @@
 ---
 date: 2019-07-06
-linktitle: "Modifying columns"
-linktitle: "Modifying columns"
-title: Adding columns
-weight: 40040
+linktitle: "Modifying Columns"
+title: "Modifying Columns"
+weight: 3
 ---
 
 Once a table is deployed, SchemaHero can modify columns in it. If you edit the YAML that contains the schema definition, and deploy it with `kubectl apply`, SchemaHero will compare that desired schema against the running schema, and generate the required SQL statements to convert the schema to the desired state.

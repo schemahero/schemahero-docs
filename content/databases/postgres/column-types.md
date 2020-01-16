@@ -2,7 +2,7 @@
 date: 2019-06-13
 linktitle: "Column Types"
 title: Supported Postgres Column types
-weight: 20130
+weight: 3
 ---
 
 The goal of SchemaHero is to support all column types. Currently, there is support for the following Postgres types. If there's any missing, [open an issue](https://github.com/schemahero/schemahero/issues/new) to report it.

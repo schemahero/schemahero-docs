@@ -3,7 +3,10 @@ date: 2019-05-25
 linktitle: "Deleting tables"
 title: Deleting tables
 weight: 40020
+draft: true
 ---
+
+**Status**: *Planned for v1alpha4*
 
 By default, SchemaHero will not delete table table when you delete the `table` object. In other words, `kubectl apply -f ./my-table.yaml` will create a table, but `kubectl delete -f ./my-table.yaml` will not delete the table.
 

@@ -2,15 +2,13 @@
 date: 2019-05-25
 linktitle: "Foreign Keys"
 title: Foreign Keys
-weight: 40070
+weight: 6
 ---
-
-Support for creating, altering and dropping Foreign Keys was add to SchemaHero v1alpha2.
 
 To define a foreign key on a table, use the `foreignKeys` field, as in this example:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha1
+apiVersion: schemas.schemahero.io/v1alpha3
 kind: Table
 metadata:
   name: users

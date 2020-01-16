@@ -9,13 +9,13 @@ To create a place to learn and understand SchemaHero, let's deploy a test instan
 
 There's a Kubernetes YAML for postgres in this repo. Let's deploy that and we will get a StatefulSet named `postgresql` with a 1 GB PersistentVolumeClaim.
 
-```
+```shell
 kubectl apply -f https://raw.githubusercontent.com/schemahero/schemahero/master/config/dev/database/postgres.yaml
 ```
 
 After deploying this, you can connect to your postgres database from the CLI using:
 
-```
+```shell
 kubectl exec -it postgresql-0 psql -- -U testuser -d testdb
 ```
 
@@ -23,10 +23,10 @@ When promoted, the password for "testuser" is "password".
 
 If you'd prefer to connect to this database using a local GUI such as SequelPro, run:
 
-```
+```shell
 kubectl port-forward svc/postgresl 5432:5432
 ```
 
-And then point your app to 127.0.0.:5432 with the user "testuser", database "testdb" and password "password".
+And then point your app to 127.0.0.1:5432 with the user "testuser", database "testdb" and password "password".
 
 Explore this database. Notice that it's empty.

@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Connecting"
 title: Connecting
-weight: 20220
+weight: 3
 ---
 
 SchemaHero accepts a DSN (Data Source Name) in the `uri` field when connecting to a MySQL database. This connection string supports many options, and full documentation can be found here: https://github.com/go-sql-driver/mysql#dsn-data-source-name.

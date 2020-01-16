@@ -2,10 +2,10 @@
 date: 2019-05-25
 linktitle: "Database Resources"
 title: Database Resources
-weight: 30010
+weight: 1
 ---
 
-Before deploying database tables and schemas, a database object should be deployed. The CRD for databases is responsible for creating an object that can be referenced in tables and schemas.
+Before deploying database tables and schemas, a database object must be deployed. The CRD for databases is responsible for creating an object that can be referenced in tables and schemas.
 
 This makes it easier to deploy schemas so that the credentials and database connection string doesn't have to be included in every schema migration that's deployed.
 

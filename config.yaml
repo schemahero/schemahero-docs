@@ -24,15 +24,26 @@ Params:
   pagetitle: "SchemaHero"
   permalink: "#"
   mainSections:
+    - overview
+    - cli
     - docs
+    - databases
     - tutorial
-    - community
 menu:
   main:
-    - Name: "Documentation"
+    - Name: "Overview"
       Weight: 1
+      URL: "/overview"
+    - Name: "CLI"
+      weight: 2
+      URL: "/cli"
+    - Name: "Documentation"
+      Weight: 3
       URL: "/docs"
+    - Name: "Databases"
+      Weight: 4
+      URL: "/databases"
     - Name: "Tutorial"
-      Weight: 2
+      Weight: 5
       URL: "/tutorial"
 ---

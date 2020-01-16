@@ -1,15 +1,15 @@
 ---
 date: 2019-05-25
-linktitle: "Creating tables"
-title: Creating tables
-weight: 40010
+linktitle: "Creating Tables"
+title: Creating Tables
+weight: 1
 ---
 
 To create a new table, define the initial table schema in a YAML manifest with `kind: Table`, and deploy it to the cluster. SchemaHero will see this new table request, and connect to the database and run the appropriate `create table` commands to deploy the table schema.
 
 For example, to create a simple table that stores session information in a database, we might want a postgres table that looks like this:
 
-```
+```sql
                          Table "public.session"
   Column   |            Type             | Collation | Nullable | Default
 -----------+-----------------------------+-----------+----------+---------
@@ -23,7 +23,7 @@ Indexes:
 To get this table, the following YAML will create it:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha2
+apiVersion: schemas.schemahero.io/v1alpha3
 kind: Table
 metadata:
   name: session

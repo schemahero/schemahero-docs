@@ -2,7 +2,7 @@
 date: 2019-07-06
 linktitle: "Indexes"
 title: Indexes
-weight: 40080
+weight: 7
 ---
 
 SchemaHero supports creating additional indexes on a table; indexes that are neither primary keys or foreign keys. Additional indexes can be on a single column or created from multiple columns.
@@ -21,7 +21,7 @@ indexes:
 The example below shows a postgres table that has a primary key on the `id` column, but also adds a unique constraint on a not-nullable column `email`.
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha2
+apiVersion: schemas.schemahero.io/v1alpha3
 kind: Table
 metadata:
   name: users

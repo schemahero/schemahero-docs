@@ -3,9 +3,10 @@ date: 2019-07-05
 linktitle: "Transforms"
 title: Transforms
 weight: 40100
+draft: true
 ---
 
-Note: Transforms are a planned feature, coming in v1alpha3. This feature is not yet available in the most recent version.
+**Status**: *Planned for v1alpha4*
 
 Changing the data type of a column managed by SchemaHero is as simple as just editing the type in the YAML and redeploying it. Depending on the original and new column type, there are some occaisionally some considerations. The database engine will have to transform an existing data to apply the generated migration. Let's look at an example to illustrate:
 

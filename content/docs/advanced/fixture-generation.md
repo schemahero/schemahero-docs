@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Fixture Generation"
 title: Fixture Generation
-weight: 50060
+weight: 4
 ---
 
 It can be desirable to have a schema defined in `CREATE TABLE` syntax to enable automated tests. This is often useful as fixtures for a test workflow.

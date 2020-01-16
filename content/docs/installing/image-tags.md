@@ -1,8 +1,8 @@
 ---
-date: 2019-05-25
+date: 2019-10-09
 linktitle: "Image Tags"
 title: Image Tags
-weight: 20020
+weight: 10030
 ---
 
 SchemaHero builds and uses 2 different container images:

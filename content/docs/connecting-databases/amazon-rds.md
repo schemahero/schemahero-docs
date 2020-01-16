@@ -2,7 +2,7 @@
 date: 2019-07-05
 linktitle: "Amazon RDS"
 title: Connecting to Amazon RDS
-weight: 30050
+weight: 5
 ---
 
 SchemaHero can manage a MySQL or Postgres schema running in RDS without any additional requirements.
@@ -22,7 +22,7 @@ stringData:
 Then, deploy the database connection using:
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha2
+apiVersion: databases.schemahero.io/v1alpha3
 kind: Database
 metadata:
   name: rds-postgres
