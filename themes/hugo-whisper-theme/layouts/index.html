@@ -16,21 +16,24 @@
 {{ end }}
 
 {{ define "main" }}
-<div class="strip strip-pattern-blue">
-  <div class="container pt-12 pb-16">
+<div class="strip">
+  <div class="container pt-8 pb-4">
     <div class="row">
       <div class="col-12">
         <div class="landing-logo"></div>
         <div class="content">
           <p>
-            Declarative, Desired-State Schema Management for Postgres, MySQL and others
+            Cloud Native Database Schema Management
           </p>
         </div>
         <div class="button-wrapper">
-          <a class="button primary-button" href="/overview/">
-            Learn
+          <a class="button border-button" href="https://www.youtube.com/watch?v=_fMmRgThGyA&t=3s">
+            Watch Video
           </a>
-          <a class="button border-button" href="/docs/installing/kubectl">
+          <a class="button border-button" href="/overview/">
+            Learn More
+          </a>
+          <a class="button primary-button" href="/docs/installing/kubectl">
             Get Started
           </a>
         </div>
@@ -39,17 +42,24 @@
     <div class="row">
       <div class="col-12">
         <div class="content">
-          {{ if .Content }}
           {{ .Content }}
-          {{ else }}
-          <p style="margin-bottom:0px; font-size:16px;">Install on your workstation:</p>
-          <p style="margin-top:0px"><code>curl https://kots.io/install | bash</code></p>
-          {{ end }}
         </div>
       </div>
     </div>
   </div>
 </div>
+<div class="strip strip-pattern-blue pt-2 pb-2">
+  <p style="width: 80%">
+    SchemaHero is a Kubernetes Operator that will create and apply database schema migrations to any supported database, running in or out of the cluster.
+  </p>
+  <p style="width: 80%">
+    Instead of writing migrations, just edit the desired schema and deploy it. SchemaHero will compare it to the running schema, generate migation commands and apply them.
+  </p>
+</div>
+<div class="pt-4 pb-4">
+  <iframe width="896" height="504" src="https://www.youtube.com/embed/_fMmRgThGyA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
 {{ if .Site.Params.homepage_image }}
 <div class="strip">
   <div class="container pt-4 pb-4">
