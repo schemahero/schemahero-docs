@@ -2,7 +2,7 @@
 date: 2019-10-09
 linktitle: "Installing SchemaHero"
 title: Installing SchemaHero
-weight: 10010
+weight: 2
 aliases:
   - /docs/installing
 ---
@@ -64,6 +64,6 @@ There should be 1 pod running in this namespace:
 
 ```shell
 $ kubectl get pods -n schemahero-system
-NAME                              READY   STATUS    RESTARTS   AGE
-schemahero-controller-manager-0   2/2     Running   0        3d2h
+NAME           READY   STATUS    RESTARTS   AGE
+schemahero-0   1/1     Running   0          66s
 ```

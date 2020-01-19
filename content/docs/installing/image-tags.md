@@ -2,7 +2,7 @@
 date: 2019-10-09
 linktitle: "Image Tags"
 title: Image Tags
-weight: 10030
+weight: 4
 ---
 
 SchemaHero builds and uses 2 different container images:
@@ -18,15 +18,10 @@ There are several reasons for this separation:
 
 The two images are tagged and released at the same time, using the same versioning system
 
-## Alpha
+## Semver (major.minor.patch)
 
-There is an `:alpha` tag of these iamges. This is the latest commit to master. This has the latest code, but also may have some issues. It's not recommended to use the `:alpha` tag in production.
+The `:x.y.z` tag points to a specific, immutable revision. These are created when a tag is pushed. These are the most stable versions of SchemaHero and recommended to use in production. A release tag (one without a `-prerelease` suffix) will never be overwritten with a new image.
 
-## Latest
+## Prelease Images
 
-There is no `:latest` tag. Docker defaults to the `latest` tag, and this is clear what the expectation of pulling this tag is. SchemaHero chooses to not publish an image on this tag.
-
-## major.minor.patch
-
-The `:x.y.z` tag points to a specific, immutable revision. These are created when a tag is pushed. These are the most stable versions of SchemaHero and recommended to use in production.
-
+SchemaHero releases pre-release versions, but does not publish these to the `krew` index. These can be manually installed, but are not recommended for production environments.
