@@ -35,9 +35,9 @@ function addHeaderAnchors(content) {
 }
 
 // SEARCH.js
-var client = algoliasearch("RKUCTRIG38", "1413550d394a754f742b8c18a770b5be");
+var client = algoliasearch("QVPBAZBRCD", "cc18e896d9ebbcfbef43c3146b9f13ac");
 var resultsEl = document.getElementById("search-results");
-var index = client.initIndex("prod_kotsio");
+var index = client.initIndex("prod_schemahero");
 var timeout = null;
 var DEBOUNCE_TIME = 300;
 function onSearchInput(event) {
@@ -202,8 +202,3 @@ if (searchPageInput) {
     }
     searchPageInput.addEventListener("input", onSearchPageInput);
 }
-
-
-
-
-

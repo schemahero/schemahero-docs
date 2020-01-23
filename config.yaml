@@ -1,3 +1,4 @@
+---
 baseURL: "https://schemahero.io"
 languageCode: "en-us"
 title: "schemahero.io"
@@ -7,6 +8,10 @@ canonifyurls: true
 description: "Documentation for SchemaHero."
 googleAnalytics: ""
 
+# Algolia search
+algolia:
+  index: "prod_schemahero"
+  appID: "QVPBAZBRCD"
 
 # Hugo configuration
 pygmentsCodeFences: true
