@@ -8,7 +8,7 @@
     <ul>
       {{ $currentPage := . }}
       {{ range .Site.Menus.main }}
-      <li class="menu-item-{{ .Name | lower }} {{if eq $currentPage.Section .Identifier}} active {{end}}">
+      <li class="menu-item-{{ .Identifier | lower }} {{if eq $currentPage.Section .Identifier}} active {{end}}">
         <a href="{{ .URL }}">
           <span>{{ .Name }}</span>
         </a>
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div style="margin-left:30px">
+    <div style="margin-left:30px; min-width: 98px">
       <a class="github-button" href="https://github.com/schemahero/schemahero" data-icon="octicon-star" data-size="large"
         data-show-count="true" aria-label="Star schemahero/schemahero on GitHub">Star</a>
     </div>
