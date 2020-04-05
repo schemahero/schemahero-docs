@@ -12,21 +12,9 @@ SchemaHero has 2 different components: an in-cluster Kubernetes Operator and a c
 
 ## Client
 
-The SchemaHero client-side component is a kubectl plugin that's packaged and delivered using [Krew](https://krew.dev), the package manager for kubectl plugins.
+The SchemaHero client-side component is a kubectl plugin:
 
-### Install Krew and the SchemaHero plugin at once:
-```shell
-curl https://krew.sh/schemahero | bash
-```
-
-### Install Krew and the SchemaHero plugin as separate steps:
-First, install [krew](https://krew.dev), by following the [documented installation instructions](https://github.com/kubernetes-sigs/krew/#installation).
-
-Once you have the krew package manager installed, you can install the SchemaHero plugin:
-
-```shell
-kubectl krew install schemahero
-```
+The current version of SchemaHero is v0.8.0-alpha.2 and can be downloaded from https://github.com/schemahero/schemahero/releases/tag/v0.8.0-alpha.2. To install, download the kubectl-schemahero package for your operating system / architecture (e.g. kubectl-schemahero_darwin_amd64.tar.gz). Extract this file and move the `kubectl-schemahero` binary to your path.
 
 ## Operator
 
@@ -40,7 +28,7 @@ It's easy to install the operator using the built-in command:
 kubectl schemahero install
 ```
 
-The above command will create a `schemahero-system` namespace, and install 2 new Custom Resource Definitions to your cluster.
+The above command will create a `schemahero-system` namespace, and install 3 new Custom Resource Definitions to your cluster.
 
 ### GitOps and Other Workflows
 
@@ -66,4 +54,15 @@ There should be 1 pod running in this namespace:
 $ kubectl get pods -n schemahero-system
 NAME           READY   STATUS    RESTARTS   AGE
 schemahero-0   1/1     Running   0          66s
+```
+
+## Uninstalling
+
+If you need to uninstall SchemaHero:
+
+```
+kubectl delete ns schemahero-system
+kubectl delete crd databases.databases.schemahero.io
+kubectl delete crd migrations.schemas.schemahero.io
+kubectl delete crd tables.schemas.schemahero.io
 ```

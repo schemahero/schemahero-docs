@@ -18,7 +18,7 @@ pygmentsCodeFences: true
 pygmentsStyle: "monokai"
 
 staticDir:
-    - ./static
+  - ./static
 
 Params:
   author: "SchemaHero"
