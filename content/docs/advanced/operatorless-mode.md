@@ -40,6 +40,7 @@ spec:
           volumeMounts:
             - name: migrations
               mountPath: /migrations
+          args: ["plan"]
           env:
             - name: SCHEMAHERO_DRIVER
               value: postgres
@@ -58,6 +59,7 @@ spec:
           volumeMounts:
             - name: migrations
               mountPath: /migrations
+          args: ["apply"]
           env:
             - name: SCHEMAHERO_DRIVER
               value: postgres
