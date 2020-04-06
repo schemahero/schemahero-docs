@@ -32,7 +32,7 @@ spec:
       volumes:
         - name: migrations
           emptyDir:
-            medium: memory
+            medium: Memory
       restartPolicy: OnFailure
       initContainers:
         - image: my-migrations-image
