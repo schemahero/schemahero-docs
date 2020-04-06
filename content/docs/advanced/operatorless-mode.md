@@ -47,7 +47,7 @@ spec:
             - name: SCHEMAHERO_SPEC_FILE
               value: /tables
             - name: SCHEMAHERO_OUT
-              value: /migrations
+              value: /migrations/plan.yaml
             - name: SCHEMAHERO_URI
               valueFrom:
                 secretKeyRef:
@@ -64,7 +64,7 @@ spec:
             - name: SCHEMAHERO_DRIVER
               value: postgres
             - name: SCHEMAHERO_DDL
-              value: /migrations
+              value: /migrations/plan.yaml
             - name: SCHEMAHERO_URI
               valueFrom:
                 secretKeyRef:
