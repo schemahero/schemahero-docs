@@ -10,13 +10,14 @@ SchemaHero accepts a DSN (Data Source Name) in the `uri` field when connecting t
 An example of connecting to a local, in-cluster MySQL StatefulSet that is not running TLS:
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha1
+apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Database
 metadata:
   name: my-database
-connection:
-  mysql:
-    uri:
-      value: username:password@tcp(host:3306)/dbname?tls=false
+spec:
+  connection:
+    mysql:
+      uri:
+        value: username:password@tcp(host:3306)/dbname?tls=false
 ```
 

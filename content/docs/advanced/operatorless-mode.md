@@ -12,8 +12,7 @@ To do this, you'll build a new Docker image using the SchemaHero image as the ba
 An example of the required Dockerfile is:
 
 ```Dockerfile
-FROM schemahero/schemahero:0.8.0-alpha.3
-
+FROM schemahero/schemahero:{{< schemaheroVersion >}}
 ADD --chown=schemahero:schemahero ./tables ./tables
 ```
 

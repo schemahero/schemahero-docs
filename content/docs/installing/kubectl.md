@@ -14,7 +14,7 @@ SchemaHero has 2 different components: an in-cluster Kubernetes Operator and a c
 
 The SchemaHero client-side component is a kubectl plugin:
 
-The current version of SchemaHero is v0.8.0-alpha.2 and can be downloaded from https://github.com/schemahero/schemahero/releases/tag/v0.8.0-alpha.2. To install, download the kubectl-schemahero package for your operating system / architecture (e.g. kubectl-schemahero_darwin_amd64.tar.gz). Extract this file and move the `kubectl-schemahero` binary to your path.
+The current version of SchemaHero is v{{< schemaheroVersion >}} and can be downloaded from https://github.com/schemahero/schemahero/releases/tag/v{{< schemaheroVersion >}}. To install, download the kubectl-schemahero package for your operating system / architecture (e.g. kubectl-schemahero_darwin_amd64.tar.gz). Extract this file and move the `kubectl-schemahero` binary to your path.
 
 ## Operator
 
@@ -54,15 +54,4 @@ There should be 1 pod running in this namespace:
 $ kubectl get pods -n schemahero-system
 NAME           READY   STATUS    RESTARTS   AGE
 schemahero-0   1/1     Running   0          66s
-```
-
-## Uninstalling
-
-If you need to uninstall SchemaHero:
-
-```
-kubectl delete ns schemahero-system
-kubectl delete crd databases.databases.schemahero.io
-kubectl delete crd migrations.schemas.schemahero.io
-kubectl delete crd tables.schemas.schemahero.io
 ```

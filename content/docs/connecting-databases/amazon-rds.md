@@ -22,18 +22,19 @@ stringData:
 Then, deploy the database connection using:
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha3
+apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Database
 metadata:
   name: rds-postgres
   namespace: default
-connection:
-  postgres:
-    uri:
-      valueFrom:
-        secretKeyRef:
-          key: uri
-          name: rds-postgres
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            key: uri
+            name: rds-postgres
 ```
 
 Once these are deployed, you can deploy tables using the standard SchemaHero tools, and the schemas will be applied to the RDS instance defined in the secret.

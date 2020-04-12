@@ -18,9 +18,9 @@ There are several reasons for this separation:
 
 The two images are tagged and released at the same time, using the same versioning system
 
-## Semver (major.minor.patch)
+## Semver: {{< schemaheroVersion >}}
 
-The `:x.y.z` tag points to a specific, immutable revision. These are created when a tag is pushed. These are the most stable versions of SchemaHero and recommended to use in production. A release tag (one without a `-prerelease` suffix) will never be overwritten with a new image.
+The `:x.y.z` tag points to a specific, immutable revision. These are created when a tag is pushed. The current version is {{< schemaheroVersion >}} These are the most stable versions of SchemaHero and recommended to use in production. A release tag (one without a `-prerelease` suffix) will never be overwritten with a new image.
 
 ## Prelease Images
 

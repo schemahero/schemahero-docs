@@ -9,7 +9,7 @@ To create a new table, define the initial table schema in a YAML manifest with `
 
 For example, to create a simple table that stores session information in a database, we might want a postgres table that looks like this:
 
-```sql
+```
                          Table "public.session"
   Column   |            Type             | Collation | Nullable | Default
 -----------+-----------------------------+-----------+----------+---------
@@ -18,12 +18,15 @@ For example, to create a simple table that stores session information in a datab
  expire_at | timestamp without time zone |           | not null |
 Indexes:
     "session_pkey" PRIMARY KEY, btree (id)
+
 ```
+
+#### Schemahero YAML
 
 To get this table, the following YAML will create it:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha3
+apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Table
 metadata:
   name: session

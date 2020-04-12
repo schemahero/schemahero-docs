@@ -18,14 +18,15 @@ postgresql://[user[:password]@][netloc][:port][,...][/dbname][?param1=value1&...
 All supported parameters are documented on the [Postgres website](https://www.postgresql.org/docs/current/libpq-connect.html#AEN45575).
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha1
+apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Database
 metadata:
   name: my-database
-connection:
-  postgres:
-    uri:
-      value: postgresql://username:password@postgres:5432/my-database
+spec:
+  connection:
+    postgres:
+      uri:
+        value: postgresql://username:password@postgres:5432/my-database
 ```
 
 
@@ -40,15 +41,16 @@ metadata:
 data:
   uri: cG9zdGdyZXNxbDovL3VzZXJuYW1lOnBhc3N3b3JkQHBvc3RncmVzOjU0MzIvbXktZGF0YWJhc2U=
 ---
-apiVersion: databases.schemahero.io/v1alpha1
+apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Database
 metadata:
   name: my-database
-connection:
-  postgres:
-    uri:
-      valueFrom:
-        secretKeyRef:
-          name: postgresql-secret
-          key: uri
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: postgresql-secret
+            key: uri
 ```

@@ -13,7 +13,7 @@ Changing the data type of a column managed by SchemaHero is as simple as just ed
 Let's assume we already habe a table managed by SchemaHero, deployed with this YAML:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha1
+apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Table
 metadata:
   name: reservation
@@ -33,7 +33,7 @@ spec:
 The second column defined here is a timestamp, but it does not contain any constraints. There could be NULL values in here. To add a `notNull` constraint to the `created_at` column, we need to supply a `transform`:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha1
+apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Table
 metadata:
   name: reservation

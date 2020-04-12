@@ -2,13 +2,13 @@
 date: 2019-05-25
 linktitle: "Primary Keys"
 title: Primary Keys
-weight: 5
+weight: 6
 ---
 
 SchemaHero can manage simple or composite primary keys. To create a primary key:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha3
+apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Table
 metadata:
   name: flights

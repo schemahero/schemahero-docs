@@ -12,20 +12,21 @@ Once the operator is installed and we have a database to connect to, the next st
  If you are using the example Postgres database from the previous step, create the following YAML locally and `kubectl apply` it.
 
  ```yaml
-apiVersion: databases.schemahero.io/v1alpha1
+apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Database
 metadata:
   name: schemahero-tutorial
-connection:
-  postgres:
-    uri:
-      value: postgres://schemahero:password@postgresql:5432/github?sslmode=disable
+spec:
+  connection:
+    postgres:
+      uri:
+        value: postgres://schemahero:password@postgresql:5432/github?sslmode=disable
  ```
 
 
 Reviewing this YAML:
 
-`apiVersion: databases.schemahero.io/v1alpha1`: this just tells Kubernetes that the SchemaHero manager will be responsbile for the YAML
+`apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}`: this just tells Kubernetes that the SchemaHero manager will be responsbile for the YAML
 
 `kind: Database`: the SchemaHero Operator exposes several kinds. A `Database` instructs the Operator that this is a database connection.
 

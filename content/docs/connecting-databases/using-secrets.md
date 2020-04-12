@@ -10,17 +10,18 @@ Kubernetes Secrets are a good way to deliver sensitive data to the applications 
 To set up a connection to a postgres database using a connection URI stored in a secret:
 
 ```yaml
-apiVersion: databases.schemahero.io/v1alpha3
+apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Database
 metadata:
   name: my-pg
-connection:
-  postgres:
-    uri:
-      valueFrom:
-        secretKeyRef:
-          name: postgres
-          key: uri
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: postgres
+            key: uri
 ```
 
 The above custom resource assumes that a postgres secret with a uri key was already deployed, like this:

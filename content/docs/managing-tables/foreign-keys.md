@@ -2,13 +2,13 @@
 date: 2019-05-25
 linktitle: "Foreign Keys"
 title: Foreign Keys
-weight: 6
+weight: 7
 ---
 
 To define a foreign key on a table, use the `foreignKeys` field, as in this example:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha3
+apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Table
 metadata:
   name: users

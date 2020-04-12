@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Dropping Columns"
 title: Dropping Columns
-weight: 4
+weight: 5
 ---
 
 To remove (drop) a column from a database table, simply remove it from the YAML and deploy. SchemaHero will calculate the difference, detect that that column should be removed, and issue a database-specific command to remove the column.

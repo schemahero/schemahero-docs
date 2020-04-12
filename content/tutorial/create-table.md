@@ -30,7 +30,7 @@ CREATE TABLE reservation
 Instead, let's define it in SchemaHero. Create a file called `reservation.yaml` and paste the following into it:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha1
+apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Table
 metadata:
   name: reservation

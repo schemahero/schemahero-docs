@@ -14,7 +14,7 @@ If something isn't working right, the best place to start debugging is to look a
 Given a table like this:
 
 ```yaml
-apiVersion: schemas.schemahero.io/v1alpha1
+apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
 kind: Table
 metadata:
   name: reservation
