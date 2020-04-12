@@ -5,8 +5,8 @@ title: CockroachDB
 weight: 3
 ---
 
-SchemaHero is [working to add](https://github.com/schemahero/schemahero/pull/86) native support for various versions of CockroachDB
+SchemaHero has recently added native support for CockroachDB.
 
 | CockroachDB Version | Minimum SchemaHero Version |
 |------------------|------------|
-| v19.x | TBD |
+| v19.4.2 | 0.9.0 / v1alpha4 |
