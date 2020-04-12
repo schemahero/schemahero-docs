@@ -2,7 +2,8 @@
 date: 2019-05-25
 linktitle: "Databases"
 title: Databases
-weight: 10020
+weight: 4
+aliases: ["/overview/about/databases/"]
 ---
 
 SchemaHero supports various databases including Postgres, MySQL and others that are compatible. SchemaHero does not attempt, nor is it a goal of the project to produce a cross-database syntax to define schemas. There are many similarities between different database engines, but each also have specific column types and other non-standard extensions that they support. SchemaHero can support this natively by not targeting the "lowest common denominator" schema definition and instead, allowing each database engine to define it's own YAML document.

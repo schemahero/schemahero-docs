@@ -2,7 +2,8 @@
 date: 2019-05-25
 linktitle: "Declarative Schema Management"
 title: Declarative Schema Management
-weight: 10010
+weight: 2
+aliases: ["/overview/about/declarative-schema-management/"]
 ---
 
 There are many benefits to managing database schemas in a declarive format, including:

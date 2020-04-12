@@ -39,24 +39,24 @@ Params:
     - tutorial
 menu:
   main:
-    - Identifier: "overview"
-      Name: "Overview"
-      Weight: 1
-      URL: "/overview/about/"
-    - Identifier: "cli"
-      Name: "CLI"
-      weight: 2
-      URL: "/cli/install/"
-    - Identifier: "docs"
-      Name: "Documentation"
-      Weight: 3
-      URL: "/docs/installing/kubectl/"
-    - Identifier: "databases"
-      Name: "Databases"
-      Weight: 4
-      URL: "/databases/postgres/"
     - Identifier: "tutorial"
       Name: "Tutorial"
-      Weight: 5
+      Weight: 1
       URL: "/tutorial"
+    - Identifier: "docs"
+      Name: "Documentation"
+      Weight: 2
+      URL: "/docs/concepts/about/"
+    - Identifier: "databases"
+      Name: "Databases"
+      Weight: 3
+      URL: "/databases/postgres/"
+    - Identifier: "cli"
+      Name: "CLI"
+      weight: 4
+      URL: "/cli/install/"
+    - Identifier: "community"
+      Name: "Community"
+      Weight: 5
+      URL: "/community"
 ---

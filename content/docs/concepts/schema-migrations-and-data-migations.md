@@ -2,7 +2,8 @@
 date: 2019-05-25
 linktitle: "Data Migrations"
 title: Data Migrations
-weight: 10020
+weight: 3
+aliases: ["/overview/about/schema-migrations-and-data-migations/"]
 ---
 
 There are two types of migrations that have to be managed and deployed:

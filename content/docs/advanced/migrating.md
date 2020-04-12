@@ -2,7 +2,8 @@
 date: 2019-05-25
 linktitle: "Migrating To SchemaHero"
 title: "Migrating To SchemaHero"
-weight: 20030
+weight: 6
+aliases: ["/overview/migrating/migrating/"]
 ---
 
 If you have an existing database and want to try SchemaHero, it's possible to use SchemaHero to export your current database schema as SchemaHero resources.

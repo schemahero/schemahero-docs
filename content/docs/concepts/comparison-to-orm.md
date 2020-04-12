@@ -2,7 +2,8 @@
 date: 2019-05-25
 linktitle: "SchemaHero vs ORM"
 title: Comparing SchemaHero to an ORM
-weight: 10030
+weight: 5
+aliases: ["/overview/about/comparison-to-orm/"]
 ---
 
 An ORM (Object Relational Mapper) is a technique that enables developers to query databases without writing SQL statements. An ORM will generate the SQL queries for objects automatically, allowing a developer to simply run code, and not SQL. There are many reasons to use an ORM, including the fact that they provide an abstraction around athe database. This abstraction makes it easier for developers who don't have an understanding of the database engine and indices to perform complex queries without writing `INNER JOIN`s and carefully building their query to not have a significant impact on the database runtime.

@@ -68,7 +68,13 @@
     {{ end}}
   </div>
 
-  {{ partial "sub-footer.html" . }}
+
+
+  {{ if eq .Kind "home" }}
+
+  {{ else }}
+    {{ partial "sub-footer.html" . }}
+  {{ end }}
 
   {{ $scripts := resources.Get "js/scripts.js" }}
 

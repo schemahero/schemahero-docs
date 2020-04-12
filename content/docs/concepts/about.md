@@ -3,6 +3,7 @@ date: 2019-05-25
 linktitle: "Overview"
 title: Overview
 weight: 1
+aliases: ["/overview/about"]
 ---
 
 SchemaHero is a Kubernetes Operator that implements a new custom kind: `Table`. The `Table` kind defines a database table, along with columns, type, indices and constraints. The `Table` object can be deployed to a cluster that has the SchemaHero operator installed. When the SchemaHero operator receives a `Table` object, it will query the target database for the current schema, if any.

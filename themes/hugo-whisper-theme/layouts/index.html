@@ -23,7 +23,7 @@
         <div class="landing-logo"></div>
         <div class="content">
           <p>
-            Database Schema Management in Kubernetes
+            Modernized Database Schema Migrations
           </p>
         </div>
         <div class="button-wrapper">
@@ -43,29 +43,12 @@
 </div>
 <div class="strip strip-pattern-blue pt-2 pb-2">
   <p style="width: 60%; font-size: 1.2em;">
-    SchemaHero is a Kubernetes Operator that enables a workflow of creating, approving, rejecting and applying database schema changes and other migrations.
-  </p>
-  <p style="width: 60%; font-size: 1.2em;">
-    SchemaHero works with MySQL, Postgres and other compatible databases, whether the database is running in Kubernetes or anywhere else.
+    SchemaHero is an open-source database schema migration tool that converts a schema definition into migration scripts that can be applied in any environment. Written as both a CLI utility and a Kubernetes Operator, SchemaHero eliminates the task of creating and managing sequenced migration scripts that are compatible with all environments that an application is running in.
   </p>
 </div>
 <div class="pt-4 pb-4">
   <iframe width="896" height="504" src="https://www.youtube.com/embed/_fMmRgThGyA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
-
-{{ if .Site.Params.homepage_image }}
-<div class="strip">
-  <div class="container pt-4 pb-4">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-10">
-        <div class="terminal">
-          <img src="{{ .Site.Params.homepage_image | relURL}}" />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-{{ end }}
 
 {{ end }}
 
