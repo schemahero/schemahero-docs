@@ -1,7 +1,7 @@
 ---
 date: 2020-04-12
-linktitle: "Deleting tables"
-title: Deleting tables
+linktitle: "Deleting Tables"
+title: Deleting Tables
 weight: 2
 ---
 
