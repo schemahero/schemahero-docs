@@ -1,7 +1,7 @@
 ---
 baseURL: "https://schemahero.io"
 languageCode: "en-us"
-title: "schemahero.io"
+title: "SchemaHero - A modern approach to database schema migrations"
 theme: "hugo-whisper-theme"
 metadataformat: "yaml"
 canonifyurls: true
