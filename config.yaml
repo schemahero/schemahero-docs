@@ -37,6 +37,7 @@ Params:
     - docs
     - databases
     - tutorial
+    - reference
 menu:
   main:
     - Identifier: "tutorial"
