@@ -2,12 +2,15 @@
 date: 2019-05-25
 linktitle: "Deploy Postgres"
 title: Deploy Postgres
-weight: 10
+weight: 1
 ---
 
-To create a place to learn and understand SchemaHero, let's deploy a test instance of Postgres. This will run in the local cluster, and can be deleted when the tutorial is completed. If you have a test Postgres server already, feel free to skip this step and connect SchemaHero to that database.
+To create a place to learn and understand SchemaHero, let's deploy a test instance of Postgres. 
+This will run in the local cluster, and can be deleted when the tutorial is completed. 
+If you have a test Postgres server already, feel free to skip this step and connect SchemaHero to that database.
 
-There's a Kubernetes YAML for postgres in this repo. Let's deploy that and we will get a StatefulSet named `postgresql` with a 1 GB PersistentVolumeClaim.
+There's a Kubernetes YAML for postgres in this repo. 
+Let's deploy that and we will get a StatefulSet named `postgresql` with a 1 GB PersistentVolumeClaim.
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/schemahero/schemahero/master/config/dev/database/postgres.yaml
@@ -19,7 +22,7 @@ After deploying this, you can connect to your postgres database from the CLI usi
 kubectl exec -it postgresql-0 psql -- -U testuser -d testdb
 ```
 
-When promoted, the password for "testuser" is "password".
+When prompted, the password for "testuser" is "password".
 
 If you'd prefer to connect to this database using a local GUI such as SequelPro, run:
 

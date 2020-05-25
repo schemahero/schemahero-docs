@@ -6,10 +6,17 @@ weight: 2
 aliases: ["/overview/about/declarative-schema-management/"]
 ---
 
+Many database schema management tools are built around an imperative model, requiring that the developer to understand the current state of the schema and understand the best commands to migrate the current state (and related data) to a new, desired state.
+This model is difficult for several reaasons that are covered in this document.
+This document proposes a declarative model to replace this traditionally imperative one, and explains the benefits and costs with this change.
+
+## Benefits 
+
 There are many benefits to managing database schemas in a declarive format, including:
+
 1. Ability to adhere to a change management process
 2. Repeatable deployments to new environments
-...
+3. Compatibility with unexpected and new runtimes
 
 ## Current Tools
 
@@ -20,7 +27,8 @@ There are several commonly-used methods of managing database schemas employed to
 
 ### Sequential Migrations / Replay
 
-Tools such as db-migrate, Flyaway, goose and others fit into this category. These are immutable after deployment, stacked migrations that start from an empty database and consist of ordered create, alter and drop commands.
+Tools such as db-migrate, Flyaway, goose and others fit into this category. 
+These are immutable after deployment, stacked migrations that start from an empty database and consist of ordered create, alter and drop commands.
 
 #### Challenges
 

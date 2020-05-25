@@ -4,5 +4,6 @@ linktitle: "Architecture"
 title: Architecture
 weight: 6
 redirect: /docs/architecture/rbac
+draft: true
 ---
 

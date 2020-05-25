@@ -1,11 +1,11 @@
 ---
-date: 2019-05-25
+date: 2020-05-24
 linktitle: "Connecting"
 title: Connecting
 weight: 2
 ---
 
-SchemaHero accepts a standard Postgres `uri` field when connecting to a Postgres database. 
+SchemaHero accepts a standard Postgres `uri` field when connecting to a CockroachDB database. 
 This connection string supports many options, and full documentation can be found here: https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING.
 
 The syntax of a Postgres connection URI is:
@@ -25,7 +25,7 @@ metadata:
   name: my-database
 spec:
   connection:
-    postgres:
+    cockroachdb:
       uri:
         value: postgresql://username:password@postgres:5432/my-database
 ```
@@ -48,7 +48,7 @@ metadata:
   name: my-database
 spec:
   connection:
-    postgres:
+    cockroachdb:
       uri:
         valueFrom:
           secretKeyRef:

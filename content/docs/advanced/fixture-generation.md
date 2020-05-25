@@ -5,7 +5,8 @@ title: Fixture Generation
 weight: 4
 ---
 
-It can be desirable to have a schema defined in `CREATE TABLE` syntax to enable automated tests. This is often useful as fixtures for a test workflow.
+It can be desirable to have a schema defined in `CREATE TABLE` syntax to enable automated tests. 
+This is often useful as fixtures for a test workflow.
 
 SchemaHero can generate a `.SQL` file with statements for this reason.
 

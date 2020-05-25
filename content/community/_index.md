@@ -11,4 +11,5 @@ Additionally, the following areas are important to track for news, updates and c
 
 - Follow us on Twitter at [@schemahero](https://twitter.com/schemahero).
 - Join our Kubernetes Slack channel and just say hi, ask questions or share how you are using SchemaHero at [#schemahero](https://kubernetes.slack.com/messages/schemahero)
-- Participate in the community. We are working to schedule a regular community meeting. If you would like to receive an invite, please let us know in the [#schemahero](https://kubernetes.slack.com/messages/schemahero) channel.
+- Participate in the community. We are working to schedule a regular community meeting. 
+If you would like to receive an invite, please let us know in the [#schemahero](https://kubernetes.slack.com/messages/schemahero) channel.

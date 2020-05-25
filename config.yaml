@@ -25,8 +25,8 @@ Params:
   copyright: "Replicated, Inc"
   homepage_intro: "Kubernetes-Native, Declarative Database Schema Management"
 
-  schemaheroVersion: 0.8.1
-  schemaheroAPIVersion: v1alpha3
+  schemaheroVersion: 0.9.0
+  schemaheroAPIVersion: v1alpha4
 
   favicon: ""
   pagetitle: "SchemaHero"
