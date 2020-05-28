@@ -1,11 +1,13 @@
 ---
-date: 2019-06-13
+date: 2020-05-25
 linktitle: "Column Types"
 title: Supported Postgres Column types
 weight: 3
 ---
 
-The goal of SchemaHero is to support all column types. Currently, there is support for the following Postgres types. If there's any missing, [open an issue](https://github.com/schemahero/schemahero/issues/new) to report it.
+The goal of SchemaHero is to support all column types. 
+Currently, there is support for the following Postgres types. 
+If there are any missing, [open an issue](https://github.com/schemahero/schemahero/issues/new) to report it.
 
 | Column Type | Recognized Aliases | SchemaHero Version |
 |-------------|--------------------|--------------------|
@@ -40,7 +42,7 @@ The goal of SchemaHero is to support all column types. Currently, there is suppo
 |  smallserial | serial2 | v0.1.0 |
 |  serial | serial4 | v0.1.0 |
 |  text | | v0.1.0 |
-|  time | timetz | v0.1.0 |
+|  time | timetz | v0.9.0 |
 |  timestamp | timestamptz | v0.1.0 |
 |  tsquery | | v0.1.0 |
 |  tsvector | | v0.1.0 |

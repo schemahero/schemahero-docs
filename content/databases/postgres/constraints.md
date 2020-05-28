@@ -5,7 +5,8 @@ title: Supported Postgres Constraints
 weight: 4
 ---
 
-The goal of SchemaHero is to support all supported Postgres constraints. If there's any missing, [open an issue](https://github.com/schemahero/schemahero/issues/new) to report it.
+The goal of SchemaHero is to support all supported Postgres constraints. 
+If there are any missing, [open an issue](https://github.com/schemahero/schemahero/issues/new) to report it.
 
 | Constraint Type | SchemaHero Version |
 |-----------------|--------------------|

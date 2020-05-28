@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "Define a database"
 title: Define a database
-weight: 30
+weight: 4
 ---
 
 Once the operator is installed and we have a database to connect to, the next step is to tell SchemaHero about the database. This is accomplished by deploying custom resource to the cluster with the connection information.
@@ -38,19 +38,16 @@ Reviewing this YAML:
 
 Once that YAML is deployed, you can review it with:
 
-```
+```shell
 kubectl get databases
 ...
 ```
 
 And you can check the status of the connection to the database with:
 
-```
+```shell
 kubectl describe database schemahero-tutorial
-...
-
-...
 ```
 
-In the last command, you can see at the bottom that the SchemaHero manager has established a connection to postgres using the connection uri given. The fields `...` are updated. If the `lastConnectedAt` time is not recent, there might be trouble with the database or with the connection string.
+
 

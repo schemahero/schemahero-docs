@@ -1,20 +1,16 @@
 ---
-date: 2019-05-25
-title: Deploy the SchemaHero operator
-linktitle: "Deploy SchemaHero"
-weight: 20
-something: true
+date: 2020-05-24
+title: Install SchemaHero
+linktitle: "Install SchemaHero"
+weight: 2
 ---
 
-SchemaHero is designed to run in a Kubernetes cluster. To install:
+To start, you'll need to have the SchemaHero `kubectl` plugin installed on your local workstation.
+Assuming you already have `kubectl`, install [krew](https://krew.dev) and then install SchemaHero by running:
 
-```
-kubectl apply -f https://raw.githubusercontent.com/schemahero/schemahero/master/install/schemahero/schemahero-operator.yaml
+```shell
+kubectl krew install schemahero
 ```
 
-This will create a `schemahero-system` namespace, and deploy the SchemaHero manager. You can confirm that SchemaHero is installed by executing:
+(Full installation instructions can be found in the Client section of the [installation documentation](/docs/installing/kubectl/#client)).
 
-```
-kubectl get databases
-No resources found
-```
