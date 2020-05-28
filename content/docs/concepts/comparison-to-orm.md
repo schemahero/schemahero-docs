@@ -2,7 +2,7 @@
 date: 2019-05-25
 linktitle: "SchemaHero vs ORM"
 title: Comparing SchemaHero to an ORM
-weight: 5
+weight: 7
 aliases: ["/overview/about/comparison-to-orm/"]
 ---
 
