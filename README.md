@@ -18,3 +18,10 @@ The site that is hosted at https://schemahero.io/docs can be started with:
 ```
 yarn workspace docs start
 ```
+
+## Learn
+The site that is hosted at https://schemahero.io/learn can be started with:
+
+```
+yarn workspace learn start
+```
