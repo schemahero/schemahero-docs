@@ -1,6 +1,10 @@
-
-public/
-resources/
+.DS_Store
+Thumbs.db
+db.json
+*.log
 node_modules/
-tech-doc-hugo
-.vscode
+public/*
+.deploy*/
+docs.json
+_multiconfig.yml
+.cache
