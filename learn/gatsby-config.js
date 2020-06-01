@@ -22,9 +22,7 @@ module.exports = {
           Tutorial: [
             'tutorial/introduction',
             'tutorial/install-schemahero',
-            'tutorial/install-operator',
-            'tutorial/deploy-postgres',
-            'tutorial/define-database',
+            'tutorial/connect-database',
             'tutorial/create-table',
             'tutorial/modify-table',
             'tutorial/next-steps',
