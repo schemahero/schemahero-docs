@@ -1,12 +1,35 @@
 
 .PHONY: publish
-publish: deps clean
+publish: deps clean build
+publish:
+	mkdir -p public
+	
+	mkdir -p public/docs
+	cp -r docs/public/* public/docs
+
+	mkdir -p public/learn
+	cp -r learn/public/* public/learn
+
+	mkdir -p public/cli
+	cp -r cli/public/* public/cli
+
+	mkdir -p public/reference
+	cp -r reference/public/* public/reference
+
+	mkdir -p public/databases
+	cp -r databases/public/* public/databases
+
+	mkdir -p public/community
+	cp -r community/public/* public/community
+
+.PHONY: build
+build:
 	yarn workspace docs build
 	yarn workspace learn build
-	# yarn workspace cli build && mkdir -p public/cli && mv cli/public/* public/cli
-	# yarn workspace reference build && mkdir -p public/reference && mv reference/public/* public/reference
-	# yarn workspace databases build && mkdir -p public/databases && mv databases/public/* public/databases
-	# yarn workspace community build && mkdir -p public/community && mv community/public/* public/community
+	yarn workspace cli build
+	yarn workspace reference build
+	yarn workspace databases build
+	yarn workspace community build
 
 .PHONY: deps
 deps:
@@ -14,7 +37,7 @@ deps:
 
 .PHONY: clean
 clean:
-	rm -rf public && mkdir -p public
+	rm -rf public
 	yarn workspace docs clean
 	yarn workspace learn clean
 	yarn workspace cli clean
