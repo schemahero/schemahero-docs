@@ -3,6 +3,10 @@
     "workspaces": [
         "gatsby-theme-schemahero",
         "docs",
-        "learn"
+        "learn",
+        "reference",
+        "community",
+        "cli",
+        "databases"
     ]
   }

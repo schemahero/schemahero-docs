@@ -4,7 +4,7 @@ module.exports = options => ({
     resolve: `gatsby-theme-apollo-docs`,
     options: {
       navConfig: {
-        'SchemaHero Basics': {
+        'Learn SchemaHero': {
           url: 'https://schemahero.io/learn',
           description:
             'Learn about each part of the Apollo platform and how they all work together.',

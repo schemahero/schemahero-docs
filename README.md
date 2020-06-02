@@ -12,16 +12,14 @@ We are using gatsby's component shadowing to make changes, but all shadowed comp
 
 Any style or configuration that's shared between all 4 child sites should be made to the theme.
 
-## Docs
-The site that is hosted at https://schemahero.io/docs can be started with:
 
-```
-yarn workspace docs start
-```
+Use the following commands to start each site:
 
-## Learn
-The site that is hosted at https://schemahero.io/learn can be started with:
-
-```
-yarn workspace learn start
-```
+| Site | Public URL | Command |
+|------|------------|---------|
+| Docs | https://schemahero.io/docs | `yarn workspace docs start` |
+| Learn | https://schemahero.io/learn | `yarn workspace learn start` |
+| Databases | https://schemahero.io/databases | `yarn workspace databases start` |
+| Reference | https://schemahero.io/reference | `yarn workspace reference start` |
+| CLI | https://schemahero.io/cli | `yarn workspace cli start` |
+| Community | https://schemahero.io/community | `yarn workspace community start` |
