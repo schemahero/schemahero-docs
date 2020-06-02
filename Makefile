@@ -3,7 +3,7 @@
 publish: deps clean build
 publish:
 	mkdir -p public
-	
+
 	mkdir -p public/docs
 	cp -r docs/public/* public/docs
 
@@ -24,12 +24,12 @@ publish:
 
 .PHONY: build
 build:
-	yarn workspace docs build
-	yarn workspace learn build
-	yarn workspace cli build
-	yarn workspace reference build
-	yarn workspace databases build
-	yarn workspace community build
+	yarn workspace docs build --prefix-paths
+	yarn workspace learn build --prefix-paths
+	yarn workspace cli build --prefix-paths
+	yarn workspace reference build --prefix-paths
+	yarn workspace databases build --prefix-paths
+	yarn workspace community build --prefix-paths
 
 .PHONY: deps
 deps:
