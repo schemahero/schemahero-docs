@@ -11,27 +11,27 @@ module.exports = options => ({
           omitLandingPage: true
         },
         'Documentation': {
-          url: 'https://schemahero.io/docs/',
+          url: 'https://schemahero.io/docs',
           description:
             'Ready to dive in? This section contains the SchemaHero documentation for more advanced topics.'
         },
         'API Reference': {
-          url: 'https://schemahero.io/docs/reference/api',
+          url: 'https://schemahero.io/reference',
           description:
             "The API Reference contains full specifications for all versions of SchemaHero Kubernetes objects."
         },
         'CLI Reference': {
-          url: 'https://schemahero.io/docs/reference/cli',
+          url: 'https://schemahero.io/cli',
           description:
             "A reference for the commands in the SchemaHero kubectl plugin."
         },
         'Databases': {
-          url: 'https://schemahero.io/docs/databases',
+          url: 'https://schemahero.io/databases',
           description:
             "A full look at databases supported by SchemaHero, including the features and capabilities of each."
         },
         'Community': {
-          url: 'https://schemahero.io/docs/community',
+          url: 'https://schemahero.io/community',
           description:
                 'SchemaHero is a community project. This section contains info about where and how the community works.',
           omitLandingPage: true
