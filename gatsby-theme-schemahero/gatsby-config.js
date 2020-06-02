@@ -16,7 +16,7 @@ module.exports = options => ({
             'Ready to dive in? This section contains the SchemaHero documentation for more advanced topics.'
         },
         'API Reference': {
-          url: 'https://schemmahero.io/docs/reference/api',
+          url: 'https://schemahero.io/docs/reference/api',
           description:
             "The API Reference contains full specifications for all versions of SchemaHero Kubernetes objects."
         },
