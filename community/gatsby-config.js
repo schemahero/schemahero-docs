@@ -7,7 +7,7 @@ const themeOptions = {
 };
 
 module.exports = {
-  pathPrefix: '/learn',
+  pathPrefix: '/community',
   plugins: [
     {
       resolve: '../gatsby-theme-schemahero',

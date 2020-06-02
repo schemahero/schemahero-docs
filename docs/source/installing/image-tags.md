@@ -21,7 +21,7 @@ SchemaHero supports Kubernetes `nodeSelector` attribute at the database connecti
 
 The two images are tagged and released at the same time, using the same versioning system
 
-## Semver: {{< schemaheroVersion >}}
+## Semver: 0.9.0
 
 The `:x.y.z` tag points to a specific, immutable revision.
 These are created when a tag is pushed.
