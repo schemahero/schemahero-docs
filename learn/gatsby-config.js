@@ -16,7 +16,7 @@ module.exports = {
         root: __dirname,
         subtitle: 'Learn SchemaHero',
         description: 'Learn SchemaHero',
-        githubRepo: 'schemahero/schemahero',
+        githubRepo: 'schemahero/schemahero-docs',
         sidebarCategories: {
           null: [
             'index',

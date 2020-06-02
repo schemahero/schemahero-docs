@@ -16,7 +16,7 @@ module.exports = {
         root: __dirname,
         subtitle: 'SchemaHero CLI',
         description: 'SchemaHero CLI',
-        githubRepo: 'schemahero/schemahero',
+        githubRepo: 'schemahero/schemahero-docs',
         sidebarCategories: {
           null: [
            'kubectl/install',

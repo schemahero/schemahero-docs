@@ -16,7 +16,7 @@ module.exports = {
         root: __dirname,
         subtitle: 'Supported Databases',
         description: 'Supported Databases',
-        githubRepo: 'schemahero/schemahero',
+        githubRepo: 'schemahero/schemahero-docs',
         sidebarCategories: {
           null: ['index'],
           Postgres: [
