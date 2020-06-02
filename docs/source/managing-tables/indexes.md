@@ -19,7 +19,7 @@ indexes:
 The example below shows a postgres table that has a primary key on the `id` column, but also adds a unique constraint on a not-nullable column `email`.
 
 ```yaml
-apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: schemas.schemahero.io/v1alpha4
 kind: Table
 metadata:
   name: users

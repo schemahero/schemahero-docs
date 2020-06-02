@@ -8,7 +8,7 @@ The recommended way to connect to a database is by using a connection URI. When 
 For example, to connect to a Postgres database, you can deploy a Database custom resource like this:
 
 ```yaml
-apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
   name: my-pg

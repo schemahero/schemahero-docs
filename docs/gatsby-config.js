@@ -42,7 +42,6 @@ module.exports = {
             'managing-tables/foreign-keys',
             'managing-tables/indexes',
             'managing-tables/editing-constraints',
-            'managing-tables/transforms',
           ],
           Advanced: [
             'advanced/enforcing-policies',
@@ -54,9 +53,6 @@ module.exports = {
             'advanced/regenerating',
             'advanced/other-deletion-techniques',
           ],
-          Troubleshooting: [
-            'troubleshooting/viewing-sql'
-          ]
         },
       },
     },

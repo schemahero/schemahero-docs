@@ -99,4 +99,4 @@ And you can check the status of the connection to the database with:
 
 ## Next
 
-Now that we have Postgres and SchemaHero running, next we will [deploy a new table using SchemaHero](/tutorial/create-table) to this instance.
+Now that we have Postgres and SchemaHero running, next we will [deploy a new table using SchemaHero](https://schemahero.io/leearn/tutorial/create-table) to this instance.

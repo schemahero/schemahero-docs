@@ -11,7 +11,7 @@ This is useful when shipping software on-prem (such as with [KOTS](https://kots.
 
 When running SchemaHero without the in-cluster operator, there will won't be seperate plan and apply phases. 
 Changes made and submitted will be applied automatically.
-Additionally, the `kubectl` plugin will not work without the operator, including the [`kubectl schemahero shell`](/cli/shell/) command.
+Additionally, the `kubectl` plugin will not work without the operator, including the `kubectl schemahero shell` command.
 
 ## Running Without the Operator
 

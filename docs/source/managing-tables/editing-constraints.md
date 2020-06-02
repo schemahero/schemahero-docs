@@ -12,7 +12,7 @@ When changing a column from option to required (adding a "not null" constraint),
 For example, assume a simple table is created with the following definition:
 
 ```yaml
-apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: schemas.schemahero.io/v1alpha4
 kind: Table
 metadata:
   name: flights
@@ -34,7 +34,7 @@ spec:
 Later, assume that the `frequency` column has null values and there's a requirement to make this column not nullable. Editing this table definition to be:
 
 ```yaml
-apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: schemas.schemahero.io/v1alpha4
 kind: Table
 metadata:
   name: flights

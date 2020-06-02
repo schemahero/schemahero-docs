@@ -8,3 +8,9 @@ public/*
 docs.json
 _multiconfig.yml
 .cache
+docs/public/*
+learn/public/*
+reference/public/*
+cli/public/*
+community/public/*
+databases/public/*

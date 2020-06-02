@@ -24,7 +24,7 @@ Indexes:
 To get this table, the following YAML will create it:
 
 ```yaml
-apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: schemas.schemahero.io/v1alpha4
 kind: Table
 metadata:
   name: session

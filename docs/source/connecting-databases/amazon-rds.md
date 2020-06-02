@@ -20,7 +20,7 @@ stringData:
 Then, deploy the database connection using:
 
 ```yaml
-apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
   name: rds-postgres

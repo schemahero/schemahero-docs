@@ -8,7 +8,7 @@ Finally, it's possible to connect to a database using parameters defined in YAML
 An exmaple of connecting to postgres database using parameters is:
 
 ```yaml
-apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
   name: my-db
@@ -30,7 +30,7 @@ spec:
 Once again, it's possible to deliver sensitive fields using a Kubernetes secret, as in:
 
 ```yaml
-apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
   name: my-db

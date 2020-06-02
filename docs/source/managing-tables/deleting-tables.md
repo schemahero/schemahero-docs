@@ -12,7 +12,7 @@ Instead, we've taken the approach of _declaring_ that you want the table deleted
 For example, if you have a table:
 
 ```yaml
-apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: schemas.schemahero.io/v1alpha4
 kind: Table
 metadata:
   name: users
@@ -32,7 +32,7 @@ spec:
 To remove this table, simply edit this file and re-deploy it with the following content:
 
 ```yaml
-apiVersion: schemas.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: schemas.schemahero.io/v1alpha4
 kind: Table
 metadata:
   name: users

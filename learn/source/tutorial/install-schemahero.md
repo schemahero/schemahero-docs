@@ -48,4 +48,4 @@ schemahero-0   1/1     Running   0          38s
 
 ## Next
 
-Now that we have the client and cluster components running, we can [proceed to connecting a database](/tutorial/connect-database).
+Now that we have the client and cluster components running, we can [proceed to connecting a database](https://schemahero.io/learn/tutorial/connect-database).

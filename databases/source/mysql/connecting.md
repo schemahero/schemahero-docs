@@ -9,7 +9,7 @@ This connection string supports many options, and full documentation can be foun
 An example of connecting to a local, in-cluster MySQL StatefulSet that is not running TLS:
 
 ```yaml
-apiVersion: databases.schemahero.io/{{< schemaheroAPIVersion >}}
+apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
   name: my-database
