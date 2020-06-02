@@ -7,33 +7,33 @@ module.exports = options => ({
         'Learn SchemaHero': {
           url: 'https://schemahero.io/learn',
           description:
-            'Learn about each part of the Apollo platform and how they all work together.',
+            'Get started with SchemaHero by learning the core concepts and walk through a complete tutorial.',
           omitLandingPage: true
         },
         'Documentation': {
           url: 'https://schemahero.io/docs/',
           description:
-            'Configure a production-ready GraphQL server to fetch and combine data from multiple sources.'
+            'Ready to dive in? This section contains the SchemaHero documentation for more advanced topics.'
         },
         'API Reference': {
           url: 'https://schemmahero.io/docs/reference/api',
           description:
-            "Manage the entirety of your React app's state and seamlessly execute GraphQL operations."
+            "The API Reference contains full specifications for all versions of SchemaHero Kubernetes objects."
         },
         'CLI Reference': {
           url: 'https://schemahero.io/docs/reference/cli',
           description:
-            "Integrate with Apollo's cloud service for schema versioning, metrics, and enhanced security."
+            "A reference for the commands in the SchemaHero kubectl plugin."
         },
         'Databases': {
           url: 'https://schemahero.io/docs/databases',
           description:
-            "Manage the entirety of your iOS app's state and seamlessly execute GraphQL operations."
+            "A full look at databases supported by SchemaHero, including the features and capabilities of each."
         },
         'Community': {
           url: 'https://schemahero.io/docs/community',
           description:
-                'Define a custom chain of actions that your client performs with each GraphQL operation.',
+                'SchemaHero is a community project. This section contains info about where and how the community works.',
           omitLandingPage: true
         }
       },

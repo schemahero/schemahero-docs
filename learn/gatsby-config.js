@@ -18,7 +18,11 @@ module.exports = {
         description: 'Learn SchemaHero',
         githubRepo: 'schemahero/schemahero',
         sidebarCategories: {
-          null: ['index'],
+          null: [
+            'index',
+            'declarative-schema-management',
+            'data-migrations',
+          ],
           Tutorial: [
             'tutorial/introduction',
             'tutorial/install-schemahero',
@@ -26,6 +30,10 @@ module.exports = {
             'tutorial/create-table',
             'tutorial/modify-table',
             'tutorial/next-steps',
+          ],
+          Comparisons: [
+            'comparisons/sequential-migrations',
+            'comparisons/orm',
           ],
         },
       },
