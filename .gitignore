@@ -14,3 +14,4 @@ reference/public/*
 cli/public/*
 community/public/*
 databases/public/*
+resources/_gen
