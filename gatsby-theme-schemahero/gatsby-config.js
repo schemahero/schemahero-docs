@@ -48,7 +48,7 @@ module.exports = options => ({
       twitterHandle: 'schemahero',
       youtubeUrl: 'https://www.youtube.com/channel/UCZ0-IE0eh_A8oeDOnI6PKxg',
       logoLink: 'https://schemahero.io',
-        // gaTrackingId: 'UA-74643563-13',
+      gaTrackingId: 'UA-61420213-10',
       ...options,
     }
   }]
