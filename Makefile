@@ -22,6 +22,8 @@ publish:
 	mkdir -p public/community
 	cp -r community/public/* public/community
 
+	cp -r home/* public
+
 .PHONY: build
 build:
 	yarn workspace docs build --prefix-paths
