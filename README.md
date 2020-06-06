@@ -1,12 +1,14 @@
 # SchemaHero Docs
 
+This is the source for https://schemahero.io.
+
 There are 4 different documentation sites here, each using the same base Gatsby theme.
 
 To run each, you should have NodeJS 12 and yarn.
 
 ## Theme
 
-The theme is a gatsby child them from the gatsby-theme-apollo-docs theme. 
+The theme is a gatsby child them from the gatsby-theme-apollo-docs theme.
 
 We are using gatsby's component shadowing to make changes, but all shadowed components live in the `gatsby-theme-schemahero` directory.
 
@@ -23,3 +25,8 @@ Use the following commands to start each site:
 | Reference | https://schemahero.io/reference | `yarn workspace reference start` |
 | CLI | https://schemahero.io/cli | `yarn workspace cli start` |
 | Community | https://schemahero.io/community | `yarn workspace community start` |
+
+## Deploying
+
+When these docs are deployed, `gatsby build` is run on each site, and the generated docs are copied into a single folder.
+The hosted docs are then deployed to Netlify.
