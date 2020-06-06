@@ -4,7 +4,7 @@ description: Learn how to create a new table using SchemaHero
 ---
 
 In this step, we'll deploy a few tables to the airlinedb database we've created in the previous steps.
-As we do this, we will excercise the approval and rejection workflow in SchemaHero to understand how to validate these changes before they are executed.
+As we do this, we will exercise the approval and rejection workflow in SchemaHero to understand how to validate these changes before they are executed.
 
 ## Airports Table
 
@@ -86,9 +86,9 @@ Because this column is the primary key, the column will automatically have a `NO
 **Lines 15-18:** Create a column named `name` and ensure that it has the `character varying (255)` data type.
 We are also adding a `NOT NULL` constraint to this column to make it a required column.
 
-## Validating and approving the migration
+## Validating the migration
 
-Now that we've deployed the `table` object, it doesn't automatically apply.
+Although we've deployed the `table` object, the schema is not automatically altered.
 Instead, a new (or edited) `table` object will generate a `migration` object that can be inspected and then approved or rejected.
 By default, SchemaHero requires an approval process because some database schema migrations can be destructive.
 Immediate deployments (without approval) can be enabled by adding a key to the `database` object.
@@ -96,27 +96,101 @@ Immediate deployments (without approval) can be enabled by adding a key to the `
 To see the pending migration, run:
 
 ```shell
-kuebctl schemahero get migrations -n schemahero-tutorial
+kubectl schemahero get migrations -n schemahero-tutorial
 ```
 
 You should see 1 migration, like this:
 
 ```shell
-MIGRATION...
+ID       DATABASE   TABLE    PLANNED  EXECUTED  APPROVED  REJECTED
+eaa36ef  airlinedb  airport  11s
 ```
 
-### View the generated SQL
+(Note, if you see `No resources found`, wait a few seconds and try again. The SchemaHero Operator has to complete the plan phase before the migration is available).
+
+### View the migration
 
 Before approving this migration, let's view the generated SQL statement that is attached to the `migration` object.
+Take the ID from the output of the previous command, and run `describe migration`:
 
 ```shell
-kubectl schemahero describe migration 1bzc
+kubectl schemahero describe migration eaa36ef -n schemahero-tutorial
 ```
 
 The output will look like this:
 
 ```shell
 
+Migration Name: eaa36ef
+
+Generated DDL Statement (generated at 2020-06-06T10:41:04-07:00):
+  create table "airport" ("code" character (4), "name" character varying (255) not null, primary key ("code"));
+
+
+To apply this migration:
+  kubectl schemahero -n schemahero-tutorial approve migration eaa36ef
+
+To recalculate this migration against the current schema:
+  kubectl schemahero -n schemahero-tutorial recalculate migration eaa36ef
+
+To deny and cancel this migration:
+  kubectl schemahero -n schemahero-tutorial reject migration eaa36ef
 ```
 
-Here, we can see the SQL.
+### Reviewing the SQL
+
+At the top of this output, the Generated DDL statement is the planned migration.
+This is the exact SQL statement(s) that SchemaHero will run to apply this migration.
+
+Below that, SchemaHero provides 3 commands for the next steps:
+
+`apply`: Running this command will accept the SQL statement and SchemaHero will execute it against the database.
+
+`recalculate`: Running this command will instruct SchemaHero to discard the generated SQL statement(s) and generate them again.
+This is useful if the database schema has changed and you want SchemaHero to reexecute the plan.
+
+`reject`: Running this command will reject the migration and not execute it.
+
+## Applying the migration
+
+After looking at the generated SQL command, we can see that it's safe and as expected.
+The next step here is to approve the migration so that SchemaHero will execute the plan.
+
+```shell
+kubectl schemahero -n schemahero-tutorial approve migration eaa36ef
+```
+
+Running the command will produce:
+
+```shell
+Migration eaa36ef approved
+```
+
+We can see that SchemaHero has processed this by running `get migrations` again:
+
+```
+kubectl schemahero get migrations -n schemahero-tutorial
+```
+
+Now, the output looks like:
+
+```
+ID       DATABASE   TABLE    PLANNED  EXECUTED  APPROVED  REJECTED
+eaa36ef  airlinedb  airport  9m38s    38s       52s
+```
+
+This shows that the migration was planned 9 minutes and 38 seconds ago, approved 52 seconds ago, and executed 38 seconds ago.
+
+## Verifying the migration
+
+Finally, let's verify this migration in Beekeeper Studio or whatever database management tool you are using.
+
+Clicking Refresh on the "Tables & Views" header in the left nav, we now see the `airport` table under "public".
+Expanding `airport` and you can see the columns in the table.
+
+<img src="../images/airport-table.png">
+
+## Next steps
+
+Next, we will create and deploy a couple of additional tables, but making edits to them after the initial deployment.
+Continue to the [modify a table](https://schemahero.io/learn/tutorial/modify-table) tutorial.

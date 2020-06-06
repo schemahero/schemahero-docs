@@ -5,7 +5,7 @@ description: Learn how to install the SchemaHero kubectl plugin and the in-clust
 
 ## Installing the `kubectl` plugin
 
-The SchemaHero client component is packaged as a `kubectl` plugin and distributed through the [krew](https://krew.dev) pacakge manager.
+The SchemaHero client component is packaged as a `kubectl` plugin and distributed through the [krew](https://krew.dev) package manager.
 If you don't already have krew installed, head over to the [krew installation guide](https://krew.sigs.k8s.io/docs/user-guide/setup/install/), follow the steps there and then come back here.
 
 Installing the SchemaHero client component using:
@@ -32,7 +32,7 @@ Once you have the `kubectl` plugin installed, we can install the SchemaHero in-c
 kubectl schemahero install
 ```
 
-This will create a `schemahero-system` namespace, and deploy the SchemaHero oerpator. 
+This will create a `schemahero-system` namespace, and deploy the SchemaHero oerpator.
 You can confirm that SchemaHero is installed by executing:
 
 ```
@@ -46,6 +46,6 @@ NAME           READY   STATUS    RESTARTS   AGE
 schemahero-0   1/1     Running   0          38s
 ```
 
-## Next
+## Next Steps
 
 Now that we have the client and cluster components running, we can [proceed to connecting a database](https://schemahero.io/learn/tutorial/connect-database).

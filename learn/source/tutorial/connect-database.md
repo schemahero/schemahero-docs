@@ -3,49 +3,59 @@ title: Connect A Database
 description: Learn how to configure SchemaHero to manage a database
 ---
 
-In this step, we will deploy a Postgres instance and configure SchemaHero to manage this instance.
+In this step, we will deploy a PostgreSQL instance and configure SchemaHero to manage this instance.
 
-To start, we need a Postgres server to use during this tutorial.
-In order to make this part easy, we've exported the Postgres 11.8.0 Helm chart to plain Kubernetes YAML and added it to the SchemaHero repo.
+To start, we need a PostgreSQL server to use during this tutorial.
+In order to make this part easy, we've exported the PostgreSQL 11.8.0 Helm chart to plain Kubernetes YAML and added it to the SchemaHero repo.
 
-## Deploy Postgres
+## Deploy PostgreSQL
 
-Deploy Postgres into a new `schemahero-tutorial` namespace with the following command:
+Deploy PostgreSQL into a new `schemahero-tutorial` namespace with the following command:
 
 ```shell
 kubectl create ns schemahero-tutorial
-kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/master/examples/airline/postgres/postgres-11.8.0.yaml
+kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/master/examples/tutorial/postgresql/postgresql-11.8.0.yaml
 ```
 
-## Validate Postgres is running
+## Validate PostgreSQL is running
 
-After deploying this, you can connect to your Postgres instance from the CLI using:
+After deploying this and waiting for the containers to start, you can connect to your PostgreSQL instance from the CLI using:
 
 ```shell
 kubectl exec -it -n schemahero-tutorial \
-  postgresql-0 psql -- -U airline-user -d airline-demo
+  postgresql-postgresql-0 psql -- -U airlinedb-user -d airlinedb
 ```
 
-(When prompted, the password for "airline-user" is "password").
+If you get a message that says `error: unable to upgrade connection: container not found ("postgresql")` wait a moment and try again.
+This simply means that PostgresQL is not yet started.
 
-### Using a GUI SQL management tool
+(When prompted, the password for "airlinedb-user" is "password").
 
-For this demo, we'll show commands in SQL, but it's possible to use a GUI based tool to connect to and visualize the database.
-We like [Beekeeper Studio](https://www.beekeeperstudio.io/), if you'd prefer a GUI-based tool to manage Postgres.
+## Connect to PostgresSQL
 
-Before you can connect using Beekeeper or another management UI, you'll have to create a port-foward using `kubectl` because the Postgres instance we just deployed is not accessible outside of the cluster.
+For this demo, we'll switch over to a GUI-based database management tool to show the state of the database.
+We like [Beekeeper Studio](https://www.beekeeperstudio.io/), but any database management tool you are comfortable with will work here.
+
+Before you can connect using Beekeeper or another management UI, you'll have to create a port-foward using `kubectl` because the PostgreSQL instance we just deployed is not accessible outside of the cluster.
+
+The following command will create the port-forward into the cluster.
+Note that this will have to stay running to use Beekeeper Studio, so we recommend opening this in a new terminal window.
 
 ```shell
 kubectl port-forward -n schemahero-tutorial svc/postgresql 5432:5432
 ```
 
-Now, point your app to `127.0.0.1:5432` with the user "airline-user", database "airline-demo" and password "password".
+Now, point your app to `127.0.0.1:5432` with the user "airlinedb-user", database "airlinedb" and password "password".
+
+<img src="../images/beekeeper-connect.png" >
 
 Explore this database and noticed that it's empty.
 
+<img src="../images/airlinedb-initial.png" >
+
 ## Create SchemaHero Database object
 
-Now that we have SchemaHero running in the cluster and a Postgres instance available, the next step is provide the database info to SchemaHero so that the operator can manage the database. 
+Now that we have SchemaHero running in the cluster and a PostgreSQL instance available, the next step is provide the database info to SchemaHero so that the operator can manage the database.
 We do this by deploying custom resource to the cluster with the connection information.
 
  A `database` definition will allow SchemaHero to manage the schema of the database. A `database` definition includes a name type and connection parameters.
@@ -65,7 +75,7 @@ spec:
         valueFrom:
           secretKeyRef:
             name: postgresql
-            key: uri 
+            key: uri
 ```
 
 Let's review this database object:
@@ -80,12 +90,12 @@ It's common to set it to the same name as your database, but it's not required.
 For our tutorial, we've chosen to deploy Postgres to this namespace, but SchemaHero easily supports the database in another namespace, another cluster, or externally managed (RDS, etc).
 
 **Line 7-13:** This is the database reference that contains the data SchemaHero will need to connect to and authenticate into this database.
-In this example, we are using a previously deployed secret (it was part of the Postgres deployment earlier).
+In this example, we are using a previously deployed secret (it was part of the PostgreSQL deployment earlier).
 SchemaHero supports reading credentials from inline, secrets or HashiCorp Vault.
 
+## Validate SchemaHero
 
-
-Once that YAML is deployed, you can review it with:
+Once the SchemaHero database object is deployed, you can review it with:
 
 ```shell
 kubectl get databases -n schemahero-tutorial
@@ -95,8 +105,6 @@ airlinedb   47m
 
 ```
 
-And you can check the status of the connection to the database with:
-
 ## Next
 
-Now that we have Postgres and SchemaHero running, next we will [deploy a new table using SchemaHero](https://schemahero.io/leearn/tutorial/create-table) to this instance.
+Now that we have PostgreSQL and SchemaHero running, next we will [deploy a new table using SchemaHero](https://schemahero.io/learn/tutorial/create-table) to this instance.
