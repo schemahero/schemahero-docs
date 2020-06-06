@@ -39,7 +39,7 @@ module.exports = options => ({
       },
       footerNavConfig: {
         Changelog: {
-          href: 'https://schemahero.io/docs/changelog',
+          href: 'https://schemahero.io/changelog',
         },
       },
       algoliaApiKey: 'd1b04d4ba087ad9aaeb6df9d281ad628',
