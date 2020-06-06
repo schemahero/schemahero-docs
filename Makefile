@@ -22,6 +22,9 @@ publish:
 	mkdir -p public/community
 	cp -r community/public/* public/community
 
+	mkdir -p public/changelog
+	cp -r changelog/public/* public/changelog
+
 	cp -r home/* public
 
 .PHONY: build
@@ -32,6 +35,7 @@ build:
 	yarn workspace reference build --prefix-paths
 	yarn workspace databases build --prefix-paths
 	yarn workspace community build --prefix-paths
+	yarn workspace changelog build --prefix-paths
 
 .PHONY: deps
 deps:
@@ -46,3 +50,4 @@ clean:
 	yarn workspace reference clean
 	yarn workspace databases clean
 	yarn workspace community clean
+	yarn workspace changelog clean

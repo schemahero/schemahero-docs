@@ -2,7 +2,7 @@
 
 This is the source for https://schemahero.io.
 
-There are 4 different documentation sites here, each using the same base Gatsby theme.
+There are different documentation sites here, each using the same base Gatsby theme.
 
 To run each, you should have NodeJS 12 and yarn.
 
@@ -12,7 +12,7 @@ The theme is a gatsby child them from the gatsby-theme-apollo-docs theme.
 
 We are using gatsby's component shadowing to make changes, but all shadowed components live in the `gatsby-theme-schemahero` directory.
 
-Any style or configuration that's shared between all 4 child sites should be made to the theme.
+Any style or configuration that's shared between all child sites should be made to the theme.
 
 
 Use the following commands to start each site:
@@ -25,6 +25,7 @@ Use the following commands to start each site:
 | Reference | https://schemahero.io/reference | `yarn workspace reference start` |
 | CLI | https://schemahero.io/cli | `yarn workspace cli start` |
 | Community | https://schemahero.io/community | `yarn workspace community start` |
+| Changelog | https://schemahero.io/changelog | `yarn workspace changelog start` |
 
 ## Deploying
 
