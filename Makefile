@@ -6,24 +6,31 @@ publish:
 
 	mkdir -p public/docs
 	cp -r docs/public/* public/docs
+	rm -rf public/docs/social-cards
 
 	mkdir -p public/learn
 	cp -r learn/public/* public/learn
+	rm -rf public/learn/social-cards
 
 	mkdir -p public/cli
 	cp -r cli/public/* public/cli
+	rm -rf public/cli/social-cards
 
 	mkdir -p public/reference
 	cp -r reference/public/* public/reference
+	rm -rf public/reference/social-cards
 
 	mkdir -p public/databases
 	cp -r databases/public/* public/databases
+	rm -rf public/databases/social-cards
 
 	mkdir -p public/community
 	cp -r community/public/* public/community
+	rm -rf public/community/social-cards
 
 	mkdir -p public/changelog
 	cp -r changelog/public/* public/changelog
+	rm -rf public/changelog/social-cards
 
 	cp -r home/* public
 
