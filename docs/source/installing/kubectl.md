@@ -13,6 +13,8 @@ The SchemaHero client-side component is a kubectl plugin:
 The current version of SchemaHero is v0.9.0 and can be downloaded from https://github.com/schemahero/schemahero/releases/tag/v0.9.0
 To install, download the kubectl-schemahero package for your operating system / architecture (e.g. `kubectl-schemahero_darwin_amd64.tar.gz`). Extract this file and move the `kubectl-schemahero` binary to your path.
 
+Schemahero can also be installed via krew with `kubectl krew install schemahero`.
+
 ## Operator
 
 SchemaHero relies on an in-cluster operator.
