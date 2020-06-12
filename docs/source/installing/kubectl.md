@@ -8,12 +8,24 @@ The best way to get started, is to install the kubectl plugin:
 
 ## Client
 
-The SchemaHero client-side component is a kubectl plugin:
+The SchemaHero client component is packaged as a `kubectl` plugin and distributed through the [krew](https://krew.dev) package manager.
+If you don't already have krew installed, head over to the [krew installation guide](https://krew.sigs.k8s.io/docs/user-guide/setup/install/), follow the steps there and then come back here.
 
-The current version of SchemaHero is v0.9.0 and can be downloaded from https://github.com/schemahero/schemahero/releases/tag/v0.9.0
-To install, download the kubectl-schemahero package for your operating system / architecture (e.g. `kubectl-schemahero_darwin_amd64.tar.gz`). Extract this file and move the `kubectl-schemahero` binary to your path.
+Install the SchemaHero client component using:
 
-Schemahero can also be installed via krew with `kubectl krew install schemahero`.
+```shell
+kubectl krew install schemahero
+```
+
+Note: This will not install anything to your cluster, it only places a single binary named `kubectl-schemahero` on your path.
+
+Verify the installation by checking the version:
+
+```shell
+kubectl schemahero version
+```
+
+You should see the version of SchemaHero installed on your workstation (0.9.0 or similar).
 
 ## Operator
 
