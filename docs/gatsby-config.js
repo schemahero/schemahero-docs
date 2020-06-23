@@ -44,11 +44,11 @@ module.exports = {
             'managing-tables/editing-constraints',
           ],
           Advanced: [
+            'advanced/hashicorp-vault',
             'advanced/enforcing-policies',
             'advanced/fixture-generation',
             'advanced/operatorless-mode',
             'advanced/migrating',
-            'advanced/drift-detection',
             'advanced/continuous-delivery',
             'advanced/regenerating',
             'advanced/other-deletion-techniques',
