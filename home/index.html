@@ -7,18 +7,18 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>SchemaHero - A modern approach to database schema migrations</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="" />
-  <meta property="og:title" content="" />
-  <meta property="og:type" content="" />
-  <meta property="og:url" content="" />
+  <meta name="description" content="SchemaHero is a Kubernetes Operator for Declarative Schema Management for various databases." />
+  <meta property="og:title" content="SchemaHero - A modern approach to database schema migrations" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://schemahero.io/" />
   <meta property="og:image" content="" />
-  <meta property="og:description" content="" />
-  <meta name="twitter:card" content="" />
-  <meta name="twitter:site" content="" />
-  <meta name="twitter:creator" content="" />
+  <meta property="og:description" content="SchemaHero is a Kubernetes Operator for Declarative Schema Management for various databases." />
+  <meta name="twitter:card" content="SchemaHero" />
+  <meta name="twitter:site" content="@replicatedhq" />
+  <meta name="twitter:creator" content="@replicatedhq" />
   <link href="https://fonts.googleapis.com/css?family=Ubuntu:500&display=swap" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="./css/home.css">
+  <link rel="stylesheet" href="css/home.css">
   <link rel="apple-touch-icon" sizes="57x57" href="https://schemahero.io/images/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="https://schemahero.io/images/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="https://schemahero.io/images/apple-icon-72x72.png">
@@ -38,6 +38,8 @@
 </head>
 
 <body class="page page-home">
+  <div id="particles-js"></div>
+  
   <div id="main-menu-mobile" class="main-menu-mobile">
     <ul>
       <li class="menu-item-github">
@@ -47,7 +49,7 @@
     </ul>
   </div>
 
-  <div class="wrapper">
+  <div class="wrapper" >
     <div class="header">
       <div class="container">
         <div class="logo"><a href="https://schemahero.io"></a></div>
@@ -65,8 +67,8 @@
       </div>
     </div>
 
-    <div class="strip">
-      <div class="container pt-2 pb-4">
+    <div class="strip" style="background-color: #fff !important;">
+      <div class="container pt-2 pb-10">
         <div class="row">
           <div class="col-12">
             <div class="landing-logo"></div>
@@ -91,14 +93,16 @@
       </div>
     </div>
 
-    <div class="strip strip-pattern-blue pt-2 pb-2">
-      <p style="width: 60%; font-size: 1.2em;">
+    <div class="particle-bg">
+      <p class="p-15">
         SchemaHero is an open-source database schema migration tool that converts a schema definition into migration scripts that can be applied in any environment. Written as both a CLI utility and a Kubernetes Operator, SchemaHero eliminates the task of creating and managing sequenced migration scripts that are compatible with all environments that an application is running in.
       </p>
     </div>
 
-    <div class="pt-4 pb-4">
-      <iframe width="896" height="504" src="https://www.youtube.com/embed/_fMmRgThGyA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div style="padding: 0 15% 200px 15%">
+      <div class="video-container">
+        <iframe width="896" height="504" src="https://www.youtube.com/embed/_fMmRgThGyA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
     </div>
 
     <div class="FooterContent-wrapper flex flex-auto justifyContent--center">
@@ -161,5 +165,120 @@
     })();
   </script>
 
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<script>
+  particlesJS('particles-js', 
+  {
+  "particles": {
+    "number": {
+      "value": 80,
+      "density": {
+        "enable": true,
+        "value_area": 700
+      }
+    },
+    "color": {
+      "value": "#ffffff"
+    },
+    "shape": {
+      "type": "circle",
+      "stroke": {
+        "width": 2,
+        "color": "#fff"
+      },
+      "polygon": {
+        "nb_sides": 5
+      },
+      "image": {
+        "src": "img/github.svg",
+        "width": 100,
+        "height": 100
+      }
+    },
+    "opacity": {
+      "value": .5,
+      "random": false,
+      "anim": {
+        "enable": false,
+        "speed": .3,
+        "opacity_min": 0.1,
+        "sync": false
+      }
+    },
+    "size": {
+      "value": 1,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 10,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 200,
+      "color": "#ffffff",
+      "opacity": 0.2,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 1,
+      "direction": "none",
+      "random": false,
+      "straight": false,
+      "out_mode": "out",
+      "bounce": false,
+      "attract": {
+        "enable": false,
+        "rotateX": 600,
+        "rotateY": 1200
+      }
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": {
+        "enable": false,
+        "mode": "repulse"
+      },
+      "onclick": {
+        "enable": false,
+        "mode": "push"
+      },
+      "resize": true
+    },
+    "modes": {
+      "grab": {
+        "distance": 400,
+        "line_linked": {
+          "opacity": 1
+        }
+      },
+      "bubble": {
+        "distance": 400,
+        "size": 40,
+        "duration": 2,
+        "opacity": 8,
+        "speed": 3
+      },
+      "repulse": {
+        "distance": 200,
+        "duration": 0.4
+      },
+      "push": {
+        "particles_nb": 4
+      },
+      "remove": {
+        "particles_nb": 2
+      }
+    }
+  },
+  "retina_detect": true
+});
+</script>
 </body>
 </html>
