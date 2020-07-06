@@ -84,28 +84,9 @@ label {
     margin-bottom: .5rem
 }
 
-button {
-    border-radius: 0
-}
-
 button:focus {
     outline: 1px dotted;
     outline: 5px auto -webkit-focus-ring-color
-}
-
-button {
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit
-}
-
-button {
-    overflow: visible
-}
-
-button {
-    text-transform: none
 }
 
 [type=button],
@@ -173,41 +154,6 @@ button::-moz-focus-inner {
     border-color: #326de6 !important
 }
 
-.d-flex {
-    display: flex !important
-}
-
-.flex {
-    display: flex !important
-}
-
-.flex-row {
-    flex-direction: row !important
-}
-
-@media (min-width:576px) {
-    .flex {
-        display: flex !important
-    }
-}
-
-@media (min-width:768px) {
-    .flex {
-        display: flex !important
-    }
-}
-
-@media (min-width:992px) {
-    .flex {
-        display: flex !important
-    }
-}
-
-@media (min-width:1300px) {
-    .flex {
-        display: flex !important
-    }
-}
 
 @supports (position:sticky) {
     .sticky-top {
@@ -828,33 +774,26 @@ p {
     margin-top: 50px;
 }
 
-.button-wrapper .button {
-    margin-right: 20px;
-    margin-bottom: 25px;
-}
-
-.button-wrapper .button:last-child {
-    margin-right: 0
-}
-
 .button {
-    border-radius: 0px;
+    border-radius: 0;
+    min-width: 175px !important;
+    margin: 0 10px 20px 10px;
+    font-family: inherit;
+    line-height: inherit;
     font-weight: 700;
-    cursor: pointer;
-    padding: 15px 35px;
+    padding: 15px 35px !important;
     font-size: 12px;
-    display: inline-block;
     border: 0;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
     outline: 0;
-    position: relative;
     text-transform: uppercase;
 }
 
+
 .button.primary-button {
     background: rgb(43,89,177);
-background: linear-gradient(0deg, rgba(43,89,177,1) 0%, rgba(80,138,252,1) 100%);
+    background: linear-gradient(0deg, rgba(43,89,177,1) 0%, rgba(80,138,252,1) 100%);
     color: #fff
 }
 
@@ -931,7 +870,9 @@ background: linear-gradient(0deg, rgba(43,89,177,1) 0%, rgba(80,138,252,1) 100%)
     width:100%;
     height:100%;
     z-index:-1;
-    
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
 }
 
 .particle-bg p {
@@ -940,6 +881,14 @@ background: linear-gradient(0deg, rgba(43,89,177,1) 0%, rgba(80,138,252,1) 100%)
     font-size: 1.2em;
     line-height: 2em;
 }
+
+canvas{
+    width: 100%;
+    height: 100%;
+    display:block;
+    vertical-align:bottom;
+}
+
 
 @media (max-width: 500px) {
     #particles-js p {
@@ -952,7 +901,7 @@ background: linear-gradient(0deg, rgba(43,89,177,1) 0%, rgba(80,138,252,1) 100%)
 }
 
 .page-home .landing-logo {
-    width: 420px;
+    max-width: 420px;
     height: 298px;
     margin: 0 auto;
     background-image: url(../images/schemahero-large.svg);
@@ -1091,4 +1040,9 @@ background: linear-gradient(0deg, rgba(43,89,177,1) 0%, rgba(80,138,252,1) 100%)
 
 .alignSelf--flexEnd {
     align-self: flex-end
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+    justify-content: center;
 }
