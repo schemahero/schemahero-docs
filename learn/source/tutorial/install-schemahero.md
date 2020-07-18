@@ -32,7 +32,7 @@ Once you have the `kubectl` plugin installed, we can install the SchemaHero in-c
 kubectl schemahero install
 ```
 
-This will create a `schemahero-system` namespace, and deploy the SchemaHero oerpator.
+This will create a `schemahero-system` namespace, and deploy the SchemaHero operator.
 You can confirm that SchemaHero is installed by executing:
 
 ```
