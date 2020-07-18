@@ -17,7 +17,7 @@ There are many benefits to managing database schemas in a declarive format, incl
 
 In a declarative model, only the current state of the schema is defined. 
 The declarative schema management application is responsible for producing the commands necessary to migrate the schema from any previous state to the desired state,
-A benefit of only storing the current state is that previously used datbase extensions, tables and features will not be required when creating a new environment or instance.
+A benefit of only storing the current state is that previously used database extensions, tables and features will not be required when creating a new environment or instance.
 
 ### No need to learn DDL (Data Definition Language)
 
@@ -29,4 +29,4 @@ Converting from a unified, declarative model to the appropriate DDL commands bas
 
 When a declarative pattern to define database schema management is adopted, it becomes possible to validate schemas against a set of policies before application.
 This is not easily possible with imperative tools that only store migration scripts.
-With the full desired state available, the database schema can be evaluated against a set of rules to ensure that policies and ebst practices are enforced.
+With the full desired state available, the database schema can be evaluated against a set of rules to ensure that policies and best practices are enforced.
