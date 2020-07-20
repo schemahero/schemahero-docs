@@ -28,6 +28,8 @@ module.exports = {
             'connecting-databases/creating-db-resource',
             'connecting-databases/connection-uri',
             'connecting-databases/using-secrets',
+            'connecting-databases/hashicorp-vault',
+            'connecting-databases/amazon-ssm',
             'connecting-databases/using-params',
             'connecting-databases/amazon-rds',
             'connecting-databases/google-cloud-sql',
