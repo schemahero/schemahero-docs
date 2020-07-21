@@ -1,6 +1,6 @@
 ---
 title: Kubernetes Secrets
-description: Kubernetes Secrets
+description: Database Credentials From Kubernetes Secrets
 ---
 
 Kubernetes Secrets are a good way to deliver sensitive data to the applications running in the cluster. SchemaHero supports reading parameters from secrets, using a syntax that's familiar to anyone who's written Kubernetes pods specs before.
@@ -12,6 +12,7 @@ apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
   name: my-pg
+  namespace: namespace
 spec:
   connection:
     postgres:
