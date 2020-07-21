@@ -68,5 +68,6 @@ spec:
       columns:              # defining the columns
         - name:             # name of the column
           type:             # data type of the column
+          default:          # default value for the column
           contstraints:     # adding constraints to this column
             notNull:        # set "not null" on the column
