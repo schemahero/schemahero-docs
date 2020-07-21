@@ -36,4 +36,25 @@ spec:
           vault:            # read mysql connection from vault
             secret:         # name of secret in vault
             role:           # role to use in vault
+            endpoint:       # the endpoint of the vault api server
+            serviceAccount: # the service account in k8s containing the vault auth
+            serviceAccountNamespace: # namespace of the service account
+            agentInject:    # when set, apply vault annotations
+          ssm:              # use aws parameter store ssm
+            name:           # key name in ssm
+            withDecryption: # when set, decrypt
+            region:         # aws region name
+            accessKeyId:    # the aws access key id to use (leave empty for instance role)
+              value:        # the static value of
+              valueFrom:    # read the aws access key id from...
+                secretKeyRef: # ... from a secret
+                  key:      # key in the secret
+                  name:     # name of the secret
+            secretAccessKey: # the aws secret access key (leave empty for instance role)
+              value:        # the static value
+                valueFrom:    # read the aws secret access key from...
+                secretKeyRef: # ... from a secret
+                  key:      # key in the secret
+                  name:     # name of the secret
+
 ```
