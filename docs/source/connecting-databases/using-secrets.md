@@ -26,7 +26,7 @@ spec:
 The above custom resource assumes that a postgres secret with a uri key was already deployed, like this:
 
 ```yaml
-apiversion: v1
+apiVersion: v1
 kind: Secret
 metadata:
   name: postgres
