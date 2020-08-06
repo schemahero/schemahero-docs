@@ -30,6 +30,7 @@ module.exports = {
             'mysql/connecting',
             'mysql/column-types',
             'mysql/constraints',
+            'mysql/attributes',
           ],
           CockroachDB: [
             'cockroachdb/versions',
