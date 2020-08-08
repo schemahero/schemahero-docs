@@ -51,6 +51,8 @@ spec:
           type:             # data type of the column
           contstraints:     # adding constraints to this column
             notNull:        # set "not null" on the column
+          attributes:       # adding attributes to this column
+            autoIncrement:  # set "auto_increment" on the integer type column
     cockroachdb:            # this is a cockroachdb schema
       primaryKey:           # array of column names in the primary key
       foreignKeys:          # defining the foreign keys

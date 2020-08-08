@@ -44,6 +44,7 @@ module.exports = {
             'managing-tables/foreign-keys',
             'managing-tables/indexes',
             'managing-tables/editing-constraints',
+            'managing-tables/attributes',
           ],
           Advanced: [
             'advanced/enforcing-policies',

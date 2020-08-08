@@ -10,7 +10,7 @@ This abstraction makes it easier for developers who don't have an understanding 
 
 SchemaHero does not do this. 
 SchemaHero is a schema migration tool. 
-SchemaHero creates and edits the structure of the database (tables, columns, indices and constraints). 
+SchemaHero creates and edits the structure of the database (tables, columns, indices, constraints and column attributes). 
 Developers won't interact with SchemaHero when querying data. 
 In fact, SchemaHero doesn't have functionality to build queries that are used at runtime. 
 Instead, this is a deploy-time tool.
