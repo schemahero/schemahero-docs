@@ -21,11 +21,11 @@ SchemaHero supports Kubernetes `nodeSelector` attribute at the database connecti
 
 The two images are tagged and released at the same time, using the same versioning system
 
-## Semver: 0.10.0
+## Semver: 0.10.4
 
 The `:x.y.z` tag points to a specific, immutable revision.
 These are created when a tag is pushed.
-The current version is 0.10.0
+The current version is 0.10.4
 These are the most stable versions of SchemaHero and recommended to use in production. A release tag (one without a `-prerelease` suffix) will never be overwritten with a new image.
 
 ## Prelease Images
