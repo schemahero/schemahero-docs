@@ -43,8 +43,8 @@ module.exports = {
             'managing-tables/primary-keys',
             'managing-tables/foreign-keys',
             'managing-tables/indexes',
-            'managing-tables/editing-constraints',
             'managing-tables/attributes',
+            'managing-tables/editing-constraints',
           ],
           Advanced: [
             'advanced/enforcing-policies',

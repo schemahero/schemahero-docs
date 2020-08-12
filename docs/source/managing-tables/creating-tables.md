@@ -1,6 +1,6 @@
 ---
 title: Creating Tables
-description: Creating Tables
+description: Creating new tables in a database.
 ---
 
 To create a new table, define the initial table schema in a YAML manifest with `kind: Table`, and deploy it to the cluster. 
@@ -20,7 +20,7 @@ Indexes:
 
 ```
 
-#### Schemahero YAML
+#### SchemaHero YAML
 
 To get this table, the following YAML will create it:
 
@@ -51,4 +51,4 @@ spec:
           notNull: true
 ```
 
-For more information about the available fields and attributes, contine reading the docs in this section.
+For more information about the available fields and attributes, continue reading the docs in this section.

@@ -1,11 +1,14 @@
 ---
 title: Deleting Tables
-description: Deleting Tables
+description: Deleting entire tables
 ---
 
-By default, SchemaHero will not delete table table when you delete the `table` object. In other words, `kubectl apply -f ./my-table.yaml` will create a table, but `kubectl delete -f ./my-table.yaml` will not delete the table.
+By default, SchemaHero will not delete table table when you delete the `table` object. 
+In other words, `kubectl apply -f ./my-table.yaml` will create a table, but `kubectl delete -f ./my-table.yaml` will not delete the table.
 
-This decision was made out of caution. Deployment pipelines can experience outages. There are many different types of workflows to deploy to Kubernetes, and the last thing anyone would expect is that an outage in a workflow will drop a table from a database.
+This decision was made out of caution. 
+Deployment pipelines can experience outages. 
+There are many different types of workflows to deploy to Kubernetes, and the last thing anyone would expect is that an outage in a workflow will drop a table from a database.
 
 Instead, we've taken the approach of _declaring_ that you want the table deleted by commiting it, specifying the desired (Deleted) state.
 

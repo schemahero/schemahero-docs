@@ -1,6 +1,6 @@
 ---
-title: Attributes
-description: Additional Column Attributes
+title: Column Attributes
+description: Specifying additional attributes on columns
 ---
 
 SchemaHero supports creating and editing additional column attributes on database table columns.

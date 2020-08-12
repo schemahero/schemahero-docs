@@ -1,11 +1,13 @@
 ---
 title: Indexes
-description: Indexes
+description: Managing indexes for a table
 ---
 
-SchemaHero supports creating additional indexes on a table; indexes that are neither primary keys or foreign keys. Additional indexes can be on a single column or created from multiple columns.
+SchemaHero supports creating additional indexes on a table; indexes that are neither primary keys or foreign keys. 
+Additional indexes can be on a single column or created from multiple columns.
 
-To add an index, first add any constraints required on the column (notNull, etc). Then at the top level of your schema definition, add the index under a key named `indexes`.
+To add an index, first add any constraints required on the column (notNull, etc). 
+Then at the top level of your schema definition, add the index under a key named `indexes`.
 
 The definition of the `index` type is:
 

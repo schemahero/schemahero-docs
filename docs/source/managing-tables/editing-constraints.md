@@ -1,13 +1,15 @@
 ---
 title: Editing Constraints
-description: Editing Constraints
+description: Editing contraints on a column
 ---
 
 SchemaHero supports creating and editing constraints on database table columns.
 
 ## nullability
 
-When changing a column from optional to required (adding a "not null" constraint), SchemaHero supports adding a default to the column and will update all existing rows with this new default. For a large table, this change may impact performance when the migration is applied.
+When changing a column from optional to required (adding a "not null" constraint), 
+SchemaHero supports adding a default to the column and will update all existing rows with this new default. 
+For a large table, this change may impact performance when the migration is applied.
 
 For example, assume a simple table is created with the following definition:
 
@@ -31,7 +33,8 @@ spec:
           type: varchar(255)
 ```
 
-Later, assume that the `frequency` column has null values and there's a requirement to make this column not nullable. Editing this table definition to be:
+Later, assume that the `frequency` column has null values and there's a requirement to make this column not nullable. 
+Editing this table definition to be:
 
 ```yaml
 apiVersion: schemas.schemahero.io/v1alpha4
@@ -60,7 +63,8 @@ Will create a migration that has 3 phases:
 
 **1. Add Default**
 
-This step is completed first. This will ensure that any new data inserted will have the default value applied while the rest of the migration continues.
+This step is completed first. 
+This will ensure that any new data inserted will have the default value applied while the rest of the migration continues.
 
 **2. Update Values**
 

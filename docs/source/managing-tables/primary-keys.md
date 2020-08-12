@@ -1,6 +1,6 @@
 ---
 title: Primary Keys
-description: Primary Keys
+description: Managing primary keys in a table
 ---
 
 ## Primary Keys 
@@ -27,4 +27,5 @@ spec:
           type: integer
 ```
 
-In the above example, we are creating a table named "flights". This table has a composite primary key that includes the origin and the destination columns.
+In the above example, we are creating a table named "flights". 
+This table has a composite primary key that includes the origin and the destination columns.

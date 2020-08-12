@@ -1,6 +1,6 @@
 ---
 title: Foreign Keys
-description: Foreign Keys
+description: Managing foreign keys for a table
 ---
 
 To define a foreign key on a table, use the `foreignKeys` field, as in this example:
