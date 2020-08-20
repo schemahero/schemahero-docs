@@ -147,7 +147,7 @@ Below that, SchemaHero provides 3 commands for the next steps:
 `apply`: Running this command will accept the SQL statement and SchemaHero will execute it against the database.
 
 `recalculate`: Running this command will instruct SchemaHero to discard the generated SQL statement(s) and generate them again.
-This is useful if the database schema has changed and you want SchemaHero to reexecute the plan.
+This is useful if the database schema has changed and you want SchemaHero to re-execute the plan.
 
 `reject`: Running this command will reject the migration and not execute it.
 

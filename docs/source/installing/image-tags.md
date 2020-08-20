@@ -9,7 +9,7 @@ SchemaHero builds and uses 2 different container images:
 
 The `schemahero-manager` image is the Kubernetes CRD controller and manager.
 It runs in the cluster and handles the reconciliation of any deployed custom resources.
-When a database or table custom resource is deployed, the code to connect to and monitor the connection is in the schemahero container.
+When a database or table custom resource is deployed, the code to connect and monitor the connection is in the schemahero container.
 Both of these container images are built from this repo.
 
 There are several reasons for this separation:
@@ -25,7 +25,7 @@ The two images are tagged and released at the same time, using the same versioni
 
 The `:x.y.z` tag points to a specific, immutable revision.
 These are created when a tag is pushed.
-The current version is 0.10.4
+The current version is 0.10.4.
 These are the most stable versions of SchemaHero and recommended to use in production. A release tag (one without a `-prerelease` suffix) will never be overwritten with a new image.
 
 ## Prelease Images

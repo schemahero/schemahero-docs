@@ -5,7 +5,7 @@ description: Operatorless Mode
 
 It's possible to have the basic functionality of SchemaHero, without running the in-cluster operator.
 This option makes it possible to run SchemaHero in environments that do not have Kubernetes.
-This is useful when shipping software on-prem (such as with [KOTS](https://kots.io)) and you don't want to require cluster-admin level permissions that are necessary to install a CustomResourceDefinition.
+This is useful when shipping software on-prem (such as with [KOTS](https://kots.io)), and you don't want to require cluster-admin level permissions that are necessary to install a CustomResourceDefinition.
 
 ## Missing Features
 

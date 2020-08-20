@@ -56,7 +56,7 @@ When `disableTLS` is set to `true`, SchemaHero will append `?tls=false` to the g
 
 ## Examples
 
-An exmaple of connecting to postgres database using parameters is:
+An example of connecting to postgres database using parameters is:
 
 ```yaml
 apiVersion: databases.schemahero.io/v1alpha4
@@ -80,7 +80,7 @@ spec:
         value: disable
 ```
 
-It's also possible to use secrets for all or some values:
+It's also possible to use secrets for some or all values:
 
 ```yaml
 apiVersion: databases.schemahero.io/v1alpha4

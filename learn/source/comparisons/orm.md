@@ -5,12 +5,12 @@ description: Comparing SchemaHero to an ORM (Object Relational Mapper)
 
 An ORM (Object Relational Mapper) is a technique that enables developers to query databases without writing SQL statements. 
 An ORM will generate the SQL queries for objects automatically, allowing a developer to simply run code, and not SQL. 
-There are many reasons to use an ORM, including the fact that they provide an abstraction around athe database. 
-This abstraction makes it easier for developers who don't have an understanding of the database engine and indices to perform complex queries without writing `INNER JOIN`s and carefully building their query to not have a significant impact on the database runtime.
+There are many reasons to use an ORM, including the fact that they provide an abstraction around the database. 
+This abstraction makes it easier for developers who don't have an understanding of the database engine and indices to perform complex queries without writing `INNER JOIN`s, and carefully building their query to not have a significant impact on the database runtime.
 
 SchemaHero does not do this. 
 SchemaHero is a schema migration tool. 
-SchemaHero creates and edits the structure of the database (tables, columns, indices, constraints and column attributes). 
+SchemaHero creates and edits the structure of the database (tables, columns, indices, constraints, and column attributes). 
 Developers won't interact with SchemaHero when querying data. 
 In fact, SchemaHero doesn't have functionality to build queries that are used at runtime. 
 Instead, this is a deploy-time tool.

@@ -29,5 +29,5 @@ spec:
 
 ## Full Reference
 
-The database object supports additional fields for advanced use cases such as limiting the nodes that migration plan and apply steps will be scheduled on, using internally hosted versions of SchemaHero and more.
+The database object supports additional fields for advanced use cases such as limiting the nodes that migration plan, and apply steps will be scheduled on, using internally hosted versions of SchemaHero and more.
 See the [reference](https://schemahero.io/reference/v1alpha4/database) for all supported fields.

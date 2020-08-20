@@ -9,7 +9,7 @@ SchemaHero supports creating and editing additional column attributes on databas
 
 In MySQL, it is possible to add the [AUTO_INCREMENT attribute](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) to integer types to generate a unique identity for new rows.
 
- In Postgresql and Cockroachdb it is more common to use the [serial type](https://schemahero.io/databases/postgres/column-types/).
+ In Postgresql and Cockroachdb, it is more common to use the [serial type](https://schemahero.io/databases/postgres/column-types/).
 
 ```yaml
 apiVersion: schemas.schemahero.io/v1alpha4
