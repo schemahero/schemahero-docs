@@ -19,5 +19,5 @@ spec:
         value: postgres://username:password@host:5432/db_name
 ```
 
-the next page covers how to use a Kubernetes Secret to provide this connection string.
+The next page covers how to use a Kubernetes Secret to provide this connection string.
 
