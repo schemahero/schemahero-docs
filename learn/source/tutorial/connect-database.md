@@ -6,7 +6,7 @@ description: Learn how to configure SchemaHero to manage a database
 In this step, we will deploy a PostgreSQL instance and configure SchemaHero to manage this instance.
 
 To start, we need a PostgreSQL server to use during this tutorial.
-In order to make this part easy, we've exported the PostgreSQL 11.8.0 Helm chart to plain Kubernetes YAML and added it to the SchemaHero repo.
+In order to make this part easy, we've exported the PostgreSQL 11.8.0 Helm chart to plain Kubernetes YAML, and added it to the SchemaHero repo.
 
 ## Deploy PostgreSQL
 
@@ -45,17 +45,17 @@ Note that this will have to stay running to use Beekeeper Studio, so we recommen
 kubectl port-forward -n schemahero-tutorial svc/postgresql 5432:5432
 ```
 
-Now, point your app to `127.0.0.1:5432` with the user "airlinedb-user", database "airlinedb" and password "password".
+Now, point your app to `127.0.0.1:5432` with the user "airlinedb-user", database "airlinedb", and password "password".
 
 <img src="../images/beekeeper-connect.png" >
 
-Explore this database and noticed that it's empty.
+Explore this database and notice that it's empty.
 
 <img src="../images/airlinedb-initial.png" >
 
 ## Create SchemaHero Database object
 
-Now that we have SchemaHero running in the cluster and a PostgreSQL instance available, the next step is provide the database info to SchemaHero so that the operator can manage the database.
+Now that we have SchemaHero running in the cluster and a PostgreSQL instance available, the next step is to provide the database info to SchemaHero so the operator can manage the database.
 We do this by deploying custom resource to the cluster with the connection information.
 
  A `database` definition will allow SchemaHero to manage the schema of the database. A `database` definition includes a name type and connection parameters.
@@ -91,7 +91,7 @@ For our tutorial, we've chosen to deploy Postgres to this namespace, but SchemaH
 
 **Line 7-13:** This is the database reference that contains the data SchemaHero will need to connect to and authenticate into this database.
 In this example, we are using a previously deployed secret (it was part of the PostgreSQL deployment earlier).
-SchemaHero supports reading credentials from inline, secrets or HashiCorp Vault.
+SchemaHero supports reading credentials from inline, secrets, or HashiCorp Vault.
 
 ## Validate SchemaHero
 
@@ -107,4 +107,4 @@ airlinedb   47m
 
 ## Next
 
-Now that we have PostgreSQL and SchemaHero running, next we will [deploy a new table using SchemaHero](https://schemahero.io/learn/tutorial/create-table) to this instance.
+Now that we have PostgreSQL and SchemaHero running, we then [deploy a new table using SchemaHero](https://schemahero.io/learn/tutorial/create-table) to this instance.

@@ -32,7 +32,7 @@ spec:
 
 A well-formed `foreignKeys` field is an array of `foreignKey` objects:
 
-`columns`: An array of the column names that are part of this table that have the foreign key contraint applied. (the child columns)
+`columns`: An array of the column names that are part of this table that have the foreign key contraint applied (the child columns).
 
 `references.table`: The name of the parent table
 

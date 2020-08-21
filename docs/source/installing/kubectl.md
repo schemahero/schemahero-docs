@@ -4,11 +4,11 @@ description: Installing SchemaHero
 ---
 
 SchemaHero has 2 different components: an in-cluster Kubernetes Operator and a client side kubectl plugin that you can use to interact with the operator.
-The best way to get started, is to install the kubectl plugin:
+The best way to get started is to install the kubectl plugin:
 
 ## Client
 
-The SchemaHero client component is packaged as a `kubectl` plugin and distributed through the [krew](https://krew.dev) package manager.
+The SchemaHero client component is packaged as a `kubectl` plugin, and distributed through the [krew](https://krew.dev) package manager.
 If you don't already have krew installed, head over to the [krew installation guide](https://krew.sigs.k8s.io/docs/user-guide/setup/install/), follow the steps there and then come back here.
 
 Install the SchemaHero client component using:
@@ -30,7 +30,7 @@ You should see the version of SchemaHero installed on your workstation (0.10.4 o
 ## Operator
 
 SchemaHero relies on an in-cluster operator.
-The next step in the installation is to operator components:
+The next step in the installation is the operator components:
 
 ### One Command Deploy
 
@@ -44,14 +44,14 @@ The above command will create a `schemahero-system` namespace, and install 3 new
 
 ### GitOps and Other Workflows
 
-An alternative approach is to let the kubectl plugin generate the YAML that can be checked in, commited and deployed using another tool:
+An alternative approach is to let the kubectl plugin generate the YAML that can be checked in, commited, and deployed using another tool:
 
 ```shell
 kubectl schemahero install --yaml
 ```
 
 This will create the necessary YAML to install the in-cluster SchemaHero operator.
-After inspection, you can use `kubectl` to `apply` this YAML to you cluster.
+After inspection, you can use `kubectl` to `apply` this YAML to your cluster.
 
 ## Verification
 

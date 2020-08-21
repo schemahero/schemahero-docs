@@ -201,7 +201,7 @@ Let's make another change.
 This time, we want to add a foreign key to make sure that all data entered in the `origin` and `destination` columns are present in the `airport` table.
 
 To add a foreign key, we can edit the `schedule.yaml` and add the foreignKey constraints to this table.
-The updated table YAML looks like this:
+The updated table YAML will look like:
 
 ```yaml
 apiVersion: schemas.schemahero.io/v1alpha4
@@ -304,7 +304,7 @@ Approve the migration:
 kubectl schemahero -n schemahero-tutorial approve migration b12d3fd
 ```
 
-You can use your database management utility to verify that the migration was applied and the foreign keys now exist.
+You can use your database management utility to verify that the migration was applied, and the foreign keys now exist.
 
 ## Next steps
 

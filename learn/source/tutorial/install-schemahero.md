@@ -5,7 +5,7 @@ description: Learn how to install the SchemaHero kubectl plugin and the in-clust
 
 ## Installing the `kubectl` plugin
 
-The SchemaHero client component is packaged as a `kubectl` plugin and distributed through the [krew](https://krew.dev) package manager.
+The SchemaHero client component is packaged as a `kubectl` plugin, and distributed through the [krew](https://krew.dev) package manager.
 If you don't already have krew installed, head over to the [krew installation guide](https://krew.sigs.k8s.io/docs/user-guide/setup/install/), follow the steps there and then come back here.
 
 Install the SchemaHero client component using:
