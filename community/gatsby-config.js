@@ -18,7 +18,7 @@ module.exports = {
         description: 'SchemaHero Community',
         githubRepo: 'schemahero/schemahero-docs',
         sidebarCategories: {
-          null: ['index'],
+          null: ['index', 'roadmap'],
           'Community Meetings': [
             'meetings/2020-06-01',
           ],
