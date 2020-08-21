@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Helmet} from 'react-helmet';
+import favicon from "../../../images/favicon.ico";
 
 export default function SEO(props) {
-  const {title, description, siteName, twitterCard, children, favicon} = props;
+  const {title, description, siteName, twitterCard, children} = props;
   return (
     <Helmet>
       <title>{title}</title>
@@ -24,11 +25,9 @@ SEO.propTypes = {
   description: PropTypes.string.isRequired,
   siteName: PropTypes.string.isRequired,
   twitterCard: PropTypes.string,
-  children: PropTypes.node,
-  favicon: PropTypes.string
+  children: PropTypes.node
 };
 
 SEO.defaultProps = {
-  twitterCard: 'summary',
-  favicon: '', // TODO
+  twitterCard: 'summary'
 };
