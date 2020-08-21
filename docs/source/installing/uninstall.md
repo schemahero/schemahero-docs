@@ -3,7 +3,7 @@ title: Uninstalling SchemaHero
 description: Uninstalling SchemaHero
 ---
 
-If you want to uninstall SchemaHero from your cluster, the easiest method is to use the [install](/cli/install/) command to generate the YAML and pass that to `kubectl delete`:
+If you want to uninstall SchemaHero from your cluster, the easiest method is to use the [install](https://schemahero.io/cli/kubectl/install/) command to generate the YAML and pass that to `kubectl delete`:
 
 ```shell
 kubectl schemahero install --yaml | kubectl delete -f -
