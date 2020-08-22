@@ -7,6 +7,7 @@ SchemaHero works various versions of Postgres.
 
 | Postgres Version | Minimum SchemaHero Version |
 |------------------|------------|
+| 13-beta | 0.1.0 / v1alpha1 |
 | 12.x | 0.1.0 / v1alpha1 |
 | 11.x | 0.1.0 / v1alpha1 |
 | 10.x | 0.1.0 / v1alpha1 |
