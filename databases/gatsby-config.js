@@ -35,7 +35,11 @@ module.exports = {
           CockroachDB: [
             'cockroachdb/versions',
             'cockroachdb/connecting',
-          ]
+          ],
+          Cassandra: [
+            'cassandra/versions',
+            'cassandra/connecting',
+          ],
         },
       },
     },
