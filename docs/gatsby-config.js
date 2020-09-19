@@ -46,6 +46,9 @@ module.exports = {
             'managing-tables/attributes',
             'managing-tables/editing-constraints',
           ],
+          'Managing Types': [
+            'managing-types/creating-types',
+          ],
           Advanced: [
             'advanced/enforcing-policies',
             'advanced/fixture-generation',
