@@ -39,6 +39,10 @@ module.exports = {
           Cassandra: [
             'cassandra/versions',
             'cassandra/connecting',
+            'cassandra/keyspaces',
+            'cassandra/tables',
+            'cassandra/table-properties',
+            'cassandra/custom-types',
           ],
         },
       },
