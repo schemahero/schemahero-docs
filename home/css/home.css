@@ -928,19 +928,27 @@ canvas{
 }
 
 .FooterItem {
-    font-size: 12px;
+    font-size: 16px;
     padding: 0 10px;
     position: relative;
     color: #f5f8fc;
-    font-weight: 700
+    font-weight: 600;
+}
+
+.footer-copyright {
+    font-size: 12px !important;
+    font-weight: normal;
 }
 
 .FooterItem a {
-    font-size: 12px;
     position: relative;
     color: #f5f8fc;
     font-weight: 700;
     text-decoration: underline
+}
+
+.FooterItem a:hover {
+    color: #b5cff1; 
 }
 
 .TroubleshootFooter {
