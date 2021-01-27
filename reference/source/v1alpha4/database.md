@@ -26,6 +26,12 @@ spec:
           vault:            # read pg connection from vault
             secret:         # name of secret in vault
             role:           # role to use in vault
+            endpoint:       # the endpoint of the vault api server
+            serviceAccount: # the service account in k8s containing the vault auth
+            serviceAccountNamespace: # namespace of the service account
+            agentInject:    # when set, apply vault annotations
+            connectionTemplate: # when set, use this Go template to form the uri
+            kubernetesAuthEndpoint: # when set, use this path instead of the Vault default (https://www.vaultproject.io/docs/auth/kubernetes#via-the-cli)
     mysql:                  # mysql definition
       uri:                  # parse mysql connection string from uri
         value:              # mysql connection string
@@ -40,6 +46,8 @@ spec:
             serviceAccount: # the service account in k8s containing the vault auth
             serviceAccountNamespace: # namespace of the service account
             agentInject:    # when set, apply vault annotations
+            connectionTemplate: # when set, use this Go template to form the uri
+            kubernetesAuthEndpoint: # when set, use this path instead of the Vault default (https://www.vaultproject.io/docs/auth/kubernetes#via-the-cli)
           ssm:              # use aws parameter store ssm
             name:           # key name in ssm
             withDecryption: # when set, decrypt
