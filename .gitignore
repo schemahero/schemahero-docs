@@ -16,3 +16,4 @@ community/public/*
 databases/public/*
 resources/_gen
 changelog/public/*
+page-data.json
