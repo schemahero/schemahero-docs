@@ -44,6 +44,11 @@ module.exports = {
             'cassandra/table-properties',
             'cassandra/custom-types',
           ],
+          SQLite: [
+            'sqlite/versions',
+            'sqlite/connecting',
+            'sqlite/tables',
+          ],
         },
       },
     },

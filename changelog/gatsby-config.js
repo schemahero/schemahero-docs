@@ -20,6 +20,7 @@ module.exports = {
         sidebarCategories: {
           null: ['index'],
           'Changelog': [
+            'releases/0.12.0',
             'releases/0.11.2',
             'releases/0.11.1',
             'releases/0.11.0',

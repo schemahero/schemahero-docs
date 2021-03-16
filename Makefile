@@ -1,4 +1,14 @@
 
+.PHONY: build
+build: deps
+	yarn workspace docs build --prefix-paths
+	yarn workspace learn build --prefix-paths
+	yarn workspace cli build --prefix-paths
+	yarn workspace reference build --prefix-paths
+	yarn workspace databases build --prefix-paths
+	yarn workspace community build --prefix-paths
+	yarn workspace changelog build --prefix-paths
+
 .PHONY: publish
 publish: deps clean build
 publish:
@@ -33,16 +43,6 @@ publish:
 	rm -rf public/changelog/social-cards
 
 	cp -r home/* public
-
-.PHONY: build
-build:
-	yarn workspace docs build --prefix-paths
-	yarn workspace learn build --prefix-paths
-	yarn workspace cli build --prefix-paths
-	yarn workspace reference build --prefix-paths
-	yarn workspace databases build --prefix-paths
-	yarn workspace community build --prefix-paths
-	yarn workspace changelog build --prefix-paths
 
 .PHONY: deps
 deps:
