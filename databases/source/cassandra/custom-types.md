@@ -5,7 +5,7 @@ description: Managing Cassandra Custom Data Types
 
 Custom (user-defined) data types are commonly used in Cassandra databases.
 
-Custom types can be defined and SchemaHero will creaste/update these in the database.
+Custom types can be defined and SchemaHero will create/update these in the database.
 
 ## Example
 
