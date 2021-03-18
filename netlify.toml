@@ -1,3 +1,3 @@
 [build]
-  publish = "public"
-  command = "make publish"
+  publish = "site"
+  command = "mkdocs build"
