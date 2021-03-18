@@ -8,7 +8,7 @@ We will design a very basic database for a fictitious airline reservation system
 
 This tutorial will deploy an empty database, create an initial schema, and then modify the schema so that it ends up with the following tables:
 
-<img src="../images//airline-entity.svg" style="padding-top: 20px; padding-bottom: 40px;"/>
+<img src="/images/airline-entity.svg" style="padding-top: 20px; padding-bottom: 40px;"/>
 
 This tutorial will create a namespace in your Kubernetes cluster named `schemahero-tutorial`, and all recommended YAML will be deployed to that namespace.
 At the end of the tutorial, there are steps to clean up the cluster and remove the database and all components.
@@ -28,4 +28,4 @@ If you don't have one for testing, consider [KiND](https://github.com/kubernetes
 1. Basic knowledge about database schemas.
 This toturial uses PostgresQL, so PostgresQL experience is recommended.
 
-All of the YAML for this tutorial is in [https://github.com/schemahero/schemahero/tree/master/examples/tutorial](https://github.com/schemahero/schemahero/tree/master/examples/tutorial).
+All of the YAML for this tutorial is in [https://github.com/schemahero/schemahero/tree/main/examples/tutorial](https://github.com/schemahero/schemahero/tree/main/examples/tutorial).

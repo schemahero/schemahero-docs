@@ -188,7 +188,7 @@ Finally, let's verify this migration in Beekeeper Studio or whatever database ma
 Clicking Refresh on the "Tables & Views" header in the left nav, we now see the `airport` table under "public".
 Expanding `airport` and you can see the columns in the table.
 
-<img src="../images/airport-table.png">
+<img src="/images/airport-table.png">
 
 ## Next steps
 

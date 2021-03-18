@@ -1,13 +1,23 @@
 site_name: SchemaHero Docs
 theme:
   name: material
+  logo: images/schemahero-logo.svg
+  favicon: images/favicon.ico
+  palette:
+    scheme: default
+    primary: white
+    accent: blue
   features:
     - navigation.tabs
-    - navigation.expand
+    - navigation.instant
+    - navigation.tracking
+    - navigation.indexes
 markdown_extensions:
   - admonition
+  - attr_list
 nav:
   - Learn SchemaHero:
+    - 'learn/index.md'
     - 'Declarative Schema Management': 'learn/declarative-schema-management.md'
     - 'Data Migrations': 'learn/data-migrations.md'
     - Tutorial:

@@ -9,7 +9,7 @@ In this step, we are going to deploy a table and then make a change to it.
 
 Similar to the last step, let's create a `schedule` table that has the following schema:
 
-<img src="../images/schedule-table.svg">
+<img src="/images/schedule-table.svg">
 
 To accomplish this, create a local file named `schedule-table.yaml` and paste the following contents into it:
 
@@ -75,7 +75,7 @@ kubectl schemahero -n schemahero-tutorial approve migration a9626a8
 
 To confirm, open Beekeeper Studio and see the schedule table:
 
-<img src="../images/schedule-table.png">
+<img src="/images/schedule-table.png">
 
 ## Change columns
 
@@ -193,7 +193,7 @@ Migration fa32022 approved
 
 Refreshing the table view in Beekeeper Studio, we can see the change has been applied:
 
-<img src="../images/modified-schedule-table.png">
+<img src="/images/modified-schedule-table.png">
 
 ## Adding a foreign key
 

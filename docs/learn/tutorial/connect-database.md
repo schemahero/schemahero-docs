@@ -14,7 +14,7 @@ Deploy PostgreSQL into a new `schemahero-tutorial` namespace with the following 
 
 ```shell
 kubectl create ns schemahero-tutorial
-kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/master/examples/tutorial/postgresql/postgresql-11.8.0.yaml
+kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/main/examples/tutorial/postgresql/postgresql-11.8.0.yaml
 ```
 
 ## Validate PostgreSQL is running
@@ -47,11 +47,11 @@ kubectl port-forward -n schemahero-tutorial svc/postgresql 5432:5432
 
 Now, point your app to `127.0.0.1:5432` with the user "airlinedb-user", database "airlinedb", and password "password".
 
-<img src="../images/beekeeper-connect.png" >
+<img src="/images/beekeeper-connect.png" >
 
 Explore this database and notice that it's empty.
 
-<img src="../images/airlinedb-initial.png" >
+<img src="/images/airlinedb-initial.png" >
 
 ## Create SchemaHero Database object
 
