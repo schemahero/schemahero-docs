@@ -3,25 +3,12 @@ title: Roadmap
 description: The SchemaHero Roadmap
 ---
 
-import { Button } from '@apollo/space-kit/Button';
-import { Link } from 'gatsby';
-import { colors } from 'gatsby-theme-apollo-core';
-
 SchemaHero is an early project and there's a lot to do.
 Our roadmap is designed to add compatibility with existing infrastructure and systems in order to create additional use cases and get feedback and adoption of SchemaHero in various environments.
 
 The detailed SchemaHero roadmap is maintained in the [Roadmap project](https://github.com/schemahero/schemahero/projects/2) in the SchemaHero GitHub repo.
 
-<div>
-  <Button
-    size="large"
-    color={colors.primary}
-    as={<a href="https://github.com/schemahero/schemahero/projects/2" />}
-    style={{marginLeft: 16}}
-  >
-    View the Roadmap
-  </Button>
-</div>
+[View the Roadmap](https://github.com/schemahero/schemahero/projects/2){ .md-button .md-button--primary }
 
 ## Short Term Roadmap
 
