@@ -1,0 +1,138 @@
+site_name: SchemaHero Docs
+theme:
+  name: material
+  logo: images/schemahero-logo.svg
+  favicon: images/favicon.ico
+  include_homepage_in_sidebar: false
+  custom_dir: overrides/
+  palette:
+    scheme: default
+    primary: grey
+    accent: blue
+  features:
+    - navigation.tabs
+    - navigation.tracking
+    - navigation.indexes
+copyright: |
+  &copy; Copyright The SchemaHero Authors. All rights reserved. <br />
+  The Linux Foundation has registered trademarks and uses trademarks.
+  For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage">Trademark Usage page</a>.
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/schemahero/schemahero
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/schemahero
+markdown_extensions:
+  - admonition
+  - attr_list
+nav:
+  - Learn SchemaHero:
+    - 'learn/index.md'
+    - 'Declarative Schema Management': 'learn/declarative-schema-management.md'
+    - 'Data Migrations': 'learn/data-migrations.md'
+    - Tutorial:
+      - 'Introduction': 'learn/tutorial/introduction.md'
+      - 'Install SchemaHero': 'learn/tutorial/install-schemahero.md'
+      - 'Connect A Database': 'learn/tutorial/connect-database.md'
+      - 'Create A New Table': 'learn/tutorial/create-table.md'
+      - 'Modify Table': 'learn/tutorial/modify-table.md'
+      - 'Next Steps': 'learn/tutorial/next-steps.md'
+    - Comparisons:
+      - 'Sequential Migrations': 'learn/comparisons/sequential-migrations.md'
+      - 'ORM': 'learn/comparisons/orm.md'
+  - Documentation:
+    - 'About The Docs': 'docs/index.md'
+    - Installing:
+      - 'Installing SchemaHero': 'docs/installing/kubectl.md'
+      - 'Uninstalling SchemaHero': 'docs/installing/uninstall.md'
+      - 'Image Tags': 'docs/installing/image-tags.md'
+    - Connecting Databases:
+      - 'Database Resources': 'docs/connecting-databases/creating-db-resource.md'
+      - 'Connection URI': 'docs/connecting-databases/connection-uri.md'
+      - 'Kubernetes Secrets': 'docs/connecting-databases/using-secrets.md'
+      - 'HashiCorp Vault': 'docs/connecting-databases/hashicorp-vault.md'
+      - 'Amazon SSM Parameter Store': 'docs/connecting-databases/amazon-ssm.md'
+      - 'Using Params': 'docs/connecting-databases/using-params.md'
+      - 'Connecting to Amazon RDS': 'docs/connecting-databases/amazon-rds.md'
+      - 'Connecting to Google Cloud SQL': 'docs/connecting-databases/google-cloud-sql.md'
+    - Managing Tables:
+      - 'Creating Tables': 'docs/managing-tables/creating-tables.md'
+      - 'Deleting Tables': 'docs/managing-tables/deleting-tables.md'
+      - 'Adding Columns': 'docs/managing-tables/adding-columns.md'
+      - 'Modifying Columns': 'docs/managing-tables/modifying-columns.md'
+      - 'Dropping Columns': 'docs/managing-tables/dropping-columns.md'
+      - 'Primary Keys': 'docs/managing-tables/primary-keys.md'
+      - 'Foreign Keys': 'docs/managing-tables/foreign-keys.md'
+      - 'Indexes': 'docs/managing-tables/indexes.md'
+      - 'Column Attributes': 'docs/managing-tables/attributes.md'
+      - 'Editing Contraints': 'docs/managing-tables/editing-constraints.md'
+    - Managing Types:
+      - 'Creating Types': 'docs/managing-types/creating-types.md'
+    - Advanced:
+      - 'Enforcing Policies': 'docs/advanced/enforcing-policies.md'
+      - 'Fixture Generation': 'docs/advanced/fixture-generation.md'
+      - 'Operatorless Mode': 'docs/advanced/operatorless-mode.md'
+      - 'Migrating To SchemaHero': 'docs/advanced/migrating.md'
+  - Databases:
+    - Postgresql:
+      - 'Versions': 'databases/postgresql/versions.md'
+      - 'Connecting': 'databases/postgresql/connecting.md'
+      - 'Column Types': 'databases/postgresql/column-types.md'
+      - 'Constraints': 'databases/postgresql/constraints.md'
+    - MySQL:
+      - 'Versions': 'databases/mysql/versions.md'
+      - 'Connecting': 'databases/mysql/connecting.md'
+      - 'Column Types': 'databases/mysql/column-types.md'
+      - 'Constraints': 'databases/mysql/constraints.md'
+      - 'Attributes': 'databases/mysql/attributes.md'
+    - CockroachDB:
+      - 'Versions': 'databases/cockroachdb/versions.md'
+      - 'Connecting': 'databases/cockroachdb/connecting.md'
+    - Cassandra:
+      - 'Versions': 'databases/cassandra/versions.md'
+      - 'Connecting': 'databases/cassandra/connecting.md'
+      - 'Keyspaces': 'databases/cassandra/keyspaces.md'
+      - 'Tables': 'databases/cassandra/tables.md'
+      - 'Table Properties': 'databases/cassandra/table-properties.md'
+      - 'Custom Types': 'databases/cassandra/custom-types.md'
+    - SQLite:
+      - 'Versions': 'databases/sqlite/versions.md'
+      - 'Connecting': 'databases/sqlite/connecting.md'
+      - 'Tables': 'databases/sqlite/tables.md'
+  - API Reference:
+    - v1alpha4:
+      - 'Database': 'reference/v1alpha4/database.md'
+      - 'Table': 'reference/v1alpha4/table.md'
+      - 'Migration': 'reference/v1alpha4/migration.md'
+  - CLI Reference:
+    - 'install': 'cli/kubectl/install.md'
+    - 'get tables': 'cli/kubectl/get-tables.md'
+    - 'get migrations': 'cli/kubectl/get-migrations.md'
+    - 'describe migration': 'cli/kubectl/describe-migration.md'
+    - 'approve migration': 'cli/kubectl/approve-migration.md'
+    - 'reject migration': 'cli/kubectl/reject-migration.md'
+    - 'shell': 'cli/kubectl/shell.md'
+    - 'generate': 'cli/kubectl/generate.md'
+    - 'plan': 'cli/kubectl/plan.md'
+    - 'apply': 'cli/kubectl/apply.md'
+    - 'version': 'cli/kubectl/version.md'
+  - Community:
+    - 'The SchemaHero Community': 'community/index.md'
+    - 'Roadmap': 'community/roadmap.md'
+    - Contibuting:
+      - 'Getting Started Contributing': 'community/contributing/index.md'
+      - 'Development Environment': 'community/contributing/dev-environment.md'
+  - Changelog:
+    - Releases:
+      - '0.12.0': 'changelog/releases/0.12.0.md'
+      - '0.11.2': 'changelog/releases/0.11.2.md'
+      - '0.11.1': 'changelog/releases/0.11.1.md'
+      - '0.11.0': 'changelog/releases/0.11.0.md'
+      - '0.10.4': 'changelog/releases/0.10.4.md'
+      - '0.10.3': 'changelog/releases/0.10.3.md'
+      - '0.10.2': 'changelog/releases/0.10.2.md'
+      - '0.10.1': 'changelog/releases/0.10.1.md'
+      - '0.10.0': 'changelog/releases/0.10.0.md'
+      - '0.9.0': 'changelog/releases/0.9.0.md'
