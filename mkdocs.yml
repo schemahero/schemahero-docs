@@ -11,7 +11,6 @@ theme:
     accent: blue
   features:
     - navigation.tabs
-    - navigation.instant
     - navigation.tracking
     - navigation.indexes
 copyright: |
