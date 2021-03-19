@@ -44,6 +44,7 @@ nav:
       - 'Sequential Migrations': 'learn/comparisons/sequential-migrations.md'
       - 'ORM': 'learn/comparisons/orm.md'
   - Documentation:
+    - 'About The Docs': 'docs/index.md'
     - Installing:
       - 'Installing SchemaHero': 'docs/installing/kubectl.md'
       - 'Uninstalling SchemaHero': 'docs/installing/uninstall.md'
@@ -97,6 +98,10 @@ nav:
       - 'Tables': 'databases/cassandra/tables.md'
       - 'Table Properties': 'databases/cassandra/table-properties.md'
       - 'Custom Types': 'databases/cassandra/custom-types.md'
+    - SQLite:
+      - 'Versions': 'databases/sqlite/versions.md'
+      - 'Connecting': 'databases/sqlite/connecting.md'
+      - 'Tables': 'databases/sqlite/tables.md'
   - API Reference:
     - v1alpha4:
       - 'Database': 'reference/v1alpha4/database.md'
@@ -131,4 +136,5 @@ nav:
       - '0.11.0': 'changelog/releases/0.11.0.md'
       - '0.11.1': 'changelog/releases/0.11.1.md'
       - '0.11.2': 'changelog/releases/0.11.2.md'
+      - '0.12.0': 'changelog/releases/0.12.0.md'
 

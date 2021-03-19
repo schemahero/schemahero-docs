@@ -25,7 +25,7 @@ Verify the installation by checking the version:
 kubectl schemahero version
 ```
 
-You should see the version of SchemaHero installed on your workstation (0.11.2 or similar).
+You should see the version of SchemaHero installed on your workstation (0.12.0 or similar).
 
 ## Operator
 
