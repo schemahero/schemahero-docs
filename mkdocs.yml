@@ -76,6 +76,7 @@ nav:
       - 'Operatorless Mode': 'docs/advanced/operatorless-mode.md'
       - 'Migrating To SchemaHero': 'docs/advanced/migrating.md'
   - Databases:
+    - 'Supported Databases': 'databases/index.md'
     - Postgresql:
       - 'Versions': 'databases/postgresql/versions.md'
       - 'Connecting': 'databases/postgresql/connecting.md'
