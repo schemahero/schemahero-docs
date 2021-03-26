@@ -22,7 +22,7 @@ There is no elevated access required, and this method does not rely on any exter
 An example of the required Dockerfile is:
 
 ```Dockerfile
-FROM schemahero/schemahero:0.12.0
+FROM schemahero/schemahero:0.12.1
 ADD --chown=schemahero:schemahero ./tables ./tables
 ```
 
