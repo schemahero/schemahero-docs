@@ -18,6 +18,6 @@ Select a database on the left for more details.
 |----------|--------------------|
 | [Postgresql](./postgres/versions) | 9.5 - 13.x |
 | [Mysql](./mysql/versions) | 5.6 - 8.x |
-| [Cockroachdb](./cockroachdb/versions) | v19.x - v20.x |
+| [Cockroachdb](./cockroachdb/versions) | v19.x - v21.x |
 | [Cassandra](./cassandra/versions) | 3.11 |
 | [SQLite](./sqlite/versions) | 3.x |
