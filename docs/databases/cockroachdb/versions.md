@@ -9,3 +9,4 @@ SchemaHero includes native support for CockroachDB.
 |------------------|------------|
 | v19.x | 0.9.0 / v1alpha4 |
 | v20.x | 0.9.0 / v1alpha4 |
+| v21.x | 0.12.0 / v1alpha4 |
