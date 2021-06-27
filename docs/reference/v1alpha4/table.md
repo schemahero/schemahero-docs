@@ -73,3 +73,4 @@ spec:
           default:          # default value for the column
           contstraints:     # adding constraints to this column
             notNull:        # set "not null" on the column
+```
