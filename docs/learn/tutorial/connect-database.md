@@ -23,13 +23,13 @@ After deploying this and waiting for the containers to start, you can connect to
 
 ```shell
 kubectl exec -it -n schemahero-tutorial \
-  postgresql-postgresql-0 psql -- -U airlinedb-user -d airlinedb
+  postgresql-0 -- psql -U airlinedb-user airlinedb
 ```
 
 If you get a message that says `error: unable to upgrade connection: container not found ("postgresql")` wait a moment and try again.
 This simply means that PostgresQL is not yet started.
 
-(When prompted, the password for "airlinedb-user" is "password").
+(When prompted, the password for the User "airlinedb-user" is `password`).
 
 ## Connect to PostgresSQL
 
