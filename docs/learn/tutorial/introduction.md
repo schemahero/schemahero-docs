@@ -26,6 +26,6 @@ Before starting this tutorial, you should have the following:
 1. A Kubernetes cluster and local `kubectl` access to the cluster.
 If you don't have one for testing, consider [KiND](https://github.com/kubernetes-sigs/kind), [K3S](https://k3s.io), or [kURL](https://kurl.sh).
 1. Basic knowledge about database schemas.
-This toturial uses PostgresQL, so PostgresQL experience is recommended.
+This tutorial uses [PostgresQL](https://www.postgresql.org/about/), so PostgresQL experience is recommended.
 
 All of the YAML for this tutorial is in [https://github.com/schemahero/schemahero/tree/main/examples/tutorial](https://github.com/schemahero/schemahero/tree/main/examples/tutorial).
