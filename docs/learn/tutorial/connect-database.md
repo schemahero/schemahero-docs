@@ -14,7 +14,7 @@ Deploy PostgreSQL into a new `schemahero-tutorial` namespace with the following 
 
 ```shell
 kubectl create ns schemahero-tutorial
-kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/main/examples/tutorial/postgresql/postgresql-11.8.0.yaml
+kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/main/examples/tutorial/postgresql/postgresql.yaml
 ```
 
 ## Validate PostgreSQL is running
