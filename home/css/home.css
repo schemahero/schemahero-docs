@@ -902,12 +902,13 @@ canvas{
 }
 
 .page-home .landing-logo {
-    max-width: 420px;
+    max-width: 357px;
     height: 298px;
     margin: 0 auto;
     background-image: url(../images/schemahero-large.svg);
     background-repeat: no-repeat;
-    background-size: 100%
+    background-size: 100%;
+    overflow: visible;
 }
 
 .page-home p {
