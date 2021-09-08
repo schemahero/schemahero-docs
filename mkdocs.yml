@@ -7,7 +7,7 @@ theme:
   custom_dir: overrides/
   palette:
     scheme: default
-    primary: grey
+    primary: indigo
     accent: blue
   features:
     - navigation.tabs
