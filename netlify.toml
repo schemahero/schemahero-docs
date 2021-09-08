@@ -1,3 +1,4 @@
 [build]
-  publish = "public"
-  command = "make publish"
+  publish = "site"
+  command = "pip install -r requirements.txt && mkdocs build"
+  environment = { PYTHON_VERSION = "3.7" }
