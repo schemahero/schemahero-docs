@@ -14,7 +14,7 @@ Deploy PostgreSQL into a new `schemahero-tutorial` namespace with the following 
 
 ```shell
 kubectl create ns schemahero-tutorial
-kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/main/examples/tutorial/postgresql/postgresql-11.8.0.yaml
+kubectl apply -n schemahero-tutorial -f https://raw.githubusercontent.com/schemahero/schemahero/main/examples/tutorial/postgresql/postgresql.yaml
 ```
 
 ## Validate PostgreSQL is running
@@ -23,13 +23,13 @@ After deploying this and waiting for the containers to start, you can connect to
 
 ```shell
 kubectl exec -it -n schemahero-tutorial \
-  postgresql-postgresql-0 psql -- -U airlinedb-user -d airlinedb
+  postgresql-0 -- psql -U airlinedb-user airlinedb
 ```
 
 If you get a message that says `error: unable to upgrade connection: container not found ("postgresql")` wait a moment and try again.
 This simply means that PostgresQL is not yet started.
 
-(When prompted, the password for "airlinedb-user" is "password").
+(When prompted, the password for the User "airlinedb-user" is `password`).
 
 ## Connect to PostgresSQL
 
@@ -62,7 +62,7 @@ We do this by deploying custom resource to the cluster with the connection infor
 
 Create a file named `airline-db.yaml` locally, copy the following YAML in it, and then run `kubectl apply -f ./airline-db.yaml` to deploy it.
 
- ```yaml
+```yaml
 apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
@@ -102,7 +102,6 @@ kubectl get databases -n schemahero-tutorial
 
 NAME        AGE
 airlinedb   47m
-
 ```
 
 ## Next
