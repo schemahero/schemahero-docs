@@ -62,7 +62,7 @@ We do this by deploying custom resource to the cluster with the connection infor
 
 Create a file named `airline-db.yaml` locally, copy the following YAML in it, and then run `kubectl apply -f ./airline-db.yaml` to deploy it.
 
-```shell
+```yaml
 apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
