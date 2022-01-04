@@ -23,7 +23,7 @@ After deploying this and waiting for the containers to start, you can connect to
 
 ```shell
 kubectl exec -it -n schemahero-tutorial \
-  postgresql-postgresql-0 psql -- -U airlinedb-user -d airlinedb
+  postgresql-0 -- psql -U airlinedb-user -d airlinedb
 ```
 
 If you get a message that says `error: unable to upgrade connection: container not found ("postgresql")` wait a moment and try again.
@@ -62,7 +62,7 @@ We do this by deploying custom resource to the cluster with the connection infor
 
 Create a file named `airline-db.yaml` locally, copy the following YAML in it, and then run `kubectl apply -f ./airline-db.yaml` to deploy it.
 
- ```yaml
+```yaml
 apiVersion: databases.schemahero.io/v1alpha4
 kind: Database
 metadata:
