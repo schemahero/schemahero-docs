@@ -67,7 +67,7 @@ nav:
       - 'Foreign Keys': 'docs/managing-tables/foreign-keys.md'
       - 'Indexes': 'docs/managing-tables/indexes.md'
       - 'Column Attributes': 'docs/managing-tables/attributes.md'
-      - 'Editing Contraints': 'docs/managing-tables/editing-constraints.md'
+      - 'Editing Constraints': 'docs/managing-tables/editing-constraints.md'
     - Managing Types:
       - 'Creating Types': 'docs/managing-types/creating-types.md'
     - Advanced:
