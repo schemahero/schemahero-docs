@@ -15,7 +15,7 @@ At the end of the tutorial, there are steps to clean up the cluster and remove t
 
 ## Goals
 
-By completing this tutorial, you will know know the basics of SchemaHero including:
+By completing this tutorial, you will know the basics of SchemaHero including:
 1. Installing SchemaHero locally and in a Kubernetes cluster
 1. Deploying and modifying database schemas
 1. SchemaHero workflows including approving and rejecting migrations
