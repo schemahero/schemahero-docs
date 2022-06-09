@@ -3,7 +3,7 @@ title: Adding Columns
 description: Adding new columns to existing tables
 ---
 
-Once table table has been deployed, SchemaHero can add new columns easily. 
+Once the table has been deployed, SchemaHero can add new columns easily. 
 To add a new column to an existing table, add the column definition to the YAML manifest, and deploy it using `kubectl apply`. 
 The SchemaHero operator will reconcile this table manifest with the actual database to create a plan.
 
