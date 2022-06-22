@@ -10,7 +10,7 @@ This is an imperative pattern; a developer writes intructions that will be execu
 **Examples**  
 
 - [db-migrate](https://github.com/db-migrate/node-db-migrate)
-- [Flyaway](https://flywaydb.org/)
+- [Flyway](https://flywaydb.org/)
 - [goose](https://github.com/pressly/goose) 
 
 **Challenges**
