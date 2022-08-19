@@ -58,7 +58,7 @@ Explore this database and notice that it's empty.
 Now that we have SchemaHero running in the cluster and a PostgreSQL instance available, the next step is to provide the database info to SchemaHero so the operator can manage the database.
 We do this by deploying custom resource to the cluster with the connection information.
 
- A `database` definition will allow SchemaHero to manage the schema of the database. A `database` definition includes a name type and connection parameters.
+A `database` definition will allow SchemaHero to manage the schema of the database. A `database` definition includes a name type and connection parameters.
 
 Create a file named `airline-db.yaml` locally, copy the following YAML in it, and then run `kubectl apply -f ./airline-db.yaml` to deploy it.
 
