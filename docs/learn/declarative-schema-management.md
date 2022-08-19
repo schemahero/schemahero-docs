@@ -4,10 +4,10 @@ description: An explanation of the declarative schema management concept
 ---
 
 Many database schema management tools create an imperative interface, requiring the developer to understand both the current state of the schema and the optimal commands to migrate the current schema (and related data) to a new, desired schema.
-This model is difficult for several reaasons that are covered in this document.
+This model is difficult for several reasons that are covered in this document.
 This document proposes a declarative interface to replace this traditionally imperative one, and explains the benefits and challenges with this change.
  
-There are many benefits to managing database schemas in a declarive format, including:
+There are many benefits to managing database schemas in a declarative format, including:
 
 1. Ability to adhere to a change management process
 2. Repeatable deployments to new environments
