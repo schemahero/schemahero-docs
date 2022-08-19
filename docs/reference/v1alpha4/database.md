@@ -10,11 +10,15 @@ metadata:
   name:                     # Kubernetes object name
   namespace:                # Kubernetes namespace
 spec:
+  template:
+    metadata:
+      labels:               # k:v entries for labels to apply during plans and applies
+      annotations:          # k:v entries for annotations to apply during plans and applies
   enableShellCommand:       # bool indicating if shell command is enabled
   immediateDeploy:          # when true, automatically apply plans
   schemahero:
     image:                  # override default schemahero image for plans and applies
-    nodeSelector:           # nodeSelector to apply to plans an applies
+    nodeSelector:           # nodeSelector to apply to plans and applies
   connection:               # db connection
     postgres:               # postgresql definition
       uri:                  # parse postgresql connection string from uri
