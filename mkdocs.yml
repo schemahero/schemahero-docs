@@ -127,6 +127,8 @@ nav:
       - 'Development Environment': 'community/contributing/dev-environment.md'
   - Changelog:
     - Releases:
+      - '0.13.8': 'changelog/releases/0.13.8.md'
+      - '0.13.7': 'changelog/releases/0.13.7.md'
       - '0.12.4': 'changelog/releases/0.12.4.md'
       - '0.12.3': 'changelog/releases/0.12.3.md'
       - '0.12.2': 'changelog/releases/0.12.2.md'
