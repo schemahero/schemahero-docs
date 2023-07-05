@@ -16,8 +16,8 @@ Select a database on the left for more details.
 
 | Database | Supported Versions |
 |----------|--------------------|
-| [Postgresql](./postgres/versions) | 9.5 - 13.x |
-| [Mysql](./mysql/versions) | 5.6 - 8.x |
-| [Cockroachdb](./cockroachdb/versions) | v19.x - v21.x |
-| [Cassandra](./cassandra/versions) | 3.11 |
+| [Postgresql](./postgres/versions) | 9.5 - 15.1 |
+| [Mysql](./mysql/versions) | 5.6 - 8.0 |
+| [Cockroachdb](./cockroachdb/versions) | v19.2 - v22.1 |
+| [Cassandra](./cassandra/versions) | 3.x |
 | [SQLite](./sqlite/versions) | 3.x |
