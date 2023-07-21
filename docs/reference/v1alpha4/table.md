@@ -16,12 +16,14 @@ spec:
     postgres:               # this is a postgres schema
       primaryKey:           # array of column names in the primary key
       foreignKeys:          # defining the foreign keys
-        - columns:          # columns in the foreign key
+        - name:             # name of the foreign key constraint
+          columns:          # columns in the foreign key
             - colname       # include this column in foreign key
           references:       # other side of the reference
             table:          # table name the key references
             columns:        # foreign table columns
               - colname     # a column in the foreign table
+          onDelete:         # action to take on deletion of the referenced row
       indexes:              # local indexes
         - columns:          # define columns in the index
             - colname       # a column in the index
@@ -30,6 +32,7 @@ spec:
       columns:              # defining the columns
         - name:             # name of the column
           type:             # data type of the column
+          default:          # default value for the column
           contstraints:     # adding constraints to this column
             notNull:        # set "not null" on the column
     mysql:                  # this is a mysq schema
