@@ -30,7 +30,7 @@ spec:
       columns:              # defining the columns
         - name:             # name of the column
           type:             # data type of the column
-          contstraints:     # adding constraints to this column
+          constraints:     # adding constraints to this column
             notNull:        # set "not null" on the column
     mysql:                  # this is a mysq schema
       primaryKey:           # array of column names in the primary key
@@ -49,7 +49,7 @@ spec:
       columns:              # defining the columns
         - name:             # name of the column
           type:             # data type of the column
-          contstraints:     # adding constraints to this column
+          constraints:     # adding constraints to this column
             notNull:        # set "not null" on the column
           attributes:       # adding attributes to this column
             autoIncrement:  # set "auto_increment" on the integer type column
@@ -71,6 +71,6 @@ spec:
         - name:             # name of the column
           type:             # data type of the column
           default:          # default value for the column
-          contstraints:     # adding constraints to this column
+          constraints:     # adding constraints to this column
             notNull:        # set "not null" on the column
 ```
