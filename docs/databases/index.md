@@ -3,7 +3,7 @@ title: Database Support
 description: Understanding Database Support in SchemaHero
 ---
 
-SchemaHero includes supoprts for popular open source and commercial database engines.
+SchemaHero includes support for popular open source and commercial database engines.
 In addition to the current support, there is planned support on the [roadmap](https://schemahero.io/community/roadmap) for other engines.
 
 SchemaHero is not attempting to make a common interface of expressing all possible schemas across all possible databases.
@@ -19,5 +19,6 @@ Select a database on the left for more details.
 | [Postgresql](./postgres/versions) | 9.5 - 15.1 |
 | [Mysql](./mysql/versions) | 5.6 - 8.0 |
 | [Cockroachdb](./cockroachdb/versions) | v19.2 - v22.1 |
+| [Timescale](./timescale/versions) | 2.x |
 | [Cassandra](./cassandra/versions) | 3.x |
 | [SQLite](./sqlite/versions) | 3.x |

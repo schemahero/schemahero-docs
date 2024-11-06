@@ -91,6 +91,10 @@ nav:
     - CockroachDB:
       - 'Versions': 'databases/cockroachdb/versions.md'
       - 'Connecting': 'databases/cockroachdb/connecting.md'
+    - Timescale:
+      - 'Versions': 'databases/timescale/versions.md'
+      - 'Connecting': 'databases/timescale/connecting.md'
+      - 'Hypertables': 'databases/timescale/hypertables.md'
     - Cassandra:
       - 'Versions': 'databases/cassandra/versions.md'
       - 'Connecting': 'databases/cassandra/connecting.md'
