@@ -53,3 +53,49 @@ spec:
             name: postgresql-secret
             key: uri
 ```
+
+## PostgreSQL Features
+
+PostgreSQL is SchemaHero's most fully supported database, including:
+
+### Schema Management
+- Tables, views, functions, and extensions
+- All PostgreSQL column types and constraints
+- Indexes, foreign keys, and primary keys
+- User-defined types and domains
+
+### Data Migrations
+PostgreSQL supports all SchemaHero data migration operations:
+
+- **Static Updates**: Update columns with static values
+- **Calculated Updates**: Update columns using PostgreSQL expressions
+- **Data Transformations**: 
+  - Timezone conversions using `AT TIME ZONE`
+  - Type casting with PostgreSQL cast operators
+  - String transformations (UPPER, LOWER, REPLACE, SUBSTRING)
+- **Custom SQL**: Execute arbitrary PostgreSQL statements with validation
+
+Example data migration:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: DataMigration
+metadata:
+  name: user-data-cleanup
+spec:
+  database: my-database
+  name: user-data-cleanup
+  schema:
+    postgres:
+      - staticUpdate:
+          table: users
+          set:
+            status: "active"
+            updated_at: "CURRENT_TIMESTAMP"
+          where: "status IS NULL"
+      - calculatedUpdate:
+          table: users
+          calculations:
+            - column: full_name
+              expression: "CONCAT(first_name, ' ', last_name)"
+```

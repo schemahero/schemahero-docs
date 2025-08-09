@@ -1,29 +1,160 @@
 ---
 title: Data Migrations
-description: Comparing Data and Schema Migrations 
+description: Understanding and using data migrations with SchemaHero
 ---
 
-There are two types of migrations that have to be managed and deployed:
+SchemaHero supports both schema migrations and data migrations, allowing you to manage complete database changes in a unified workflow.
 
-1. Schema Migrations
-2. Data Migrations
+## Schema vs Data Migrations
 
-## Schema Migrations
+### Schema Migrations
+Schema migrations alter the structure of the database - creating tables, changing columns, adding indexes, etc. These are the core focus of SchemaHero and are always expressed declaratively.
 
-A Schema migration can be expressed in SQL syntax, and alters the structure of the database. 
-These often are new tables, changing columns, altering indexed data and more. 
-These are commonly written and can always be expressed in an idempotent syntax. Different database engines enforce various rules on how these can be applied. 
-For example, MySQL will not allow a schema migration to be executed in a transaction, while PostgreSQL will. 
-Schema management is often unique to the database.
-SchemaHero is focused on handling schema migrations.
+### Data Migrations  
+Data migrations modify the actual data in your database - updating column values, calculating derived fields, transforming data formats, etc. SchemaHero now supports imperative data migrations alongside schema changes.
 
-## Data Migrations
+## Data Migration Types
 
-Less frequently, a developer must migrate some data to a new format in a database. 
-This can involve calculating a new column and writing it, or creating new values in code and inserting them. 
-Many traditional database management tools blend the tasks of schema migrations and data migrations into one tool.
+SchemaHero supports four types of data migration operations:
 
-*SchemaHero is currently focused on schema migrations, with plans to support data migrations in the future.*
+### 1. Static Updates
+Update columns with static values:
 
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: DataMigration
+metadata:
+  name: set-defaults
+spec:
+  database: mydb
+  name: set-defaults
+  schema:
+    postgres:
+      - staticUpdate:
+          table: users
+          set:
+            status: "active"
+            region: "us-east-1"
+          where: "status IS NULL"
+```
 
-When looking at adding a data migration to a project, there is often a way to achieve the same result by implementing the update differently.
+### 2. Calculated Updates
+Update columns using calculated expressions from other columns:
+
+```yaml
+- calculatedUpdate:
+    table: users
+    calculations:
+      - column: full_name
+        expression: "CONCAT(first_name, ' ', last_name)"
+      - column: display_email
+        expression: "LOWER(email)"
+    where: "full_name IS NULL"
+```
+
+### 3. Data Transformations
+Perform common data transformations like timezone conversions, type casting, and string operations:
+
+```yaml
+- transformUpdate:
+    table: events
+    transformations:
+      - column: created_at
+        transformType: timezone_convert
+        fromValue: UTC
+        toValue: America/New_York
+      - column: email
+        transformType: format_change
+        toValue: lowercase
+    where: "created_at IS NOT NULL"
+```
+
+### 4. Custom SQL
+Execute arbitrary SQL for complex business logic:
+
+```yaml
+- customSQL:
+    sql: |
+      UPDATE orders 
+      SET total_with_tax = subtotal * 1.08,
+          status = 'processed'
+      WHERE status = 'pending'
+    validate: true
+```
+
+## Execution Control
+
+### Execution Order
+Control when data migrations run relative to schema changes:
+
+```yaml
+spec:
+  executionOrder: after_schema  # or "before_schema"
+```
+
+### Idempotency
+Mark migrations as safe to re-run:
+
+```yaml
+spec:
+  idempotent: true  # Can be executed multiple times safely
+```
+
+### Dependencies
+Specify migration dependencies:
+
+```yaml
+spec:
+  requires:
+    - table-schema-migration
+    - initial-data-setup
+```
+
+## CLI Usage
+
+Plan and apply data migrations using the SchemaHero CLI:
+
+```bash
+# Plan data migration
+kubectl-schemahero plan \
+  --driver=postgres \
+  --uri="postgres://user:pass@localhost:5432/db" \
+  --spec-file=data-migration.yaml \
+  --spec-type=datamigration
+
+# Apply the generated SQL
+kubectl-schemahero apply \
+  --driver=postgres \
+  --uri="postgres://user:pass@localhost:5432/db" \
+  --ddl=migration.sql
+```
+
+## Database Support
+
+- ✅ **PostgreSQL** - Full support for all data migration types
+- ✅ **CockroachDB** - Uses PostgreSQL implementation (full support)
+- ❌ **MySQL** - Not yet implemented
+- ❌ **SQLite** - Not yet implemented  
+- ❌ **TimescaleDB** - Not yet implemented
+- ❌ **Cassandra** - Not yet implemented
+
+*Note: While SchemaHero supports schema migrations for all these databases, data migrations are currently only implemented for PostgreSQL and CockroachDB.*
+
+## Best Practices
+
+1. **Test First** - Always test data migrations on a copy of production data
+2. **Use Transactions** - Wrap complex migrations in transactions when possible
+3. **Idempotent Design** - Design migrations to be safely re-runnable
+4. **Backup Data** - Always backup your data before running migrations
+5. **Incremental Approach** - Break complex migrations into smaller steps
+
+## Common Use Cases
+
+- Setting default values for new columns
+- Calculating derived fields from existing data  
+- Normalizing data formats (email case, phone numbers)
+- Converting between data types or units
+- Migrating data between columns or tables
+- Applying business logic updates to existing records
+
+Data migrations complement SchemaHero's schema management capabilities, providing a complete solution for database evolution.

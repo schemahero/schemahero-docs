@@ -110,6 +110,7 @@ nav:
     - v1alpha4:
       - 'Database': 'reference/v1alpha4/database.md'
       - 'Table': 'reference/v1alpha4/table.md'
+      - 'DataMigration': 'reference/v1alpha4/datamigration.md'
       - 'Migration': 'reference/v1alpha4/migration.md'
   - CLI Reference:
     - 'install': 'cli/kubectl/install.md'
