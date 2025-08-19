@@ -7,7 +7,7 @@ SchemaHero is written in Go and all of the source code is in a single repository
 
 To get started, we recommend:
 
-1. Install Go (1.16 or later)
+1. Install Go (1.16 to 1.24)
 1. Fork and clone the [SchemaHero repo](https://github.com/schemahero/schemahero)
 1. Run `make` to generate all binaries and `make test` to execute the unite tests
 1. Run `make -C integration run` to execute the integration tests
