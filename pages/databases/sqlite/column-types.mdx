@@ -1,0 +1,143 @@
+---
+title: Column Types
+description: SQLite Column Types in SchemaHero
+---
+
+# SQLite Column Types
+
+SQLite uses a dynamic type system called "type affinity" rather than strict column types. SchemaHero passes your type declarations directly to SQLite.
+
+## Type Affinity
+
+SQLite determines storage based on type affinity rules:
+
+| Affinity | Type Names | Storage |
+|----------|------------|---------|
+| INTEGER | `int`, `integer`, `tinyint`, `smallint`, `mediumint`, `bigint`, `int2`, `int8` | Signed integer (1, 2, 3, 4, 6, or 8 bytes) |
+| TEXT | `text`, `char`, `varchar`, `clob`, `character`, `nchar`, `nvarchar` | UTF-8, UTF-16BE, or UTF-16LE string |
+| REAL | `real`, `float`, `double`, `double precision` | 8-byte IEEE floating point |
+| BLOB | `blob` | Raw binary data |
+| NUMERIC | `numeric`, `decimal`, `boolean`, `date`, `datetime` | Integer or real depending on value |
+
+## Common Types
+
+```yaml
+columns:
+  # Integer types
+  - name: id
+    type: integer
+  - name: count
+    type: int
+  - name: small_num
+    type: smallint
+  - name: big_num
+    type: bigint
+
+  # Text types
+  - name: name
+    type: text
+  - name: code
+    type: varchar(10)
+  - name: description
+    type: text
+
+  # Real types
+  - name: price
+    type: real
+  - name: rate
+    type: double
+
+  # Binary
+  - name: data
+    type: blob
+
+  # Numeric affinity
+  - name: amount
+    type: numeric
+  - name: active
+    type: boolean
+```
+
+## STRICT Mode
+
+SQLite 3.37+ supports STRICT tables that enforce types:
+
+```yaml
+schema:
+  sqlite:
+    strict: true
+    columns:
+      - name: id
+        type: integer    # Must be one of: int, integer, real, text, blob, any
+      - name: name
+        type: text
+```
+
+In STRICT mode, only these types are allowed:
+- `int` or `integer`
+- `real`
+- `text`
+- `blob`
+- `any`
+
+## Type Flexibility
+
+Since SQLite is dynamically typed, SchemaHero accepts any type name:
+
+```yaml
+columns:
+  - name: created_at
+    type: datetime        # Stored as TEXT, REAL, or INTEGER
+  - name: price
+    type: decimal(10,2)   # Stored as NUMERIC affinity
+  - name: flag
+    type: boolean         # Stored as NUMERIC (0 or 1)
+```
+
+## Auto-Increment
+
+Auto-increment only works with `INTEGER PRIMARY KEY`:
+
+```yaml
+schema:
+  sqlite:
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: integer
+        attributes:
+          autoIncrement: true
+```
+
+## Examples
+
+```yaml
+columns:
+  - name: id
+    type: integer
+    attributes:
+      autoIncrement: true
+  - name: email
+    type: text
+    constraints:
+      notNull: true
+  - name: name
+    type: varchar(100)
+  - name: active
+    type: boolean
+    default: "1"
+  - name: price
+    type: real
+  - name: data
+    type: blob
+  - name: created_at
+    type: text
+    default: current_timestamp
+```
+
+## Notes
+
+- SQLite does not enforce type constraints by default
+- Any value can be stored in any column (except `INTEGER PRIMARY KEY`)
+- Use STRICT mode for type enforcement
+- Date/time values are typically stored as TEXT (ISO8601), REAL (Julian day), or INTEGER (Unix time)

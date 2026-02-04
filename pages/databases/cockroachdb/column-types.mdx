@@ -1,0 +1,106 @@
+---
+title: Column Types
+description: Supported CockroachDB Column Types in SchemaHero
+---
+
+# CockroachDB Column Types
+
+CockroachDB is PostgreSQL-compatible and supports most PostgreSQL column types. SchemaHero uses the same type handling as PostgreSQL.
+
+## Simple Types
+
+| Type | Aliases | Description |
+|------|---------|-------------|
+| `bigint` | `int8`, `int64` | 8-byte signed integer |
+| `int` | `int4`, `int64`, `integer` | 8-byte signed integer (default) |
+| `smallint` | `int2` | 2-byte signed integer |
+| `boolean` | `bool` | True/false value |
+| `bytea` | `bytes` | Binary data |
+| `date` | | Calendar date |
+| `float` | `float8`, `double precision` | 8-byte floating point |
+| `real` | `float4` | 4-byte floating point |
+| `inet` | | IPv4 or IPv6 address |
+| `int` | `integer` | 8-byte integer (CockroachDB default) |
+| `interval` | | Time interval |
+| `json` | | JSON data |
+| `jsonb` | | Binary JSON data |
+| `serial` | | Auto-incrementing integer |
+| `string` | `text`, `varchar` | Variable-length string |
+| `time` | | Time of day |
+| `timestamp` | | Date and time |
+| `timestamptz` | `timestamp with time zone` | Timestamp with timezone |
+| `uuid` | | Universally unique identifier |
+
+## Parameterized Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `bit(n)` | `bit(8)` | Fixed-length bit string |
+| `varbit(n)` | `varbit(64)` | Variable-length bit string |
+| `char(n)` | `char(10)` | Fixed-length string |
+| `varchar(n)` | `varchar(255)` | Variable-length string |
+| `decimal(p,s)` | `decimal(10,2)` | Exact numeric |
+| `numeric(p,s)` | `numeric(10,2)` | Exact numeric (alias) |
+| `string(n)` | `string(100)` | Variable-length string with limit |
+
+## Array Types
+
+Arrays are supported:
+
+```yaml
+columns:
+  - name: tags
+    type: text[]
+  - name: scores
+    type: int[]
+```
+
+## CockroachDB-Specific Types
+
+| Type | Description |
+|------|-------------|
+| `serial` | Auto-incrementing unique ID |
+| `string` | Preferred over `varchar` in CockroachDB |
+
+## Type Differences from PostgreSQL
+
+| PostgreSQL | CockroachDB |
+|------------|-------------|
+| `int` = 4 bytes | `int` = 8 bytes |
+| `serial` = 4 bytes | `serial` = 8 bytes |
+| Many geometric types | Limited geometric support |
+
+## Examples
+
+```yaml
+columns:
+  - name: id
+    type: uuid
+    default: gen_random_uuid()
+  - name: email
+    type: string
+    constraints:
+      notNull: true
+  - name: name
+    type: varchar(100)
+  - name: balance
+    type: decimal(10,2)
+  - name: active
+    type: boolean
+  - name: metadata
+    type: jsonb
+  - name: tags
+    type: text[]
+  - name: created_at
+    type: timestamptz
+    default: now()
+  - name: ip_address
+    type: inet
+```
+
+## Notes
+
+- CockroachDB defaults `INT` to 8 bytes (unlike PostgreSQL's 4 bytes)
+- Use `INT4` explicitly if you need 4-byte integers
+- `STRING` is the preferred text type in CockroachDB
+- `gen_random_uuid()` is available by default

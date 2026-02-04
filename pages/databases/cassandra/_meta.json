@@ -1,6 +1,7 @@
 {
   "connecting": "Connecting",
   "tables": "Tables",
+  "column-types": "Column Types",
   "keyspaces": "Keyspaces",
   "custom-types": "Custom Types",
   "table-properties": "Table Properties",

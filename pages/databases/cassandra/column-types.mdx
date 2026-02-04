@@ -1,0 +1,161 @@
+---
+title: Column Types
+description: Cassandra Column Types in SchemaHero
+---
+
+# Cassandra Column Types
+
+SchemaHero supports Cassandra's native data types. If a type is missing, [open an issue](https://github.com/schemahero/schemahero/issues/new).
+
+## Numeric Types
+
+| Type | Description |
+|------|-------------|
+| `tinyint` | 1-byte signed integer |
+| `smallint` | 2-byte signed integer |
+| `int` | 4-byte signed integer |
+| `bigint` | 8-byte signed integer |
+| `varint` | Arbitrary-precision integer |
+| `float` | 4-byte floating point |
+| `double` | 8-byte floating point |
+| `decimal` | Variable-precision decimal |
+| `counter` | Distributed counter |
+
+## Text Types
+
+| Type | Aliases | Description |
+|------|---------|-------------|
+| `text` | `varchar` | UTF-8 encoded string |
+| `ascii` | | ASCII string |
+
+**Note:** SchemaHero normalizes `varchar` to `text`.
+
+## UUID and Time Types
+
+| Type | Description |
+|------|-------------|
+| `uuid` | UUID (any version) |
+| `timeuuid` | Type 1 UUID (time-based) |
+| `timestamp` | Date and time (millisecond precision) |
+| `date` | Date without time |
+| `time` | Time without date (nanosecond precision) |
+| `duration` | Duration (months, days, nanoseconds) |
+
+## Binary and Boolean
+
+| Type | Description |
+|------|-------------|
+| `blob` | Arbitrary bytes |
+| `boolean` | True/false |
+
+## Network Types
+
+| Type | Description |
+|------|-------------|
+| `inet` | IP address (IPv4 or IPv6) |
+
+## Collection Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `list<type>` | `list<text>` | Ordered collection |
+| `set<type>` | `set<int>` | Unordered unique collection |
+| `map<k,v>` | `map<text, text>` | Key-value pairs |
+
+## Frozen Collections
+
+Use `frozen<>` for nested collections or UDTs:
+
+```yaml
+columns:
+  - name: addresses
+    type: frozen<list<frozen<address>>>
+  - name: metadata
+    type: frozen<map<text, text>>
+```
+
+## Tuple Type
+
+```yaml
+columns:
+  - name: coordinates
+    type: tuple<double, double>
+  - name: full_name
+    type: tuple<text, text, text>
+```
+
+## User-Defined Types (UDT)
+
+Reference UDTs by name after creating them:
+
+```yaml
+columns:
+  - name: address
+    type: frozen<address>
+  - name: contact
+    type: frozen<contact_info>
+```
+
+## Static Columns
+
+Mark columns as static for wide-row patterns:
+
+```yaml
+columns:
+  - name: user_name
+    type: text
+    isStatic: true
+```
+
+## Counter Columns
+
+Counter tables have special rules:
+- Primary key columns only
+- All non-primary-key columns must be `counter`
+- Cannot mix counter and non-counter columns
+
+```yaml
+columns:
+  - name: page_id
+    type: uuid
+  - name: view_count
+    type: counter
+  - name: click_count
+    type: counter
+```
+
+## Examples
+
+```yaml
+columns:
+  # Primary key columns
+  - name: tenant_id
+    type: uuid
+  - name: user_id
+    type: timeuuid
+  
+  # Regular columns
+  - name: email
+    type: text
+  - name: age
+    type: int
+  - name: balance
+    type: decimal
+  - name: active
+    type: boolean
+  - name: last_login
+    type: timestamp
+  
+  # Collections
+  - name: tags
+    type: set<text>
+  - name: scores
+    type: list<int>
+  - name: properties
+    type: map<text, text>
+  
+  # Static column
+  - name: account_name
+    type: text
+    isStatic: true
+```
