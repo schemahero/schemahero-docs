@@ -1,0 +1,239 @@
+---
+title: Tables
+description: TimescaleDB table definitions in SchemaHero
+---
+
+# TimescaleDB Tables
+
+TimescaleDB is built on PostgreSQL and supports all PostgreSQL features. SchemaHero supports both regular tables and TimescaleDB hypertables.
+
+## Basic Structure
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    timescaledb:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+```
+
+## Columns
+
+```yaml
+columns:
+  - name: id
+    type: uuid
+    default: gen_random_uuid()
+    constraints:
+      notNull: true
+    attributes:
+      autoIncrement: true       # For serial types
+```
+
+### Column Types
+
+TimescaleDB supports all PostgreSQL types:
+
+| Category | Types |
+|----------|-------|
+| Integer | `smallint`, `integer`, `bigint`, `serial`, `bigserial` |
+| Numeric | `numeric(p,s)`, `decimal(p,s)`, `real`, `double precision` |
+| String | `char(n)`, `varchar(n)`, `text` |
+| Boolean | `boolean` |
+| Date/Time | `date`, `time`, `timestamp`, `timestamptz`, `interval` |
+| UUID | `uuid` |
+| JSON | `json`, `jsonb` |
+| Binary | `bytea` |
+| Arrays | `text[]`, `integer[]`, etc. |
+
+### Default Values
+
+```yaml
+# String literal (note nested quotes)
+- name: status
+  type: varchar(20)
+  default: "'pending'"
+
+# Number
+- name: count
+  type: integer
+  default: "0"
+
+# Boolean
+- name: active
+  type: boolean
+  default: "true"
+
+# Functions
+- name: id
+  type: uuid
+  default: gen_random_uuid()
+
+- name: created_at
+  type: timestamptz
+  default: now()
+```
+
+## Primary Keys
+
+```yaml
+schema:
+  timescaledb:
+    primaryKey: [id]              # Single column
+    primaryKey: [time, device_id] # Composite (common for time-series)
+```
+
+## Indexes
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email
+    isUnique: true
+    type: btree                   # btree (default), hash, gin, gist
+    
+  - columns: [device_id, time]
+    name: idx_metrics_device_time
+    
+  - columns: [metadata]
+    type: gin                     # GIN index for JSONB
+```
+
+### Index Types
+
+| Type | Use Case |
+|------|----------|
+| `btree` | Default, general purpose |
+| `hash` | Equality comparisons only |
+| `gin` | Full-text search, JSONB, arrays |
+| `gist` | Geometric data, full-text search |
+
+## Foreign Keys
+
+```yaml
+foreignKeys:
+  - columns: [device_id]
+    references:
+      table: devices
+      columns: [id]
+    onDelete: CASCADE
+    onUpdate: NO ACTION
+    name: fk_metrics_device
+```
+
+## Triggers
+
+```yaml
+triggers:
+  - name: update_timestamp
+    events: [UPDATE]
+    timing: BEFORE
+    forEach: ROW
+    execute:
+      type: Function
+      name: update_modified_column
+```
+
+## Hypertables
+
+See [Hypertables](/databases/timescale/hypertables) for TimescaleDB-specific time-series table features including:
+
+- Automatic time-based partitioning
+- Compression policies
+- Retention policies
+- Continuous aggregates
+
+## Complete Example
+
+### Regular Table
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: devices
+spec:
+  database: myapp
+  name: devices
+  schema:
+    timescaledb:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: name
+          type: varchar(255)
+          constraints:
+            notNull: true
+        - name: location
+          type: text
+        - name: metadata
+          type: jsonb
+          default: "'{}'::jsonb"
+        - name: created_at
+          type: timestamptz
+          default: now()
+      indexes:
+        - columns: [name]
+          name: idx_devices_name
+          isUnique: true
+```
+
+### Time-Series Table (for Hypertable)
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: metrics
+spec:
+  database: myapp
+  name: metrics
+  schema:
+    timescaledb:
+      primaryKey: [time, device_id]
+      columns:
+        - name: time
+          type: timestamptz
+          constraints:
+            notNull: true
+        - name: device_id
+          type: uuid
+          constraints:
+            notNull: true
+        - name: temperature
+          type: double precision
+        - name: humidity
+          type: double precision
+        - name: metadata
+          type: jsonb
+      indexes:
+        - columns: [device_id, time]
+          name: idx_metrics_device_time
+      foreignKeys:
+        - columns: [device_id]
+          references:
+            table: devices
+            columns: [id]
+          onDelete: CASCADE
+      isHypertable: true
+      hypertable:
+        timeColumnName: time
+        chunkTimeInterval: 1 day
+```
+
+See [Hypertables](/databases/timescale/hypertables) for the full hypertable configuration reference.

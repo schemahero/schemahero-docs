@@ -1,0 +1,183 @@
+---
+title: Kubernetes Operator
+description: Run SchemaHero as a Kubernetes operator
+---
+
+# Kubernetes Operator
+
+SchemaHero can run as a Kubernetes operator, watching for Table custom resources and managing migrations automatically.
+
+**When to use the operator:**
+- You want migration approval workflows within Kubernetes
+- Your team already manages everything via kubectl/GitOps
+- You want automatic drift detection
+
+**When to use the CLI instead:**
+- CI/CD pipelines (GitHub Actions, GitLab CI, etc.)
+- Local development
+- Non-Kubernetes environments
+- You want explicit control over when migrations run
+
+## Installing the Operator
+
+```bash
+kubectl schemahero install
+```
+
+This installs:
+- SchemaHero CRDs (Database, Table, Migration)
+- The schemahero-manager deployment
+- RBAC resources
+
+Verify:
+```bash
+kubectl get pods -n schemahero-system
+```
+
+## Creating a Database Connection
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: my-database
+  namespace: default
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: uri
+```
+
+The secret:
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+type: Opaque
+stringData:
+  uri: postgres://user:password@host:5432/dbname?sslmode=require
+```
+
+## Creating Tables
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+  namespace: default
+spec:
+  database: my-database
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+```
+
+Apply it:
+```bash
+kubectl apply -f users-table.yaml
+```
+
+## Migration Workflow
+
+When you create or update a Table, SchemaHero:
+
+1. Compares desired state to actual database
+2. Creates a Migration resource with the planned DDL
+3. Waits for approval (unless `immediateDeploy` is set)
+
+### View Pending Migrations
+
+```bash
+kubectl schemahero get migrations
+```
+
+Output:
+```
+NAMESPACE   NAME                  DATABASE      TABLE   PHASE
+default     users-abc123          my-database   users   Planned
+```
+
+### Review a Migration
+
+```bash
+kubectl schemahero describe migration users-abc123
+```
+
+Shows the SQL that will be executed.
+
+### Approve a Migration
+
+```bash
+kubectl schemahero approve migration users-abc123
+```
+
+The migration executes and the table is updated.
+
+### Reject a Migration
+
+```bash
+kubectl schemahero reject migration users-abc123
+```
+
+The migration is discarded. Update your Table spec and a new migration will be planned.
+
+## Immediate Deploy
+
+Skip the approval step for dev/staging environments:
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: my-database
+spec:
+  immediateDeploy: true
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: uri
+```
+
+With `immediateDeploy: true`, migrations apply automatically when Tables change.
+
+## GitOps Integration
+
+Store your Table manifests in git. Use Argo CD or Flux to sync them:
+
+```
+k8s/
+├── databases/
+│   └── my-database.yaml
+└── tables/
+    ├── users.yaml
+    ├── teams.yaml
+    └── posts.yaml
+```
+
+When you merge a PR that modifies a table, your GitOps tool applies it, SchemaHero plans the migration, and (if `immediateDeploy` is set) executes it.
+
+## Uninstalling
+
+```bash
+kubectl schemahero uninstall
+```
+
+This removes the operator but leaves your database schema intact.

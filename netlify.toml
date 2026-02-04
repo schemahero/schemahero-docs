@@ -1,4 +1,16 @@
 [build]
-  publish = "site"
-  command = "pip install -r requirements.txt && mkdocs build"
-  environment = { PYTHON_VERSION = "3.12" }
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/docs"
+  to = "/docs/index"
+  status = 301
+
+[[redirects]]
+  from = "/learn"
+  to = "/learn/index"
+  status = 301

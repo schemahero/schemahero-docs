@@ -1,0 +1,143 @@
+---
+title: Tables
+description: RQLite table definitions in SchemaHero
+---
+
+# RQLite Tables
+
+RQLite is a distributed database built on SQLite. SchemaHero supports RQLite through the `rqlite` schema type, which uses SQLite syntax.
+
+## Basic Structure
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    rqlite:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: integer
+          attributes:
+            autoIncrement: true
+        - name: email
+          type: text
+          constraints:
+            notNull: true
+```
+
+## Columns
+
+RQLite uses SQLite's type affinity system:
+
+```yaml
+columns:
+  - name: id
+    type: integer
+    default: null
+    constraints:
+      notNull: true
+    attributes:
+      autoIncrement: true
+```
+
+### Type Affinity
+
+| Affinity | Type Names |
+|----------|------------|
+| INTEGER | `int`, `integer`, `tinyint`, `smallint`, `bigint` |
+| TEXT | `text`, `char`, `varchar`, `clob` |
+| REAL | `real`, `float`, `double` |
+| BLOB | `blob` |
+| NUMERIC | `numeric`, `decimal`, `boolean`, `date`, `datetime` |
+
+## Primary Keys
+
+```yaml
+schema:
+  rqlite:
+    primaryKey: [id]
+    # or composite:
+    primaryKey: [tenant_id, id]
+```
+
+## Indexes
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email
+    isUnique: true
+```
+
+## Foreign Keys
+
+```yaml
+foreignKeys:
+  - columns: [team_id]
+    references:
+      table: teams
+      columns: [id]
+    onDelete: CASCADE
+```
+
+**Note:** Foreign key enforcement depends on SQLite pragma settings.
+
+## Complete Example
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    rqlite:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: integer
+          attributes:
+            autoIncrement: true
+        - name: email
+          type: text
+          constraints:
+            notNull: true
+        - name: name
+          type: text
+        - name: team_id
+          type: integer
+        - name: active
+          type: integer
+          default: "1"
+        - name: created_at
+          type: text
+          default: current_timestamp
+      indexes:
+        - columns: [email]
+          name: idx_users_email
+          isUnique: true
+        - columns: [team_id]
+          name: idx_users_team
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+          onDelete: SET NULL
+```
+
+## RQLite-Specific Notes
+
+- Uses SQLite syntax and type system
+- Distributed and replicated automatically
+- Supports leader-follower architecture
+- Queries are executed on the leader node
+- Read consistency levels available via API

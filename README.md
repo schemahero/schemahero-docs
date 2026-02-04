@@ -1,14 +1,41 @@
-# SchemaHero Docs
+# SchemaHero Documentation
 
-This is the source for [https://schemahero.io](https://github.com/schemahero/schemahero).
-This is a mkdocs site.
+Modern documentation site for [SchemaHero](https://github.com/schemahero/schemahero), built with [Nextra](https://nextra.site/).
 
 ## Development
 
-To to run the docs locally, you need to have `python3` w/ `pip3` installed as prerequisite.
+```bash
+# Install dependencies
+npm install
 
-1. Create a virtual environment: `python3 -m venv venv`
-1. Activate the virtual environment: `source venv/bin/activate`
-1. Install the dependencies: `pip3 install -r requirements.txt`
-1. Build the docs: `mkdocs build`
-1. Run the development server: `mkdocs serve`
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Deployment
+
+This site exports to static HTML and can be deployed to any static hosting provider (Netlify, Vercel, GitHub Pages, etc.).
+
+```bash
+npm run build
+# Output is in the `out/` directory
+```
+
+## Structure
+
+- `pages/` - MDX documentation pages (file-based routing)
+- `public/` - Static assets (images, favicon, etc.)
+- `theme.config.tsx` - Nextra theme configuration
+- `next.config.mjs` - Next.js configuration
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.

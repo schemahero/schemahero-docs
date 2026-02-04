@@ -1,0 +1,9 @@
+{
+  "database-connections": "Database Connections",
+  "organizing-schemas": "Organizing Schemas",
+  "seed-data": "Seed Data",
+  "testing": "Testing Schemas",
+  "policies": "Migration Policies",
+  "ci-cd": "CI/CD Integration",
+  "kubernetes-operator": "Kubernetes Operator"
+}

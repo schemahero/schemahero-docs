@@ -1,0 +1,168 @@
+---
+title: Tables
+description: CockroachDB table definitions in SchemaHero
+---
+
+# CockroachDB Tables
+
+CockroachDB uses PostgreSQL-compatible syntax. SchemaHero supports CockroachDB through the `cockroachdb` schema type.
+
+## Basic Structure
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    cockroachdb:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+```
+
+## Columns
+
+```yaml
+columns:
+  - name: id
+    type: uuid
+    default: gen_random_uuid()
+    constraints:
+      notNull: true
+```
+
+### Column Types
+
+CockroachDB supports most PostgreSQL types:
+
+| Category | Types |
+|----------|-------|
+| Integer | `int`, `int2`, `int4`, `int8`, `serial` |
+| Numeric | `decimal(p,s)`, `float`, `real` |
+| String | `char(n)`, `varchar(n)`, `text`, `string` |
+| Boolean | `bool`, `boolean` |
+| Date/Time | `date`, `time`, `timestamp`, `timestamptz`, `interval` |
+| UUID | `uuid` |
+| JSON | `json`, `jsonb` |
+| Binary | `bytes`, `bytea` |
+| Arrays | `text[]`, `int[]`, etc. |
+
+### Default Values
+
+```yaml
+# UUID generation
+- name: id
+  type: uuid
+  default: gen_random_uuid()
+
+# Timestamp
+- name: created_at
+  type: timestamptz
+  default: now()
+
+# String literal
+- name: status
+  type: varchar(20)
+  default: "'pending'"
+```
+
+## Primary Keys
+
+```yaml
+schema:
+  cockroachdb:
+    primaryKey: [id]
+    # or composite:
+    primaryKey: [region, id]
+```
+
+## Indexes
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email
+    isUnique: true
+    
+  - columns: [last_name, first_name]
+    name: idx_users_name
+    
+  - columns: [metadata]
+    name: idx_users_metadata
+    type: gin                   # Inverted index for JSONB
+```
+
+## Foreign Keys
+
+```yaml
+foreignKeys:
+  - columns: [team_id]
+    references:
+      table: teams
+      columns: [id]
+    onDelete: CASCADE
+    onUpdate: NO ACTION
+```
+
+## Complete Example
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    cockroachdb:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+        - name: name
+          type: varchar(100)
+        - name: team_id
+          type: uuid
+        - name: metadata
+          type: jsonb
+          default: "'{}'::jsonb"
+        - name: created_at
+          type: timestamptz
+          default: now()
+      indexes:
+        - columns: [email]
+          name: idx_users_email
+          isUnique: true
+        - columns: [team_id]
+          name: idx_users_team
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+          onDelete: SET NULL
+```
+
+## CockroachDB-Specific Notes
+
+- Uses the PostgreSQL wire protocol
+- Supports most PostgreSQL types and syntax
+- `gen_random_uuid()` is available by default
+- Distributed transactions are automatic
+- Consider primary key design for data distribution

@@ -1,0 +1,75 @@
+---
+title: Connecting
+description: Connecting SchemaHero to RQLite
+---
+
+# Connecting to RQLite
+
+RQLite is a distributed relational database built on SQLite. SchemaHero supports RQLite through its native RQLite plugin.
+
+## Connection URI
+
+Connect to RQLite using an HTTP/HTTPS URI:
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: my-database
+spec:
+  connection:
+    rqlite:
+      uri:
+        value: http://rqlite-host:4001
+```
+
+### Using a Secret
+
+For production deployments, store the connection URI in a Kubernetes Secret:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rqlite-connection
+type: Opaque
+stringData:
+  uri: http://rqlite-host:4001
+---
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: my-database
+spec:
+  connection:
+    rqlite:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: rqlite-connection
+            key: uri
+```
+
+## CLI Usage
+
+When using the SchemaHero CLI directly:
+
+```bash
+schemahero plan --driver rqlite --uri "http://localhost:4001" --spec-file schema.yaml
+```
+
+## Authentication
+
+If your RQLite cluster requires authentication, include credentials in the URI:
+
+```
+http://username:password@rqlite-host:4001
+```
+
+## TLS
+
+For HTTPS connections, use the `https://` scheme:
+
+```
+https://rqlite-host:4001
+```

@@ -1,0 +1,120 @@
+---
+title: Column Types
+description: Supported MySQL Column Types in SchemaHero
+---
+
+# MySQL Column Types
+
+SchemaHero supports the following MySQL column types. If a type is missing, [open an issue](https://github.com/schemahero/schemahero/issues/new).
+
+## Simple Types
+
+These types are used without parameters:
+
+| Type | Description |
+|------|-------------|
+| `date` | Date (YYYY-MM-DD) |
+| `datetime` | Date and time |
+| `timestamp` | Timestamp |
+| `tinyblob` | Tiny binary data (255 bytes) |
+| `tinytext` | Tiny text (255 bytes) |
+| `blob` | Binary data (64KB) |
+| `text` | Text (64KB) |
+| `mediumblob` | Medium binary data (16MB) |
+| `mediumtext` | Medium text (16MB) |
+| `longblob` | Long binary data (4GB) |
+| `longtext` | Long text (4GB) |
+| `json` | JSON data |
+
+## Integer Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `tinyint` | `tinyint`, `tinyint(1)` | 1-byte integer (-128 to 127) |
+| `smallint` | `smallint`, `smallint(5)` | 2-byte integer |
+| `mediumint` | `mediumint`, `mediumint(9)` | 3-byte integer |
+| `int` | `int`, `int(11)` | 4-byte integer |
+| `bigint` | `bigint`, `bigint(20)` | 8-byte integer |
+| `bit` | `bit(1)`, `bit(64)` | Bit field |
+
+## Numeric Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `decimal(p,s)` | `decimal(10,2)` | Exact numeric |
+| `decimal(p)` | `decimal(10)` | Exact numeric (scale 0) |
+| `float` | `float`, `float(p,s)` | 4-byte floating point |
+| `double` | `double`, `double(p,s)` | 8-byte floating point |
+
+## String Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `char(n)` | `char(10)` | Fixed-length string |
+| `varchar(n)` | `varchar(255)` | Variable-length string |
+| `binary(n)` | `binary(16)` | Fixed-length binary |
+| `varbinary(n)` | `varbinary(255)` | Variable-length binary |
+
+## Date/Time Types
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `date` | `date` | Date only |
+| `time` | `time` | Time only |
+| `datetime` | `datetime`, `datetime(6)` | Date and time |
+| `timestamp` | `timestamp`, `timestamp(6)` | Timestamp (with precision 0-6) |
+| `year` | `year` | Year |
+
+## Type Aliases
+
+SchemaHero automatically normalizes these aliases:
+
+| You Write | SchemaHero Uses |
+|-----------|-----------------|
+| `bool`, `boolean` | `tinyint(1)` |
+| `integer` | `int` |
+| `dec` | `decimal` |
+| `double precision` | `double` |
+
+## Character Set and Collation
+
+MySQL columns can specify charset and collation:
+
+```yaml
+columns:
+  - name: name
+    type: varchar(255)
+    charset: utf8mb4
+    collation: utf8mb4_unicode_ci
+```
+
+## Examples
+
+```yaml
+columns:
+  - name: id
+    type: int
+    attributes:
+      autoIncrement: true
+  - name: email
+    type: varchar(255)
+  - name: price
+    type: decimal(10,2)
+  - name: active
+    type: boolean
+  - name: metadata
+    type: json
+  - name: content
+    type: longtext
+  - name: created_at
+    type: timestamp
+    default: current_timestamp
+  - name: data
+    type: blob
+  - name: bits
+    type: bit(8)
+```
+
+## Display Width (Deprecated)
+
+MySQL 8.0.17+ deprecated display width for integer types. While SchemaHero still accepts `int(11)`, the width is ignored by modern MySQL. Use `int` instead.

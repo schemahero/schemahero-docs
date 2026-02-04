@@ -1,0 +1,184 @@
+---
+title: Quick Start
+description: Get started with SchemaHero in 5 minutes
+---
+
+# Quick Start
+
+Get SchemaHero running in 5 minutes. No Kubernetes required.
+
+## 1. Install SchemaHero
+
+**macOS (Homebrew):**
+```bash
+brew install schemahero/tap/schemahero
+```
+
+**Linux / macOS (binary):**
+```bash
+curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+sudo mv schemahero /usr/local/bin/
+```
+
+**Verify installation:**
+```bash
+schemahero version
+```
+
+## 2. Start a Database
+
+If you don't have a database running, start one with Docker:
+
+```bash
+docker run -d \
+  --name quickstart-postgres \
+  -e POSTGRES_PASSWORD=password \
+  -e POSTGRES_DB=myapp \
+  -p 5432:5432 \
+  postgres:16
+```
+
+Wait a few seconds for it to start, then verify:
+```bash
+docker logs quickstart-postgres 2>&1 | grep "ready to accept connections"
+```
+
+## 3. Define Your Schema
+
+Create a file called `users.yaml`:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+        - name: created_at
+          type: timestamp
+          default: now()
+```
+
+This declares a `users` table with three columns. SchemaHero will figure out what SQL to run.
+
+## 4. Plan the Migration
+
+Generate the SQL that would be executed:
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://postgres:password@localhost:5432/myapp?sslmode=disable" \
+  --spec-file users.yaml
+```
+
+Output:
+```sql
+create table "users" (
+  "id" uuid default gen_random_uuid(),
+  "email" varchar (255) not null,
+  "created_at" timestamp default now(),
+  primary key ("id")
+);
+```
+
+SchemaHero compared your desired state (`users.yaml`) against the database (empty) and generated a `CREATE TABLE` statement.
+
+## 5. Apply the Migration
+
+Run the migration:
+
+```bash
+schemahero apply \
+  --driver postgres \
+  --uri "postgres://postgres:password@localhost:5432/myapp?sslmode=disable" \
+  --ddl <(schemahero plan \
+    --driver postgres \
+    --uri "postgres://postgres:password@localhost:5432/myapp?sslmode=disable" \
+    --spec-file users.yaml)
+```
+
+Or save the plan first:
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://postgres:password@localhost:5432/myapp?sslmode=disable" \
+  --spec-file users.yaml \
+  --out plan.sql
+
+schemahero apply \
+  --driver postgres \
+  --uri "postgres://postgres:password@localhost:5432/myapp?sslmode=disable" \
+  --ddl plan.sql
+```
+
+## 6. Modify the Schema
+
+Now add a `name` column. Update `users.yaml`:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+        - name: name
+          type: varchar(255)
+        - name: created_at
+          type: timestamp
+          default: now()
+```
+
+Plan again:
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://postgres:password@localhost:5432/myapp?sslmode=disable" \
+  --spec-file users.yaml
+```
+
+Output:
+```sql
+alter table "users" add column "name" varchar (255);
+```
+
+SchemaHero detected the difference and generated an `ALTER TABLE` statement. Apply it the same way.
+
+## 7. Clean Up
+
+```bash
+docker rm -f quickstart-postgres
+```
+
+## Next Steps
+
+- [Core Concepts](/getting-started/concepts) — Understand how SchemaHero works
+- [CI/CD Integration](/guides/ci-cd) — Run SchemaHero in your pipeline
+- [All Column Types](/databases/postgresql/column-types) — PostgreSQL column reference
+- [Multiple Tables](/guides/organizing-schemas) — Organize larger schemas

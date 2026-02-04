@@ -1,0 +1,129 @@
+---
+title: Column Types
+description: Supported PostgreSQL Column Types in SchemaHero
+---
+
+# PostgreSQL Column Types
+
+SchemaHero supports the following PostgreSQL column types. If a type is missing, [open an issue](https://github.com/schemahero/schemahero/issues/new).
+
+## Simple Types
+
+These types are used without parameters:
+
+| Type | Aliases | Description |
+|------|---------|-------------|
+| `bigint` | `int8` | 8-byte signed integer |
+| `bigserial` | `serial8` | Auto-incrementing 8-byte integer |
+| `boolean` | `bool` | True/false value |
+| `box` | | Rectangular box on a plane |
+| `bytea` | | Binary data |
+| `cidr` | | IPv4 or IPv6 network address |
+| `circle` | | Circle on a plane |
+| `citext` | | Case-insensitive text |
+| `date` | | Calendar date |
+| `double precision` | `float8` | 8-byte floating point |
+| `inet` | | IPv4 or IPv6 host address |
+| `integer` | `int`, `int4` | 4-byte signed integer |
+| `json` | | JSON data |
+| `jsonb` | | Binary JSON data (indexable) |
+| `line` | | Infinite line on a plane |
+| `lseg` | | Line segment on a plane |
+| `macaddr` | | MAC address |
+| `money` | | Currency amount |
+| `path` | | Geometric path on a plane |
+| `pg_lsn` | | PostgreSQL Log Sequence Number |
+| `point` | | Geometric point on a plane |
+| `polygon` | | Closed geometric path on a plane |
+| `real` | `float4` | 4-byte floating point |
+| `smallint` | `int2` | 2-byte signed integer |
+| `smallserial` | `serial2` | Auto-incrementing 2-byte integer |
+| `serial` | `serial4` | Auto-incrementing 4-byte integer |
+| `text` | | Variable-length character string |
+| `tsquery` | | Text search query |
+| `tsvector` | | Text search document |
+| `txid_snapshot` | | Transaction ID snapshot |
+| `uuid` | | Universally unique identifier |
+| `xml` | | XML data |
+
+## Parameterized Types
+
+These types accept length, precision, or scale parameters:
+
+| Type | Example | Description |
+|------|---------|-------------|
+| `bit(n)` | `bit(8)` | Fixed-length bit string |
+| `bit varying(n)` | `bit varying(64)`, `varbit(64)` | Variable-length bit string |
+| `character(n)` | `character(10)`, `char(10)` | Fixed-length character string |
+| `character varying(n)` | `character varying(255)`, `varchar(255)` | Variable-length character string |
+| `numeric(p,s)` | `numeric(10,2)`, `decimal(10,2)` | Exact numeric with precision and scale |
+| `numeric(p)` | `numeric(10)` | Exact numeric with precision |
+| `time(p)` | `time(6)` | Time of day with precision |
+| `time with time zone` | `timetz` | Time with timezone |
+| `time(p) with time zone` | `time(6) with time zone` | Time with timezone and precision |
+| `time without time zone` | | Time without timezone (default) |
+| `timestamp(p)` | `timestamp(6)` | Date and time with precision |
+| `timestamp with time zone` | `timestamptz` | Timestamp with timezone |
+| `timestamp(p) with time zone` | `timestamp(6) with time zone` | Timestamp with timezone and precision |
+| `timestamp without time zone` | | Timestamp without timezone (default) |
+| `vector(n)` | `vector(1536)` | pgvector extension for embeddings |
+
+## Array Types
+
+Any type can be made into an array by appending `[]`:
+
+```yaml
+columns:
+  - name: tags
+    type: text[]
+  - name: scores
+    type: integer[]
+  - name: matrix
+    type: double precision[]
+```
+
+## Type Aliases
+
+SchemaHero automatically normalizes these aliases:
+
+| You Write | SchemaHero Uses |
+|-----------|-----------------|
+| `int8` | `bigint` |
+| `serial8` | `bigserial` |
+| `bool` | `boolean` |
+| `float8` | `double precision` |
+| `int`, `int4` | `integer` |
+| `float4` | `real` |
+| `int2` | `smallint` |
+| `serial2` | `smallserial` |
+| `serial4` | `serial` |
+| `varbit` | `bit varying` |
+| `char` | `character` |
+| `varchar` | `character varying` |
+| `decimal` | `numeric` |
+| `timetz` | `time with time zone` |
+| `timestamptz` | `timestamp with time zone` |
+
+## Examples
+
+```yaml
+columns:
+  - name: id
+    type: bigserial
+  - name: uuid
+    type: uuid
+  - name: email
+    type: varchar(255)
+  - name: price
+    type: numeric(10,2)
+  - name: active
+    type: boolean
+  - name: metadata
+    type: jsonb
+  - name: tags
+    type: text[]
+  - name: created_at
+    type: timestamptz
+  - name: embedding
+    type: vector(1536)
+```

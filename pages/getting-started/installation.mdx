@@ -1,0 +1,84 @@
+---
+title: Installation
+description: Install the SchemaHero CLI
+---
+
+# Installation
+
+SchemaHero is distributed as a single binary. Choose your platform:
+
+## macOS
+
+**Homebrew (recommended):**
+```bash
+brew tap schemahero/tap
+brew install schemahero
+```
+
+Or in one command:
+```bash
+brew install schemahero/tap/schemahero
+```
+
+**Binary download:**
+```bash
+curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_darwin_amd64.tar.gz | tar xz
+sudo mv schemahero /usr/local/bin/
+```
+
+For Apple Silicon (M1/M2/M3):
+```bash
+curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_darwin_arm64.tar.gz | tar xz
+sudo mv schemahero /usr/local/bin/
+```
+
+## Linux
+
+**Homebrew (Linuxbrew):**
+```bash
+brew tap schemahero/tap
+brew install schemahero
+```
+
+**amd64:**
+```bash
+curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+sudo mv schemahero /usr/local/bin/
+```
+
+**arm64:**
+```bash
+curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_arm64.tar.gz | tar xz
+sudo mv schemahero /usr/local/bin/
+```
+
+## Windows
+
+Download the latest release from [GitHub Releases](https://github.com/schemahero/schemahero/releases) and add it to your PATH.
+
+## Docker
+
+SchemaHero is also available as a Docker image:
+
+```bash
+docker run --rm schemahero/schemahero:latest version
+```
+
+Useful for CI/CD pipelines where you don't want to install the binary.
+
+## Verify Installation
+
+```bash
+schemahero version
+```
+
+You should see output like:
+```
+SchemaHero 0.24.0
+```
+
+## Kubernetes (Optional)
+
+If you want to use SchemaHero as a Kubernetes operator, see the [Kubernetes Operator Guide](/guides/kubernetes-operator).
+
+The CLI works standalone without Kubernetes. The operator is optional and provides features like migration approval workflows within a cluster.

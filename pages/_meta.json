@@ -1,0 +1,34 @@
+{
+  "index": {
+    "title": "Home",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "raw"
+    }
+  },
+  "getting-started": {
+    "title": "Getting Started",
+    "type": "page"
+  },
+  "guides": {
+    "title": "Guides",
+    "type": "page"
+  },
+  "databases": {
+    "title": "Databases",
+    "type": "page"
+  },
+  "cli": {
+    "title": "CLI Reference",
+    "type": "page"
+  },
+  "community": {
+    "title": "Community",
+    "type": "page"
+  },
+  "changelog": {
+    "title": "Changelog",
+    "type": "page"
+  }
+}

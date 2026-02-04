@@ -1,0 +1,245 @@
+---
+title: Database Connections
+description: Configure database connections for SchemaHero
+---
+
+import { Tabs, Tab } from 'nextra/components'
+
+# Database Connections
+
+SchemaHero needs to connect to your database to plan and apply migrations.
+
+## Connection URI
+
+<Tabs items={['PostgreSQL', 'MySQL', 'CockroachDB', 'SQLite']}>
+  <Tab>
+    ```
+    postgres://user:password@host:5432/database?sslmode=require
+    ```
+    
+    **SSL options:**
+    - `sslmode=disable` — No SSL (local dev only)
+    - `sslmode=require` — Require SSL, don't verify certificate
+    - `sslmode=verify-full` — Require SSL, verify certificate
+    
+    **Example:**
+    ```bash
+    schemahero plan \
+      --driver postgres \
+      --uri "postgres://myuser:mypass@localhost:5432/mydb?sslmode=disable" \
+      --spec-file ./schema/
+    ```
+  </Tab>
+  <Tab>
+    ```
+    user:password@tcp(host:3306)/database
+    ```
+    
+    **With parameters:**
+    ```
+    user:password@tcp(host:3306)/database?tls=true&parseTime=true
+    ```
+    
+    **Example:**
+    ```bash
+    schemahero plan \
+      --driver mysql \
+      --uri "myuser:mypass@tcp(localhost:3306)/mydb" \
+      --spec-file ./schema/
+    ```
+  </Tab>
+  <Tab>
+    ```
+    postgres://user:password@host:26257/database?sslmode=verify-full
+    ```
+    
+    CockroachDB uses the PostgreSQL wire protocol.
+    
+    **Example:**
+    ```bash
+    schemahero plan \
+      --driver cockroachdb \
+      --uri "postgres://myuser:mypass@localhost:26257/mydb?sslmode=disable" \
+      --spec-file ./schema/
+    ```
+  </Tab>
+  <Tab>
+    **File path:**
+    ```
+    /path/to/database.db
+    ```
+    
+    **In-memory:**
+    ```
+    :memory:
+    ```
+    
+    **Example:**
+    ```bash
+    schemahero plan \
+      --driver sqlite \
+      --uri "./data/myapp.db" \
+      --spec-file ./schema/
+    ```
+  </Tab>
+</Tabs>
+
+## Environment Variables
+
+Keep credentials out of your command history:
+
+```bash
+export DATABASE_URL="postgres://user:password@localhost:5432/mydb"
+
+schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/
+```
+
+## Cloud Databases
+
+<Tabs items={['AWS RDS', 'AWS SSM', 'Google Cloud SQL', 'HashiCorp Vault']}>
+  <Tab>
+    ### IAM Authentication
+    
+    ```bash
+    TOKEN=$(aws rds generate-db-auth-token \
+      --hostname mydb.xxxx.us-east-1.rds.amazonaws.com \
+      --port 5432 \
+      --username myuser)
+
+    schemahero plan \
+      --driver postgres \
+      --uri "postgres://myuser:${TOKEN}@mydb.xxxx.rds.amazonaws.com:5432/mydb?sslmode=require" \
+      --spec-file ./schema/
+    ```
+    
+    ### Secrets Manager
+    
+    ```bash
+    SECRET=$(aws secretsmanager get-secret-value \
+      --secret-id mydb-credentials \
+      --query SecretString --output text)
+    DB_USER=$(echo $SECRET | jq -r .username)
+    DB_PASS=$(echo $SECRET | jq -r .password)
+
+    schemahero plan \
+      --driver postgres \
+      --uri "postgres://${DB_USER}:${DB_PASS}@mydb.xxxx.rds.amazonaws.com:5432/mydb" \
+      --spec-file ./schema/
+    ```
+  </Tab>
+  <Tab>
+    ### Parameter Store
+    
+    ```bash
+    DB_URI=$(aws ssm get-parameter \
+      --name /myapp/database-url \
+      --with-decryption \
+      --query Parameter.Value --output text)
+
+    schemahero plan \
+      --driver postgres \
+      --uri "$DB_URI" \
+      --spec-file ./schema/
+    ```
+  </Tab>
+  <Tab>
+    ### Cloud SQL Proxy
+    
+    For local development or CI:
+    
+    ```bash
+    # Start the proxy
+    cloud_sql_proxy -instances=project:region:instance=tcp:5432 &
+
+    # Connect through localhost
+    schemahero plan \
+      --driver postgres \
+      --uri "postgres://user:password@localhost:5432/mydb" \
+      --spec-file ./schema/
+    ```
+    
+    ### In GKE
+    
+    Use the Cloud SQL Auth Proxy as a sidecar, or connect via Private IP with Workload Identity.
+  </Tab>
+  <Tab>
+    ### Vault Agent Sidecar (Kubernetes)
+    
+    When using the SchemaHero operator with Vault:
+    
+    ```yaml
+    apiVersion: databases.schemahero.io/v1alpha4
+    kind: Database
+    metadata:
+      name: mydb
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "myapp"
+        vault.hashicorp.com/agent-inject-secret-db: "database/creds/myapp"
+        vault.hashicorp.com/agent-inject-template-db: |
+          {{- with secret "database/creds/myapp" -}}
+          postgres://{{ .Data.username }}:{{ .Data.password }}@host:5432/mydb
+          {{- end -}}
+    spec:
+      connection:
+        postgres:
+          uri:
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: uri
+    ```
+  </Tab>
+</Tabs>
+
+## Kubernetes Operator
+
+When using the operator, store credentials in a Secret:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mydb-credentials
+type: Opaque
+stringData:
+  uri: postgres://user:password@host:5432/database?sslmode=require
+```
+
+Reference it in your Database resource:
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: mydb
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: mydb-credentials
+            key: uri
+```
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Connection refused | Check host/port, firewall rules, database is running |
+| Authentication failed | Verify username/password, check user permissions |
+| SSL errors | Try `sslmode=require` instead of `verify-full` |
+| Timeout | Check network connectivity, VPC/subnet config |
+
+**Test connectivity directly:**
+```bash
+# PostgreSQL
+psql "postgres://user:password@host:5432/mydb?sslmode=require"
+
+# MySQL
+mysql -h host -u user -p database
+```

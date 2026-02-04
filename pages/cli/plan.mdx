@@ -1,0 +1,161 @@
+---
+title: schemahero plan
+description: Generate migration SQL from table definitions
+---
+
+# schemahero plan
+
+Compare your table definitions to a database and output the SQL needed to synchronize them.
+
+## Usage
+
+```bash
+schemahero plan [flags]
+```
+
+## Examples
+
+### Basic Usage
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://user:pass@localhost:5432/mydb?sslmode=disable" \
+  --spec-file ./schema/users.yaml
+```
+
+Output:
+```sql
+create table "users" (
+  "id" uuid default gen_random_uuid(),
+  "email" varchar (255) not null,
+  "created_at" timestamp default now(),
+  primary key ("id")
+);
+```
+
+### Plan a Directory
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/
+```
+
+Processes all YAML files in the directory recursively.
+
+### Save to File
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/ \
+  --out migrations.sql
+```
+
+### Multiple Spec Files
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/base/ \
+  --spec-file ./schema/extensions/
+```
+
+### MySQL
+
+```bash
+schemahero plan \
+  --driver mysql \
+  --uri "user:pass@tcp(localhost:3306)/mydb" \
+  --spec-file ./schema/
+```
+
+### CockroachDB
+
+```bash
+schemahero plan \
+  --driver cockroachdb \
+  --uri "postgres://user:pass@localhost:26257/mydb?sslmode=disable" \
+  --spec-file ./schema/
+```
+
+### SQLite
+
+```bash
+schemahero plan \
+  --driver sqlite \
+  --uri "./data/myapp.db" \
+  --spec-file ./schema/
+```
+
+## Flags
+
+| Flag | Type | Description |
+|------|------|-------------|
+| `--driver` | string | Database driver: `postgres`, `mysql`, `cockroachdb`, `sqlite`, `cassandra`, `timescale` |
+| `--uri` | string | Database connection URI |
+| `--spec-file` | string | Path to YAML file or directory (can be repeated) |
+| `--out` | string | Output file (default: stdout) |
+| `--overwrite` | bool | Overwrite output file if exists (default: true) |
+
+## Output
+
+When there are changes:
+```sql
+alter table "users" add column "phone" varchar (20);
+create index "idx_users_phone" on "users" ("phone");
+```
+
+When no changes needed:
+```
+(empty output)
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success (even if no changes) |
+| 1 | Error (connection failed, invalid YAML, etc.) |
+
+## Common Patterns
+
+### CI Check
+
+```bash
+PLAN=$(schemahero plan --driver postgres --uri "$DB" --spec-file ./schema/)
+if [ -n "$PLAN" ]; then
+  echo "Schema changes detected:"
+  echo "$PLAN"
+fi
+```
+
+### Validate Without Database
+
+```bash
+# Syntax check only (uses fake URI)
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://x:x@localhost/x" \
+  --spec-file ./schema/ \
+  --dry-run
+```
+
+### Pipe to Apply
+
+```bash
+schemahero plan --driver postgres --uri "$DB" --spec-file ./schema/ | \
+schemahero apply --driver postgres --uri "$DB" --ddl /dev/stdin
+```
+
+Or with process substitution:
+```bash
+schemahero apply \
+  --driver postgres \
+  --uri "$DB" \
+  --ddl <(schemahero plan --driver postgres --uri "$DB" --spec-file ./schema/)
+```

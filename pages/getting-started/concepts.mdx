@@ -1,0 +1,168 @@
+---
+title: Core Concepts
+description: Understand how SchemaHero works
+---
+
+# Core Concepts
+
+SchemaHero takes a different approach to database migrations.
+
+## Declarative vs Imperative
+
+**Traditional migrations (imperative):**
+```sql
+-- 001_create_users.sql
+CREATE TABLE users (id INT PRIMARY KEY, email VARCHAR(255));
+
+-- 002_add_name.sql
+ALTER TABLE users ADD COLUMN name VARCHAR(255);
+
+-- 003_add_created_at.sql
+ALTER TABLE users ADD COLUMN created_at TIMESTAMP DEFAULT NOW();
+```
+
+You write each change as a step. The migration tool runs them in order.
+
+**SchemaHero (declarative):**
+```yaml
+# users.yaml
+spec:
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: int
+        - name: email
+          type: varchar(255)
+        - name: name
+          type: varchar(255)
+        - name: created_at
+          type: timestamp
+          default: now()
+```
+
+You declare the desired state. SchemaHero compares it to the database and generates the necessary SQL.
+
+## The Plan → Apply Workflow
+
+SchemaHero uses a two-phase approach:
+
+### 1. Plan
+
+```bash
+schemahero plan --driver postgres --uri "..." --spec-file users.yaml
+```
+
+This:
+- Connects to your database
+- Reads the current schema
+- Compares it to your YAML definition
+- Outputs the SQL needed to make them match
+
+**No changes are made to the database during plan.**
+
+### 2. Apply
+
+```bash
+schemahero apply --driver postgres --uri "..." --ddl plan.sql
+```
+
+This executes the SQL generated in the plan phase.
+
+## Why This Matters
+
+### Always Know What Will Change
+
+Before running `apply`, you see exactly what SQL will execute:
+
+```sql
+alter table "users" add column "phone" varchar (20);
+alter table "users" alter column "email" type varchar (512);
+```
+
+No surprises. Review it, commit it to git, discuss it in a PR.
+
+### No Migration Files to Manage
+
+You don't maintain a folder of numbered migration files. Your schema is defined in one place (or a set of table YAML files). SchemaHero figures out how to get from A to B.
+
+### Works Across Environments
+
+The same `users.yaml` works against:
+- Your local dev database (empty → create table)
+- Staging (has old schema → alter table)
+- Production (already current → no changes)
+
+SchemaHero generates the appropriate SQL for each.
+
+### Safe Refactoring
+
+Rename a column? Change a type? SchemaHero shows you exactly what will happen before you commit to it.
+
+## Table Definitions
+
+A SchemaHero table definition looks like this:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:  # or mysql, cockroachdb, sqlite, cassandra
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+            unique: true
+      indexes:
+        - columns: [email]
+          name: idx_users_email
+          isUnique: true
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+```
+
+Key sections:
+- **columns**: Define each column with type, default, constraints
+- **primaryKey**: One or more columns
+- **indexes**: Additional indexes
+- **foreignKeys**: Relationships to other tables
+
+## Multiple Tables
+
+Organize your schema as multiple files:
+
+```
+schema/
+├── users.yaml
+├── teams.yaml
+├── posts.yaml
+└── comments.yaml
+```
+
+Run against the directory:
+```bash
+schemahero plan --driver postgres --uri "..." --spec-file ./schema/
+```
+
+SchemaHero processes all files and generates a combined migration.
+
+## Next Steps
+
+- [CI/CD Integration](/guides/ci-cd) — Automate schema changes in your pipeline
+- [PostgreSQL Column Types](/databases/postgresql/column-types) — Full type reference
+- [Kubernetes Operator](/guides/kubernetes-operator) — Optional: run SchemaHero in-cluster

@@ -1,0 +1,197 @@
+---
+title: Tables
+description: SQLite table definitions in SchemaHero
+---
+
+# SQLite Tables
+
+Complete reference for defining SQLite tables in SchemaHero.
+
+## Basic Structure
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    sqlite:
+      strict: true              # Enable STRICT mode (SQLite 3.37+)
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: integer
+          attributes:
+            autoIncrement: true
+        - name: email
+          type: text
+          constraints:
+            notNull: true
+```
+
+## STRICT Mode
+
+SQLite 3.37+ supports STRICT tables that enforce type checking:
+
+```yaml
+schema:
+  sqlite:
+    strict: true
+```
+
+In STRICT mode, columns must use one of: `int`, `integer`, `real`, `text`, `blob`, `any`.
+
+## Columns
+
+```yaml
+columns:
+  - name: id
+    type: integer               # Type affinity
+    default: null
+    constraints:
+      notNull: true
+    attributes:
+      autoIncrement: true
+```
+
+### Type Affinity
+
+SQLite uses type affinity, not strict types. The declared type determines how values are stored:
+
+| Affinity | Type Names |
+|----------|------------|
+| INTEGER | `int`, `integer`, `tinyint`, `smallint`, `mediumint`, `bigint` |
+| TEXT | `text`, `char`, `varchar`, `clob` |
+| REAL | `real`, `float`, `double` |
+| BLOB | `blob` |
+| NUMERIC | `numeric`, `decimal`, `boolean`, `date`, `datetime` |
+
+### Default Values
+
+```yaml
+# String literal
+- name: status
+  type: text
+  default: "'pending'"
+
+# Number
+- name: count
+  type: integer
+  default: "0"
+
+# Current timestamp
+- name: created_at
+  type: text
+  default: current_timestamp
+```
+
+### Auto-Increment
+
+```yaml
+primaryKey: [id]
+columns:
+  - name: id
+    type: integer
+    attributes:
+      autoIncrement: true
+```
+
+**Note:** SQLite AUTOINCREMENT only works on `INTEGER PRIMARY KEY` columns.
+
+## Primary Keys
+
+```yaml
+schema:
+  sqlite:
+    primaryKey: [id]              # Single column
+    primaryKey: [tenant_id, id]   # Composite key
+```
+
+## Indexes
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email
+    isUnique: true
+    
+  - columns: [last_name, first_name]
+    name: idx_users_name
+```
+
+## Foreign Keys
+
+```yaml
+foreignKeys:
+  - columns: [team_id]
+    references:
+      table: teams
+      columns: [id]
+    onDelete: CASCADE
+    onUpdate: NO ACTION
+```
+
+**Important:** Foreign key enforcement must be enabled in your application:
+
+```sql
+PRAGMA foreign_keys = ON;
+```
+
+This must be set on each connection.
+
+## Complete Example
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    sqlite:
+      strict: true
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: integer
+          attributes:
+            autoIncrement: true
+        - name: email
+          type: text
+          constraints:
+            notNull: true
+        - name: name
+          type: text
+        - name: team_id
+          type: integer
+        - name: active
+          type: integer
+          default: "1"
+        - name: created_at
+          type: text
+          default: current_timestamp
+      indexes:
+        - columns: [email]
+          name: idx_users_email
+          isUnique: true
+        - columns: [team_id]
+          name: idx_users_team
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+          onDelete: SET NULL
+```
+
+## Limitations
+
+- No `ALTER COLUMN` - columns cannot be modified after creation
+- No `DROP COLUMN` in older SQLite versions (added in 3.35.0)
+- Foreign keys disabled by default
+- Limited data types compared to other databases

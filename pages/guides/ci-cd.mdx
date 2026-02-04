@@ -1,0 +1,245 @@
+---
+title: CI/CD Integration
+description: Run SchemaHero in your CI/CD pipeline
+---
+
+# CI/CD Integration
+
+SchemaHero fits naturally into CI/CD workflows. The `plan` and `apply` commands are designed for automation.
+
+## The Pattern
+
+A typical workflow:
+
+1. **Developer** modifies a table YAML file
+2. **CI** runs `schemahero plan` and comments the SQL diff on the PR
+3. **Reviewer** approves the schema change along with the code
+4. **CD** runs `schemahero apply` on merge to deploy the migration
+
+## GitHub Actions
+
+### Plan on Pull Request
+
+Add this workflow to show schema changes in PRs:
+
+```yaml
+# .github/workflows/schema-plan.yml
+name: Schema Plan
+
+on:
+  pull_request:
+    paths:
+      - 'schema/**'
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SchemaHero
+        run: |
+          curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+          sudo mv schemahero /usr/local/bin/
+
+      - name: Plan Schema Changes
+        id: plan
+        run: |
+          OUTPUT=$(schemahero plan \
+            --driver postgres \
+            --uri "${{ secrets.DATABASE_URL }}" \
+            --spec-file ./schema/)
+          echo "sql<<EOF" >> $GITHUB_OUTPUT
+          echo "$OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sql = `${{ steps.plan.outputs.sql }}`;
+            const body = sql.trim() 
+              ? `### Schema Changes\n\`\`\`sql\n${sql}\n\`\`\``
+              : '### Schema Changes\nNo changes detected.';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+```
+
+### Apply on Merge
+
+```yaml
+# .github/workflows/schema-apply.yml
+name: Schema Apply
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'schema/**'
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SchemaHero
+        run: |
+          curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+          sudo mv schemahero /usr/local/bin/
+
+      - name: Apply Schema Changes
+        run: |
+          schemahero plan \
+            --driver postgres \
+            --uri "${{ secrets.DATABASE_URL }}" \
+            --spec-file ./schema/ \
+            --out plan.sql
+
+          schemahero apply \
+            --driver postgres \
+            --uri "${{ secrets.DATABASE_URL }}" \
+            --ddl plan.sql
+```
+
+## GitLab CI
+
+```yaml
+# .gitlab-ci.yml
+stages:
+  - plan
+  - deploy
+
+variables:
+  SCHEMAHERO_VERSION: "0.24.0"
+
+schema-plan:
+  stage: plan
+  image: schemahero/schemahero:${SCHEMAHERO_VERSION}
+  script:
+    - schemahero plan --driver postgres --uri "$DATABASE_URL" --spec-file ./schema/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - schema/**
+
+schema-apply:
+  stage: deploy
+  image: schemahero/schemahero:${SCHEMAHERO_VERSION}
+  script:
+    - schemahero plan --driver postgres --uri "$DATABASE_URL" --spec-file ./schema/ --out plan.sql
+    - schemahero apply --driver postgres --uri "$DATABASE_URL" --ddl plan.sql
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - schema/**
+```
+
+## Using the Docker Image
+
+The `schemahero/schemahero` Docker image contains the CLI:
+
+```bash
+docker run --rm \
+  -v $(pwd)/schema:/schema \
+  schemahero/schemahero:latest \
+  plan --driver postgres --uri "..." --spec-file /schema/
+```
+
+This works in any CI system that supports Docker.
+
+## Multi-Environment Deployments
+
+For staging → production workflows:
+
+```yaml
+# .github/workflows/deploy-schema.yml
+name: Deploy Schema
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'schema/**'
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SchemaHero
+        run: |
+          curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+          sudo mv schemahero /usr/local/bin/
+      - name: Apply to Staging
+        run: |
+          schemahero plan --driver postgres --uri "${{ secrets.STAGING_DATABASE_URL }}" --spec-file ./schema/ --out plan.sql
+          schemahero apply --driver postgres --uri "${{ secrets.STAGING_DATABASE_URL }}" --ddl plan.sql
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SchemaHero
+        run: |
+          curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+          sudo mv schemahero /usr/local/bin/
+      - name: Apply to Production
+        run: |
+          schemahero plan --driver postgres --uri "${{ secrets.PRODUCTION_DATABASE_URL }}" --spec-file ./schema/ --out plan.sql
+          schemahero apply --driver postgres --uri "${{ secrets.PRODUCTION_DATABASE_URL }}" --ddl plan.sql
+```
+
+## Dry Run / Validation
+
+To validate schema files without a database connection:
+
+```bash
+schemahero plan --driver postgres --spec-file ./schema/ --uri "postgres://fake" --dry-run
+```
+
+Useful for syntax checking in PRs before you have access to the database.
+
+## Tips
+
+### Store Plan Output
+
+Save the plan output as a CI artifact for audit trails:
+
+```yaml
+- name: Save Plan
+  run: |
+    schemahero plan --driver postgres --uri "$DATABASE_URL" --spec-file ./schema/ --out plan.sql
+
+- uses: actions/upload-artifact@v4
+  with:
+    name: schema-plan
+    path: plan.sql
+```
+
+### Fail on Destructive Changes
+
+Check the plan output for `DROP` statements:
+
+```bash
+PLAN=$(schemahero plan --driver postgres --uri "$DATABASE_URL" --spec-file ./schema/)
+if echo "$PLAN" | grep -qi "drop"; then
+  echo "⚠️ Destructive changes detected!"
+  echo "$PLAN"
+  exit 1
+fi
+```
+
+### Database Credentials
+
+Always use secrets, never hardcode credentials:
+- GitHub: `${{ secrets.DATABASE_URL }}`
+- GitLab: `$DATABASE_URL` (CI/CD variables)
+- Environment-specific secrets for staging/production

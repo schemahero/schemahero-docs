@@ -1,0 +1,267 @@
+---
+title: Migration Policies
+description: Enforce rules on schema changes
+---
+
+# Migration Policies
+
+SchemaHero can enforce policies to prevent dangerous or unwanted schema changes.
+
+## Why Policies?
+
+Some schema changes are risky in production:
+- Dropping columns loses data
+- Dropping tables loses data
+- Renaming columns can break applications
+- Changing column types can truncate data
+
+Policies let you catch these before they reach production.
+
+## CLI Usage
+
+Check for destructive changes in CI:
+
+```bash
+PLAN=$(schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/)
+
+# Fail if any DROP statements
+if echo "$PLAN" | grep -qi "drop"; then
+  echo "❌ Destructive changes detected!"
+  echo ""
+  echo "$PLAN"
+  echo ""
+  echo "If this is intentional, get approval and use --allow-destructive"
+  exit 1
+fi
+
+echo "✅ No destructive changes"
+echo "$PLAN"
+```
+
+### Policy Script Example
+
+Create a `check-policy.sh`:
+
+```bash
+#!/bin/bash
+set -e
+
+PLAN=$(schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/)
+
+ERRORS=()
+
+# Check for DROP TABLE
+if echo "$PLAN" | grep -qi "drop table"; then
+  ERRORS+=("DROP TABLE detected - data will be lost")
+fi
+
+# Check for DROP COLUMN
+if echo "$PLAN" | grep -qi "drop column"; then
+  ERRORS+=("DROP COLUMN detected - data will be lost")
+fi
+
+# Check for column type changes that might truncate
+if echo "$PLAN" | grep -qi "alter column.*type.*varchar"; then
+  ERRORS+=("Column type change detected - verify data won't be truncated")
+fi
+
+# Report
+if [ ${#ERRORS[@]} -gt 0 ]; then
+  echo "❌ Policy violations found:"
+  echo ""
+  for err in "${ERRORS[@]}"; do
+    echo "  • $err"
+  done
+  echo ""
+  echo "Planned changes:"
+  echo "$PLAN"
+  exit 1
+fi
+
+echo "✅ All policies passed"
+echo ""
+echo "$PLAN"
+```
+
+Use in CI:
+```yaml
+- name: Check Migration Policy
+  run: ./check-policy.sh
+  env:
+    DATABASE_URL: ${{ secrets.DATABASE_URL }}
+```
+
+## Kubernetes Operator Policies
+
+When using the operator, policies are defined on the Database resource:
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: production-db
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: db-credentials
+            key: uri
+  schemahero:
+    requireApproval: true  # Always require manual approval
+```
+
+### Strict Mode
+
+Prevent any destructive migrations:
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: production-db
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: db-credentials
+            key: uri
+  schemahero:
+    disableDestructive: true  # Block DROP operations entirely
+```
+
+With `disableDestructive: true`, migrations containing DROP statements will fail.
+
+## Common Policies
+
+### No Drops in Production
+
+```bash
+if [ "$ENVIRONMENT" = "production" ]; then
+  if echo "$PLAN" | grep -qi "drop"; then
+    echo "DROP statements not allowed in production"
+    exit 1
+  fi
+fi
+```
+
+### Require NOT NULL with Default
+
+Prevent adding NOT NULL columns without defaults (which fails on tables with data):
+
+```bash
+# This is a simplified check - real implementation would parse the SQL
+if echo "$PLAN" | grep -qi "add column.*not null" && ! echo "$PLAN" | grep -qi "default"; then
+  echo "Adding NOT NULL column requires a DEFAULT value"
+  exit 1
+fi
+```
+
+### Maximum Column Size Increase
+
+Prevent accidentally making large columns:
+
+```bash
+if echo "$PLAN" | grep -qi "varchar.*4000\|text"; then
+  echo "Large column detected - verify this is intentional"
+  # Could exit 1 or just warn
+fi
+```
+
+## GitHub Actions Integration
+
+```yaml
+name: Schema Policy Check
+
+on:
+  pull_request:
+    paths:
+      - 'schema/**'
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SchemaHero
+        run: |
+          curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+          sudo mv schemahero /usr/local/bin/
+
+      - name: Check Policies
+        id: policy
+        run: |
+          PLAN=$(schemahero plan \
+            --driver postgres \
+            --uri "${{ secrets.DATABASE_URL }}" \
+            --spec-file ./schema/)
+          
+          DESTRUCTIVE=false
+          if echo "$PLAN" | grep -qi "drop"; then
+            DESTRUCTIVE=true
+          fi
+          
+          echo "plan<<EOF" >> $GITHUB_OUTPUT
+          echo "$PLAN" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "destructive=$DESTRUCTIVE" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const plan = `${{ steps.policy.outputs.plan }}`;
+            const destructive = '${{ steps.policy.outputs.destructive }}' === 'true';
+            
+            let body = '### Schema Changes\n\n';
+            if (destructive) {
+              body += '⚠️ **Destructive changes detected!** Review carefully.\n\n';
+            }
+            body += '```sql\n' + plan + '\n```';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+      - name: Fail if Destructive
+        if: steps.policy.outputs.destructive == 'true'
+        run: |
+          echo "Destructive changes require manual approval"
+          echo "Add the 'approved-destructive' label to proceed"
+          exit 1
+```
+
+## Bypass Policies
+
+For legitimate destructive changes:
+
+1. **CI**: Add a flag or label system
+   ```yaml
+   - name: Check for Approval
+     if: steps.policy.outputs.destructive == 'true'
+     run: |
+       if [[ "${{ contains(github.event.pull_request.labels.*.name, 'approved-destructive') }}" != "true" ]]; then
+         echo "Add 'approved-destructive' label to proceed"
+         exit 1
+       fi
+   ```
+
+2. **Operator**: Manually approve the migration
+   ```bash
+   kubectl schemahero approve migration-name
+   ```
+
+The goal is to make destructive changes intentional, not accidental.

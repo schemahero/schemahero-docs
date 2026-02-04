@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.landing-hero {
+  text-align: center;
+  padding: 4rem 0 2rem;
+}
+
+.landing-hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.landing-hero h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+.landing-hero p {
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-buttons .button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hero-buttons .button.primary {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+}
+
+.hero-buttons .button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+.hero-buttons .button.secondary {
+  border: 2px solid currentColor;
+  opacity: 0.8;
+}
+
+.hero-buttons .button.secondary:hover {
+  opacity: 1;
+  background: rgba(128, 128, 128, 0.1);
+}
+
+/* Dark mode adjustments */
+:root.dark .landing-hero h1,
+:root.dark .landing-hero h2,
+:root.dark .landing-hero p {
+  color: #e5e7eb;
+}
+
+/* Documentation page heading styles - override Nextra defaults */
+article h1,
+.nextra-content h1,
+main h1 {
+  font-size: 2.25rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+  color: #111827 !important;
+}
+
+article h2,
+.nextra-content h2,
+main h2 {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  color: #1f2937 !important;
+}
+
+article h3,
+.nextra-content h3,
+main h3 {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+  color: #374151 !important;
+}
+
+article h4,
+.nextra-content h4,
+main h4 {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+  color: #4b5563 !important;
+}
+
+/* Dark mode heading styles */
+:root.dark article h1,
+:root.dark .nextra-content h1,
+:root.dark main h1,
+.dark article h1,
+.dark .nextra-content h1,
+.dark main h1 {
+  color: #f9fafb !important;
+}
+
+:root.dark article h2,
+:root.dark .nextra-content h2,
+:root.dark main h2,
+.dark article h2,
+.dark .nextra-content h2,
+.dark main h2 {
+  color: #f3f4f6 !important;
+  border-bottom-color: #374151 !important;
+}
+
+:root.dark article h3,
+:root.dark .nextra-content h3,
+:root.dark main h3,
+.dark article h3,
+.dark .nextra-content h3,
+.dark main h3 {
+  color: #e5e7eb !important;
+}
+
+:root.dark article h4,
+:root.dark .nextra-content h4,
+:root.dark main h4,
+.dark article h4,
+.dark .nextra-content h4,
+.dark main h4 {
+  color: #d1d5db !important;
+}
