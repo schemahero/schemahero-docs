@@ -1,8 +1,26 @@
 ---
 title: "0.14.0"
-description: SchemaHero 0.14.0 Changelog
+description: SchemaHero 0.14.0 Release Notes
 ---
+
+# 0.14.0
+
+**Released:** 2023-03-24
 
 ## Changes
 
-- Adds ability to provide annotations in the manifest for the schemahero database that will be applied to the controller statefulset
+- update go mod to fix HIGH CVE-2022-41723
+- Don't try to apply migrations that have been applied already
+- Find databases from tables and views
+- RBAC to allow schemahero access to views
+- Sort specs so tables are processed before views
+- Add view CRD to generated YAML
+- Add Cassandra to db type check
+- fix: Update docker image meta data
+- Fix image ref format on tagged builds
+- Tests for timescaledb
+- fix: Update docker build commands to use Dockerfile.multiarch
+- Add initial support for views (continuous aggregates for timescale)
+- feat: add support for arch:arm and refactor build process
+- Support for fractional seconds precision in datetime and timestamp types for MySQL
+- update go mod to fix HIGH CVE-2022-41721

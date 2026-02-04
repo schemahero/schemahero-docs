@@ -1,17 +1,26 @@
 ---
 title: "0.12.1"
-description: SchemaHero 0.12.1 Changelog
+description: SchemaHero 0.12.1 Release Notes
 ---
+
+# 0.12.1
+
+**Released:** 2021-03-26
 
 ## Changes
 
-- Added a darwin/arm64 architecture of the kubectl plugin ([#371](https://github.com/schemahero/schemahero/pull/371))
-- Bumped dependencies ([#385](https://github.com/schemahero/schemahero/pull/385)) ([#386](https://github.com/schemahero/schemahero/pull/386)) ([#387](https://github.com/schemahero/schemahero/pull/387)) ([#388](https://github.com/schemahero/schemahero/pull/388))
-- Changed base image in manager from debian:stretch to debian:buster ([#391](https://github.com/schemahero/schemahero/pull/391))
-- Change to use Go 1.16.2 ([#396](https://github.com/schemahero/schemahero/pull/396))
-
-## Fixes
-
-- Fixed the krew autoreleaser ([#370](https://github.com/schemahero/schemahero/pull/370))
-- Fixed handling of time and timezone types in postgres ([#389](https://github.com/schemahero/schemahero/pull/389))
-- Fixed `schemahero install` to install all CRDs ([#393](https://github.com/schemahero/schemahero/pull/393))
+- go mod files changed
+- run on '**' branches not '*' to include '/'s
+- build and test with go 1.16.2
+- fix(krew): install crds of table and migrations
+- Always pull base image when building schemhero images
+- Move schemahero image from stretch to buster
+- Reenable missing tests
+- Fix postgres alter table timestamp types
+- Reverse logic of time zone handling in postgres
+- Bump github.com/aws/aws-sdk-go-v2/config from 1.1.2 to 1.1.3
+- Bump github.com/aws/aws-sdk-go from 1.37.31 to 1.38.2
+- Bump github.com/aws/aws-sdk-go-v2/service/ssm from 1.1.2 to 1.2.0
+- Bump k8s.io/apiextensions-apiserver from 0.20.4 to 0.20.5
+- Bump github.com/aws/aws-sdk-go-v2/credentials from 1.1.2 to 1.1.3
+- Bump k8s.io/cli-runtime from 0.20.4 to 0.20.5

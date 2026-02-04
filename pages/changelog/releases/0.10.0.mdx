@@ -1,21 +1,28 @@
 ---
 title: "0.10.0"
-description: SchemaHero 0.10.0 Changelog
+description: SchemaHero 0.10.0 Release Notes
 ---
 
-## New Features
+# 0.10.0
 
-- Add support for using [Amazon SSM Parameter Store](https://schemahero.io/docs/connecting-databases/amazon-ssm/) for connection strings
-- Add support for directly integrating with a [HashiCorp Vault API](https://schemahero.io/docs/connecting-databases/hashicorp-vault/)
+**Released:** 2020-07-16
 
 ## Changes
 
-- SchemaHero will no longer deploy 1 pod for plan and 1 for apply
-- SchemaHero will now deploy a `<dbname-controller>` Statefulset to the namespace the Database is deployed to for migrations
-
-## Fixes
-
-- Improved performance of `kubectl schemahero get tables` on clusters with many namespaces
-- Added support for Mysql `longtext`, `mediumtext`, `text`, and `tinytext` types
-- Fixed a bug where generate would generate the wrong precision for decimal types in Mysql
-- Removed empty plans from `kubectl schemahero get migrations`
+- [proaction] updating workflow
+- Add support for text types
+- pkg/cli/schemaherokubectlcli: handle walk error
+- Change column from inforamtion_schema
+- Prevent changing tinytext, mediumtext and longtext
+- Don't include length for some mysql types that are not configurable
+- avoid empty commits
+- Performance of get tables
+- Need CA Certs to use SSM
+- support instance roles
+- Tested
+- Add support for connection uris in AWS SSM
+- Add rbac roles to table controller
+- Enable database controller on install
+- Add log-level flag to manager run
+- Fixing installer to install webhook service
+- include precision and scale in mysql decimal types
