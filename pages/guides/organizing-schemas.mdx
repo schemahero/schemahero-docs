@@ -1,0 +1,122 @@
+---
+title: Organizing Schemas
+description: Best practices for organizing table definitions
+---
+
+# Organizing Schemas
+
+As your application grows, you'll have many tables. Here's how to organize them.
+
+## Directory Structure
+
+A typical layout:
+
+```
+schema/
+├── users.yaml
+├── teams.yaml
+├── billing/
+│   ├── subscriptions.yaml
+│   ├── invoices.yaml
+│   └── payments.yaml
+└── content/
+    ├── posts.yaml
+    ├── comments.yaml
+    └── media.yaml
+```
+
+Run against the entire directory:
+```bash
+schemahero plan --driver postgres --uri "..." --spec-file ./schema/
+```
+
+SchemaHero recursively finds all YAML files.
+
+## One Table Per File
+
+Keep each table in its own file:
+
+```yaml
+# schema/users.yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      # ...
+```
+
+Benefits:
+- Easy to find and edit
+- Clean git diffs
+- Simple code review
+
+## Multiple Tables Per File
+
+For tightly related tables, you can combine them:
+
+```yaml
+# schema/billing.yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: subscriptions
+spec:
+  # ...
+---
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: invoices
+spec:
+  # ...
+```
+
+Use `---` to separate multiple resources in one file.
+
+## Naming Conventions
+
+**Files:** Use the table name, lowercase with hyphens
+- `user-profiles.yaml` for `user_profiles` table
+- `order-items.yaml` for `order_items` table
+
+**Metadata name:** Match the table name
+```yaml
+metadata:
+  name: user-profiles  # or user_profiles
+spec:
+  name: user_profiles  # actual table name in DB
+```
+
+## Foreign Key Ordering
+
+SchemaHero handles foreign key dependencies automatically. You don't need to order your files.
+
+If `posts` references `users`, SchemaHero will create `users` first, even if `posts.yaml` is processed first.
+
+## Environment-Specific Schemas
+
+For different schemas per environment, use separate directories:
+
+```
+schema/
+├── base/
+│   ├── users.yaml
+│   └── teams.yaml
+├── staging/
+│   └── test-data.yaml
+└── production/
+    └── (empty or production-only tables)
+```
+
+```bash
+# Staging
+schemahero plan --spec-file ./schema/base/ --spec-file ./schema/staging/
+
+# Production
+schemahero plan --spec-file ./schema/base/ --spec-file ./schema/production/
+```

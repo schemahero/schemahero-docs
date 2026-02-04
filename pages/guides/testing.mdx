@@ -1,0 +1,201 @@
+---
+title: Testing Schemas
+description: Test your database schemas locally and in CI
+---
+
+# Testing Schemas
+
+Validate your schema changes before deploying to production.
+
+## Local Testing
+
+### Spin Up a Test Database
+
+```bash
+# PostgreSQL
+docker run -d --name test-db -e POSTGRES_PASSWORD=test -e POSTGRES_DB=testdb -p 5432:5432 postgres:16
+
+# MySQL
+docker run -d --name test-db -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=testdb -p 3306:3306 mysql:8
+```
+
+### Apply Your Schema
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://postgres:test@localhost:5432/testdb?sslmode=disable" \
+  --spec-file ./schema/ \
+  --out plan.sql
+
+schemahero apply \
+  --driver postgres \
+  --uri "postgres://postgres:test@localhost:5432/testdb?sslmode=disable" \
+  --ddl plan.sql
+```
+
+### Run Your Tests
+
+```bash
+# Run application tests against the database
+DATABASE_URL="postgres://postgres:test@localhost:5432/testdb?sslmode=disable" go test ./...
+```
+
+### Clean Up
+
+```bash
+docker rm -f test-db
+```
+
+## CI Testing
+
+### GitHub Actions Example
+
+```yaml
+# .github/workflows/test.yml
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SchemaHero
+        run: |
+          curl -sSL https://github.com/schemahero/schemahero/releases/latest/download/schemahero_linux_amd64.tar.gz | tar xz
+          sudo mv schemahero /usr/local/bin/
+
+      - name: Apply Schema
+        run: |
+          schemahero plan \
+            --driver postgres \
+            --uri "postgres://postgres:test@localhost:5432/testdb?sslmode=disable" \
+            --spec-file ./schema/ \
+            --out plan.sql
+          schemahero apply \
+            --driver postgres \
+            --uri "postgres://postgres:test@localhost:5432/testdb?sslmode=disable" \
+            --ddl plan.sql
+
+      - name: Run Tests
+        run: go test ./...
+        env:
+          DATABASE_URL: postgres://postgres:test@localhost:5432/testdb?sslmode=disable
+```
+
+## Validate Without Database
+
+Check that your YAML files are valid:
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --spec-file ./schema/ \
+  --uri "postgres://fake:fake@localhost/fake" \
+  --dry-run
+```
+
+This parses the files and validates the structure without connecting to a database.
+
+## Testing Migrations
+
+### Test the Migration Path
+
+To ensure your schema changes apply cleanly:
+
+1. Start with current production schema
+2. Apply your changes
+3. Verify no errors
+
+```bash
+# Dump production schema (using pg_dump or similar)
+pg_dump --schema-only $PROD_DATABASE_URL > prod-schema.sql
+
+# Start fresh test database
+docker run -d --name migration-test -e POSTGRES_PASSWORD=test -p 5433:5432 postgres:16
+sleep 5
+
+# Load current production schema
+psql "postgres://postgres:test@localhost:5433/postgres" < prod-schema.sql
+
+# Apply new changes
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://postgres:test@localhost:5433/postgres?sslmode=disable" \
+  --spec-file ./schema/ \
+  --out migration.sql
+
+schemahero apply \
+  --driver postgres \
+  --uri "postgres://postgres:test@localhost:5433/postgres?sslmode=disable" \
+  --ddl migration.sql
+
+# Clean up
+docker rm -f migration-test
+```
+
+### Idempotency Test
+
+Run plan twice—the second run should produce no changes:
+
+```bash
+# First apply
+schemahero plan --driver postgres --uri "$DB" --spec-file ./schema/ --out plan1.sql
+schemahero apply --driver postgres --uri "$DB" --ddl plan1.sql
+
+# Second plan should be empty
+OUTPUT=$(schemahero plan --driver postgres --uri "$DB" --spec-file ./schema/)
+if [ -n "$OUTPUT" ]; then
+  echo "Schema is not idempotent!"
+  echo "$OUTPUT"
+  exit 1
+fi
+```
+
+## Fixture Data
+
+For tests that need seed data, use SchemaHero's seed data feature:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: serial
+        - name: email
+          type: varchar(255)
+  seedData:
+    rows:
+      - id: 1
+        email: admin@example.com
+      - id: 2
+        email: test@example.com
+```
+
+Seed data is applied after the table is created/updated.

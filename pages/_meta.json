@@ -7,24 +7,32 @@
       "layout": "raw"
     }
   },
-  "learn": {
-    "title": "Learn",
+  "getting-started": {
+    "title": "Getting Started",
     "type": "page"
   },
-  "docs": {
-    "title": "Docs",
+  "guides": {
+    "title": "Guides",
     "type": "page"
   },
   "databases": {
     "title": "Databases",
     "type": "page"
   },
-  "reference": {
-    "title": "API Reference",
-    "type": "page"
-  },
   "cli": {
     "title": "CLI Reference",
+    "type": "page"
+  },
+  "reference": {
+    "title": "Schema Reference",
+    "type": "page"
+  },
+  "learn": {
+    "title": "Tutorial (Legacy)",
+    "type": "page"
+  },
+  "docs": {
+    "title": "Docs (Legacy)",
     "type": "page"
   },
   "community": {

@@ -1,0 +1,6 @@
+{
+  "ci-cd": "CI/CD Integration",
+  "organizing-schemas": "Organizing Schemas",
+  "testing": "Testing Schemas",
+  "kubernetes-operator": "Kubernetes Operator"
+}
