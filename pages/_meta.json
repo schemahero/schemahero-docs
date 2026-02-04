@@ -27,6 +27,10 @@
     "title": "CLI Reference",
     "type": "page"
   },
+  "kubernetes": {
+    "title": "Kubernetes Operator",
+    "type": "page"
+  },
   "community": {
     "title": "Community",
     "type": "page"

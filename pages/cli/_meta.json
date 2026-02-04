@@ -2,12 +2,5 @@
   "plan": "plan",
   "apply": "apply",
   "generate": "generate",
-  "version": "version",
-  "install": "install (Kubernetes)",
-  "get-tables": "get tables (Kubernetes)",
-  "get-migrations": "get migrations (Kubernetes)",
-  "describe-migration": "describe migration (Kubernetes)",
-  "approve-migration": "approve migration (Kubernetes)",
-  "reject-migration": "reject migration (Kubernetes)",
-  "shell": "shell (Kubernetes)"
+  "version": "version"
 }

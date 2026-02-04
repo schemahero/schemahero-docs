@@ -1,0 +1,37 @@
+---
+title: Kubernetes Operator
+description: Managing SchemaHero in Kubernetes
+---
+
+# Kubernetes Operator
+
+When running SchemaHero as a Kubernetes operator, you can use `kubectl schemahero` commands to interact with the operator and manage schema migrations.
+
+## Prerequisites
+
+- SchemaHero operator installed in your cluster (see [install](./install))
+- `kubectl` configured to access your cluster
+- `kubectl-schemahero` plugin installed
+
+## Available Commands
+
+| Command | Description |
+|---------|-------------|
+| [install](./install) | Install the SchemaHero operator |
+| [get tables](./get-tables) | List tables managed by SchemaHero |
+| [get migrations](./get-migrations) | List pending and applied migrations |
+| [describe migration](./describe-migration) | Show details of a specific migration |
+| [approve migration](./approve-migration) | Approve a pending migration |
+| [reject migration](./reject-migration) | Reject a pending migration |
+| [shell](./shell) | Open a database shell |
+
+## Workflow
+
+The Kubernetes operator workflow differs from the CLI workflow:
+
+1. **Deploy Table resources** - Apply Table manifests to your cluster
+2. **Review migrations** - The operator generates Migration resources
+3. **Approve or reject** - Use `kubectl schemahero approve` or `reject`
+4. **Operator applies** - Approved migrations are executed automatically
+
+For most use cases, we recommend the [CLI workflow](/getting-started/quickstart) with `schemahero plan` and `schemahero apply` for simpler, more predictable deployments.
