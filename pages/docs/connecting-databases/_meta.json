@@ -1,0 +1,10 @@
+{
+  "creating-db-resource": "Database Resources",
+  "connection-uri": "Connection URI",
+  "using-secrets": "Kubernetes Secrets",
+  "hashicorp-vault": "HashiCorp Vault",
+  "amazon-ssm": "Amazon SSM",
+  "using-params": "Using Params",
+  "amazon-rds": "Amazon RDS",
+  "google-cloud-sql": "Google Cloud SQL"
+}

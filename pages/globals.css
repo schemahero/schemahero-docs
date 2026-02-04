@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.landing-hero {
+  text-align: center;
+  padding: 4rem 0 2rem;
+}
+
+.landing-hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.landing-hero h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+.landing-hero p {
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-buttons .button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hero-buttons .button.primary {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+}
+
+.hero-buttons .button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+.hero-buttons .button.secondary {
+  border: 2px solid currentColor;
+  opacity: 0.8;
+}
+
+.hero-buttons .button.secondary:hover {
+  opacity: 1;
+  background: rgba(128, 128, 128, 0.1);
+}
+
+/* Dark mode adjustments */
+:root.dark .landing-hero h1,
+:root.dark .landing-hero h2,
+:root.dark .landing-hero p {
+  color: #e5e7eb;
+}

@@ -1,0 +1,12 @@
+{
+  "creating-tables": "Creating Tables",
+  "deleting-tables": "Deleting Tables",
+  "adding-columns": "Adding Columns",
+  "modifying-columns": "Modifying Columns",
+  "dropping-columns": "Dropping Columns",
+  "primary-keys": "Primary Keys",
+  "foreign-keys": "Foreign Keys",
+  "indexes": "Indexes",
+  "attributes": "Column Attributes",
+  "editing-constraints": "Editing Constraints"
+}

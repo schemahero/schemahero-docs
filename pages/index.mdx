@@ -1,0 +1,122 @@
+---
+title: SchemaHero - Declarative Database Schema Migrations
+---
+
+import { Cards, Card } from 'nextra/components'
+
+<div className="landing-hero">
+
+# 🦸 SchemaHero
+
+## Declarative Database Schema Migrations for Kubernetes
+
+SchemaHero is a Kubernetes operator that enables you to define database schemas declaratively.
+Write your desired schema state, and SchemaHero automatically generates and applies the migrations.
+
+<div className="hero-buttons">
+  <a href="/learn/tutorial/introduction" className="button primary">Get Started →</a>
+  <a href="https://github.com/schemahero/schemahero" className="button secondary">View on GitHub</a>
+</div>
+
+</div>
+
+---
+
+## Why SchemaHero?
+
+<Cards>
+  <Card title="Declarative" href="/learn/declarative-schema-management">
+    Define your desired schema state in YAML. SchemaHero figures out the migrations.
+  </Card>
+  <Card title="Kubernetes-Native" href="/docs/installing/kubectl">
+    Runs as a Kubernetes operator. Tables and migrations are Custom Resources.
+  </Card>
+  <Card title="Multi-Database" href="/databases">
+    Supports PostgreSQL, MySQL, CockroachDB, SQLite, Cassandra, and TimescaleDB.
+  </Card>
+  <Card title="Safe by Default" href="/docs/advanced/enforcing-policies">
+    Review migrations before applying. Enforce policies to prevent dangerous operations.
+  </Card>
+</Cards>
+
+---
+
+## How It Works
+
+```yaml filename="users-table.yaml"
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: my-database
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: uuid_generate_v4()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+        - name: created_at
+          type: timestamp
+          default: now()
+```
+
+Apply this to your cluster, and SchemaHero will:
+
+1. **Compare** your desired schema with the current database state
+2. **Generate** the necessary `ALTER TABLE` or `CREATE TABLE` statements
+3. **Create** a Migration resource for review (or auto-apply with `immediateDeploy`)
+
+---
+
+## Quick Start
+
+```bash
+# Install SchemaHero
+kubectl schemahero install
+
+# Connect to your database
+kubectl apply -f database.yaml
+
+# Define your tables
+kubectl apply -f tables/
+
+# Review pending migrations
+kubectl schemahero get migrations
+
+# Approve a migration
+kubectl schemahero approve migration-name
+```
+
+<div style={{ marginTop: '3rem', textAlign: 'center' }}>
+  <a href="/learn/tutorial/introduction" style={{ fontSize: '1.25rem', fontWeight: 600 }}>
+    Start the Tutorial →
+  </a>
+</div>
+
+---
+
+## Supported Databases
+
+| Database | Status |
+|----------|--------|
+| [PostgreSQL](/databases/postgresql/versions) | ✅ Full Support |
+| [MySQL](/databases/mysql/versions) | ✅ Full Support |
+| [CockroachDB](/databases/cockroachdb/versions) | ✅ Full Support |
+| [SQLite](/databases/sqlite/versions) | ✅ Full Support |
+| [Cassandra](/databases/cassandra/versions) | ✅ Full Support |
+| [TimescaleDB](/databases/timescale/versions) | ✅ Full Support |
+
+---
+
+<div style={{ textAlign: 'center', marginTop: '2rem', opacity: 0.7 }}>
+
+**SchemaHero is a [CNCF Sandbox](https://www.cncf.io/sandbox-projects/) project**
+
+</div>

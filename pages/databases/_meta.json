@@ -1,0 +1,9 @@
+{
+  "index": "Supported Databases",
+  "postgresql": "PostgreSQL",
+  "mysql": "MySQL",
+  "cockroachdb": "CockroachDB",
+  "timescale": "TimescaleDB",
+  "cassandra": "Cassandra",
+  "sqlite": "SQLite"
+}
