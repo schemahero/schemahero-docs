@@ -1,0 +1,39 @@
+# v0.23.1
+
+Released on February 4, 2026
+
+## Bug Fixes
+
+- **Fix version string in release binaries** - Fixed an issue where darwin binaries incorrectly reported `v0.23.0-alpha.7` instead of the correct version. The Makefile now properly passes the VERSION variable to sub-makes during the release build process. ([#1300](https://github.com/schemahero/schemahero/pull/1300))
+
+## New Features
+
+- **Batch window support for multi-table deployments** - Added `batchWindow` field to the Database CRD, allowing efficient batching of table reconciliations. When multiple tables are created or updated simultaneously, SchemaHero now waits for the batch window duration before processing, reducing database connection overhead. ([#1297](https://github.com/schemahero/schemahero/pull/1297))
+
+- **Improved logging for in-sync tables** - Added info-level logging when a table is already in sync with the database, providing better visibility during reconciliation. ([#1288](https://github.com/schemahero/schemahero/pull/1288))
+
+## CI/CD Improvements
+
+Updated database version matrices in CI to remove EOL versions and add current supported versions:
+
+- PostgreSQL: 14.20, 15.15, 16.11, 17.7, 18.1 ([#1289](https://github.com/schemahero/schemahero/pull/1289))
+- MySQL: 8.0.45, 8.4.8, 9.5.2 ([#1290](https://github.com/schemahero/schemahero/pull/1290))
+- CockroachDB: v24.3.25, v25.2.11, v25.4.3 ([#1291](https://github.com/schemahero/schemahero/pull/1291))
+- Cassandra: 4.0.19, 4.1.10, 5.0.6 ([#1292](https://github.com/schemahero/schemahero/pull/1292))
+- SQLite: 3.51.2 ([#1293](https://github.com/schemahero/schemahero/pull/1293))
+- RQLite: 8.36.8, 9.3.18 ([#1294](https://github.com/schemahero/schemahero/pull/1294))
+- TimescaleDB: 2.25.0-pg17 ([#1295](https://github.com/schemahero/schemahero/pull/1295))
+
+## Dependencies
+
+- Bumped security-related dependencies ([#1286](https://github.com/schemahero/schemahero/pull/1286), [#1287](https://github.com/schemahero/schemahero/pull/1287))
+
+## Installation
+
+```bash
+# Homebrew
+brew install schemahero/tap/schemahero
+
+# Direct download
+curl -LO https://github.com/schemahero/schemahero/releases/download/v0.23.1/schemahero_linux_amd64.tar.gz
+```
