@@ -2,8 +2,9 @@
   "index": {
     "title": "Home",
     "type": "page",
+    "display": "hidden",
     "theme": {
-      "layout": "full"
+      "layout": "raw"
     }
   },
   "learn": {
