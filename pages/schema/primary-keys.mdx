@@ -3,97 +3,154 @@ title: Primary Keys
 description: Primary key definitions in SchemaHero
 ---
 
+import { Tabs, Tab } from 'nextra/components'
+
 # Primary Keys
 
-Every table should have a primary key that uniquely identifies each row.
+Primary keys uniquely identify each row. The syntax varies by database.
 
-## Basic Primary Key
+## Basic Syntax
 
-```yaml
-schema:
-  postgres:
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'Cassandra']}>
+  <Tab>
+    ```yaml
+    schema:
+      postgres:
+        primaryKey: [id]
+        columns:
+          - name: id
+            type: serial
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    schema:
+      mysql:
+        primaryKey: [id]
+        columns:
+          - name: id
+            type: int
+            attributes:
+              autoIncrement: true
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    schema:
+      sqlite:
+        primaryKey: [id]
+        columns:
+          - name: id
+            type: integer
+            attributes:
+              autoIncrement: true
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    schema:
+      cassandra:
+        primaryKey:
+          - [partition_key]      # Partition key(s)
+          - [clustering_col]     # Clustering column(s)
+        columns:
+          - name: partition_key
+            type: uuid
+          - name: clustering_col
+            type: timestamp
+    ```
+    
+    Cassandra uses a nested array: first element is partition key(s), second is clustering column(s).
+  </Tab>
+</Tabs>
+
+## Auto-Increment IDs
+
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
+  <Tab>
+    Use `serial` or `bigserial`:
+    ```yaml
     primaryKey: [id]
     columns:
       - name: id
-        type: serial
-      - name: email
-        type: varchar(255)
-```
+        type: serial          # 4-byte auto-increment
+      
+      # Or for large tables:
+      - name: id
+        type: bigserial       # 8-byte auto-increment
+    ```
+  </Tab>
+  <Tab>
+    Use `autoIncrement` attribute:
+    ```yaml
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: int
+        attributes:
+          autoIncrement: true
+      
+      # Or bigint for large tables:
+      - name: id
+        type: bigint
+        attributes:
+          autoIncrement: true
+    ```
+  </Tab>
+  <Tab>
+    Use `integer` with `autoIncrement`:
+    ```yaml
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: integer
+        attributes:
+          autoIncrement: true
+    ```
+    
+    **Note:** SQLite AUTOINCREMENT only works with INTEGER PRIMARY KEY.
+  </Tab>
+</Tabs>
 
-Generated SQL:
-```sql
-CREATE TABLE users (
-  id serial,
-  email varchar(255),
-  PRIMARY KEY (id)
-);
-```
+## UUID Primary Keys
 
-## Primary Key Types
-
-### Auto-Increment Integer
-
-```yaml
-# PostgreSQL
-primaryKey: [id]
-columns:
-  - name: id
-    type: serial        # Auto-incrementing int4
-
-  - name: id
-    type: bigserial     # Auto-incrementing int8
-```
-
-```yaml
-# MySQL
-primaryKey: [id]
-columns:
-  - name: id
-    type: int
-    attributes:
-      autoIncrement: true
-```
-
-### UUID
-
-```yaml
-# PostgreSQL
-primaryKey: [id]
-columns:
-  - name: id
-    type: uuid
-    default: gen_random_uuid()
-```
-
-```yaml
-# MySQL
-primaryKey: [id]
-columns:
-  - name: id
-    type: char(36)
-    default: "(uuid())"
-```
-
-### Natural Key
-
-Using existing data as the primary key:
-
-```yaml
-primaryKey: [email]
-columns:
-  - name: email
-    type: varchar(255)
-    constraints:
-      notNull: true
-```
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
+  <Tab>
+    ```yaml
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: uuid
+        default: gen_random_uuid()
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: char(36)
+        default: "(uuid())"
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: text
+        # Generate UUID in application
+    ```
+  </Tab>
+</Tabs>
 
 ## Composite Primary Keys
 
 Multiple columns:
 
-```yaml
-schema:
-  postgres:
+<Tabs items={['PostgreSQL/MySQL/SQLite', 'Cassandra']}>
+  <Tab>
+    ```yaml
     primaryKey: [tenant_id, user_id]
     columns:
       - name: tenant_id
@@ -102,18 +159,41 @@ schema:
         type: uuid
       - name: role
         type: varchar(20)
-```
-
-Generated SQL:
-```sql
-PRIMARY KEY (tenant_id, user_id)
-```
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    primaryKey:
+      - [tenant_id]            # Partition key
+      - [user_id, created_at]  # Clustering columns
+    clusteringOrder:
+      column: created_at
+      isDescending: true
+    columns:
+      - name: tenant_id
+        type: uuid
+      - name: user_id
+        type: uuid
+      - name: created_at
+        type: timestamp
+    ```
+  </Tab>
+</Tabs>
 
 ### Common Patterns
 
+**Multi-tenant tables:**
+```yaml
+primaryKey: [tenant_id, id]
+columns:
+  - name: tenant_id
+    type: uuid
+  - name: id
+    type: serial
+```
+
 **Many-to-many join table:**
 ```yaml
-# user_roles table
 primaryKey: [user_id, role_id]
 columns:
   - name: user_id
@@ -131,74 +211,53 @@ foreignKeys:
       columns: [id]
 ```
 
-**Multi-tenant tables:**
-```yaml
-primaryKey: [tenant_id, id]
-columns:
-  - name: tenant_id
-    type: uuid
-  - name: id
-    type: serial
-```
-
 ## UUID vs Integer
 
 | | UUID | Integer |
 |-|------|---------|
 | **Size** | 16 bytes | 4-8 bytes |
-| **Generation** | Anywhere (client, DB) | Database only |
-| **Security** | Non-guessable | Sequential, guessable |
-| **Performance** | Slightly slower indexes | Faster indexes |
-| **Distributed** | No coordination needed | Needs sequence coordination |
+| **Generation** | Anywhere | Database only |
+| **Security** | Non-guessable | Sequential |
+| **Performance** | Slightly slower | Faster |
+| **Distributed** | No coordination | Needs sequences |
 
 **Use UUID when:**
-- IDs generated outside the database
+- IDs generated outside database
 - Distributed systems
-- IDs exposed in URLs and shouldn't be guessable
+- IDs in URLs should be non-guessable
 
 **Use Integer when:**
 - Single database
 - Performance critical
 - IDs are internal only
 
-## Changing Primary Keys
+## Cassandra Primary Keys
 
-**Warning:** Changing a primary key on an existing table with data is complex. SchemaHero will attempt it but you may need to:
-
-1. Create a new column
-2. Backfill data
-3. Update foreign keys in other tables
-4. Change the primary key
-5. Drop the old column
-
-Consider the migration path carefully.
-
-## No Primary Key
-
-Tables without primary keys are allowed but discouraged:
+Cassandra primary keys have special semantics:
 
 ```yaml
 schema:
-  postgres:
-    columns:
-      - name: log_message
-        type: text
-      - name: logged_at
-        type: timestamp
+  cassandra:
+    primaryKey:
+      - [tenant_id]              # Partition key
+      - [created_at, user_id]    # Clustering columns
+    clusteringOrder:
+      column: created_at
+      isDescending: true
 ```
 
-This is valid but:
-- No efficient row identification
-- No foreign key references possible
-- Replication may not work
-- Updates/deletes affect all matching rows
+- **Partition key** — Determines data distribution. Queries must include it.
+- **Clustering columns** — Sort order within partition. Range queries allowed.
+- **Clustering order** — ASC (default) or DESC per column.
 
-Always add a primary key unless you have a specific reason not to.
+Query patterns:
+```sql
+-- ✓ Allowed: full partition key
+SELECT * FROM users WHERE tenant_id = ?;
 
-## Primary Key Naming
+-- ✓ Allowed: partition + clustering prefix
+SELECT * FROM users WHERE tenant_id = ? AND created_at > ?;
 
-PostgreSQL auto-names primary key constraints: `{table}_pkey`
-
-MySQL uses `PRIMARY` as the constraint name (not configurable).
-
-SQLite doesn't expose constraint names.
+-- ✗ Not allowed: missing partition key
+SELECT * FROM users WHERE created_at > ?;
+```

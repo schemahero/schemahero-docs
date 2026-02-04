@@ -3,257 +3,415 @@ title: Columns
 description: Column definitions in SchemaHero
 ---
 
+import { Tabs, Tab } from 'nextra/components'
+
 # Columns
 
-Columns define the fields in your table.
-
-## Basic Column
-
-```yaml
-columns:
-  - name: email
-    type: varchar(255)
-```
+Column definitions vary slightly by database type.
 
 ## Column Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `name` | string | Column name (required) |
-| `type` | string | Data type (required) |
-| `default` | string | Default value |
-| `constraints` | object | Column constraints |
-| `attributes` | object | Database-specific attributes |
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'Cassandra']}>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `name` | string | Column name (required) |
+    | `type` | string | PostgreSQL data type (required) |
+    | `default` | string | Default value or function |
+    | `constraints.notNull` | bool | NOT NULL constraint |
+    | `attributes.autoIncrement` | bool | Auto-increment (use with serial) |
+  </Tab>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `name` | string | Column name (required) |
+    | `type` | string | MySQL data type (required) |
+    | `default` | string | Default value |
+    | `constraints.notNull` | bool | NOT NULL constraint |
+    | `attributes.autoIncrement` | bool | AUTO_INCREMENT |
+    | `charset` | string | Column character set |
+    | `collation` | string | Column collation |
+  </Tab>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `name` | string | Column name (required) |
+    | `type` | string | SQLite type affinity (required) |
+    | `default` | string | Default value |
+    | `constraints.notNull` | bool | NOT NULL constraint |
+    | `attributes.autoIncrement` | bool | AUTOINCREMENT |
+  </Tab>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `name` | string | Column name (required) |
+    | `type` | string | Cassandra data type (required) |
+    | `isStatic` | bool | Static column |
+  </Tab>
+</Tabs>
 
-## Column Types
+## Common Types
 
-Types are database-specific. See:
-- [PostgreSQL Types](/databases/postgresql/column-types)
-- [MySQL Types](/databases/mysql/column-types)
-- [CockroachDB Types](/databases/cockroachdb/connecting)
-- [SQLite Types](/databases/sqlite/tables)
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'Cassandra']}>
+  <Tab>
+    ```yaml
+    # Integers
+    - name: count
+      type: integer           # 4 bytes
+    - name: big_count
+      type: bigint            # 8 bytes
+    - name: small_count
+      type: smallint          # 2 bytes
+    - name: id
+      type: serial            # auto-increment int
+    - name: id
+      type: bigserial         # auto-increment bigint
 
-### Common Types
+    # Strings
+    - name: code
+      type: char(3)           # fixed length
+    - name: name
+      type: varchar(100)      # variable length
+    - name: bio
+      type: text              # unlimited
 
-```yaml
-# Integers
-- name: count
-  type: integer
+    # Numbers
+    - name: price
+      type: numeric(10,2)     # exact decimal
+    - name: rate
+      type: real              # 4-byte float
+    - name: precise
+      type: double precision  # 8-byte float
 
-- name: id
-  type: bigint
+    # Boolean
+    - name: active
+      type: boolean
 
-- name: small_num
-  type: smallint
+    # Date/Time
+    - name: created_at
+      type: timestamp
+    - name: created_at
+      type: timestamptz       # with timezone
+    - name: birth_date
+      type: date
+    - name: start_time
+      type: time
 
-# Strings
-- name: name
-  type: varchar(100)
+    # UUID
+    - name: id
+      type: uuid
 
-- name: code
-  type: char(3)
+    # JSON
+    - name: data
+      type: json
+    - name: data
+      type: jsonb             # binary, indexable
 
-- name: description
-  type: text
+    # Arrays
+    - name: tags
+      type: text[]
+    - name: scores
+      type: integer[]
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    # Integers
+    - name: count
+      type: int               # 4 bytes
+    - name: big_count
+      type: bigint            # 8 bytes
+    - name: small_count
+      type: smallint          # 2 bytes
+    - name: tiny
+      type: tinyint           # 1 byte
 
-# Numbers
-- name: price
-  type: numeric(10,2)
+    # Strings
+    - name: code
+      type: char(3)
+    - name: name
+      type: varchar(100)
+    - name: bio
+      type: text
+    - name: content
+      type: longtext
 
-- name: rate
-  type: decimal(5,4)
+    # Numbers
+    - name: price
+      type: decimal(10,2)
+    - name: rate
+      type: float
+    - name: precise
+      type: double
 
-- name: score
-  type: float
+    # Boolean
+    - name: active
+      type: boolean           # alias for tinyint(1)
 
-# Boolean
-- name: is_active
-  type: boolean
+    # Date/Time
+    - name: created_at
+      type: timestamp
+    - name: created_at
+      type: datetime
+    - name: birth_date
+      type: date
+    - name: start_time
+      type: time
 
-# Date/Time
-- name: created_at
-  type: timestamp
+    # Binary
+    - name: data
+      type: blob
+    - name: data
+      type: longblob
 
-- name: birth_date
-  type: date
+    # JSON
+    - name: data
+      type: json
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    # SQLite uses type affinity, not strict types
+    
+    # Integer affinity
+    - name: id
+      type: integer
+    - name: count
+      type: int
+    - name: big
+      type: bigint
 
-- name: start_time
-  type: time
+    # Text affinity
+    - name: name
+      type: text
+    - name: code
+      type: varchar(100)
+    - name: char
+      type: char(3)
 
-# UUID
-- name: id
-  type: uuid
+    # Real affinity
+    - name: price
+      type: real
+    - name: rate
+      type: float
+    - name: precise
+      type: double
 
-# JSON
-- name: metadata
-  type: jsonb      # PostgreSQL
-  
-- name: data
-  type: json       # MySQL
-```
+    # Blob affinity
+    - name: data
+      type: blob
+
+    # Numeric affinity
+    - name: amount
+      type: numeric
+    - name: flag
+      type: boolean
+    ```
+    
+    **Note:** SQLite is dynamically typed. Type names are hints, not enforcement (unless STRICT mode is enabled).
+  </Tab>
+  <Tab>
+    ```yaml
+    # Numeric
+    - name: count
+      type: int
+    - name: big_count
+      type: bigint
+    - name: small_count
+      type: smallint
+    - name: tiny
+      type: tinyint
+    - name: amount
+      type: decimal
+    - name: rate
+      type: float
+    - name: precise
+      type: double
+    - name: var
+      type: varint
+
+    # Text
+    - name: name
+      type: text
+    - name: data
+      type: ascii
+    - name: content
+      type: varchar
+
+    # UUID/Time
+    - name: id
+      type: uuid
+    - name: time_id
+      type: timeuuid
+    - name: created_at
+      type: timestamp
+    - name: birth_date
+      type: date
+    - name: start_time
+      type: time
+
+    # Binary
+    - name: data
+      type: blob
+
+    # Boolean
+    - name: active
+      type: boolean
+
+    # Collections
+    - name: tags
+      type: list<text>
+    - name: scores
+      type: set<int>
+    - name: attrs
+      type: map<text, text>
+
+    # Counter
+    - name: views
+      type: counter
+    ```
+  </Tab>
+</Tabs>
 
 ## Default Values
 
-### Static Defaults
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
+  <Tab>
+    ```yaml
+    # String literal (note nested quotes)
+    - name: status
+      type: varchar(20)
+      default: "'pending'"
 
-```yaml
-- name: role
-  type: varchar(20)
-  default: "'user'"       # String literal (note the quotes)
+    # Number
+    - name: count
+      type: integer
+      default: "0"
 
-- name: count
-  type: integer
-  default: "0"            # Numeric literal
+    # Boolean
+    - name: active
+      type: boolean
+      default: "true"
 
-- name: is_active
-  type: boolean
-  default: "true"         # Boolean literal
-```
+    # Functions
+    - name: id
+      type: uuid
+      default: gen_random_uuid()
 
-**Important:** String defaults need inner quotes: `default: "'value'"` not `default: "value"`
+    - name: created_at
+      type: timestamp
+      default: now()
 
-### Function Defaults
+    - name: created_at
+      type: timestamptz
+      default: current_timestamp
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    # String literal
+    - name: status
+      type: varchar(20)
+      default: "'pending'"
 
-```yaml
-# PostgreSQL
-- name: id
-  type: uuid
-  default: gen_random_uuid()
+    # Number
+    - name: count
+      type: int
+      default: "0"
 
-- name: created_at
-  type: timestamp
-  default: now()
+    # Boolean
+    - name: active
+      type: boolean
+      default: "1"
 
-- name: updated_at
-  type: timestamp
-  default: current_timestamp
-```
+    # Functions
+    - name: id
+      type: char(36)
+      default: "(uuid())"
 
-```yaml
-# MySQL
-- name: id
-  type: char(36)
-  default: "(uuid())"
+    - name: created_at
+      type: timestamp
+      default: current_timestamp
 
-- name: created_at
-  type: timestamp
-  default: current_timestamp
-```
+    - name: updated_at
+      type: timestamp
+      default: current_timestamp on update current_timestamp
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    # String literal
+    - name: status
+      type: text
+      default: "'pending'"
 
-### Sequence/Auto-increment
+    # Number
+    - name: count
+      type: integer
+      default: "0"
 
-```yaml
-# PostgreSQL
-- name: id
-  type: serial          # Auto-incrementing integer
+    # Functions
+    - name: created_at
+      type: text
+      default: current_timestamp
+    ```
+  </Tab>
+</Tabs>
 
-- name: id
-  type: bigserial       # Auto-incrementing bigint
-```
-
-```yaml
-# MySQL
-- name: id
-  type: int
-  attributes:
-    autoIncrement: true
-```
+**Important:** String defaults need nested quotes: `default: "'value'"` not `default: "value"`
 
 ## Constraints
 
 ```yaml
-- name: email
-  type: varchar(255)
-  constraints:
-    notNull: true       # Cannot be NULL
-    unique: true        # Must be unique
-```
-
-See [Constraints](/schema/constraints) for full details.
-
-## Modifying Columns
-
-When you change a column definition, SchemaHero generates `ALTER TABLE` statements.
-
-### Adding a Column
-
-Add a new column to your YAML:
-
-```yaml
 columns:
-  - name: id
-    type: serial
   - name: email
     type: varchar(255)
-  - name: phone        # New column
-    type: varchar(20)
+    constraints:
+      notNull: true
 ```
 
-Generated SQL:
-```sql
-ALTER TABLE users ADD COLUMN phone varchar(20);
-```
-
-### Changing a Type
+The only column-level constraint is `notNull`. For unique constraints, use indexes:
 
 ```yaml
-- name: email
-  type: varchar(500)   # Was varchar(255)
+indexes:
+  - columns: [email]
+    name: idx_email_unique
+    isUnique: true
 ```
 
-Generated SQL:
-```sql
-ALTER TABLE users ALTER COLUMN email TYPE varchar(500);
-```
+## Auto-Increment
 
-### Adding a Constraint
-
-```yaml
-- name: email
-  type: varchar(255)
-  constraints:
-    notNull: true      # Adding NOT NULL
-```
-
-Generated SQL:
-```sql
-ALTER TABLE users ALTER COLUMN email SET NOT NULL;
-```
-
-### Removing a Column
-
-Remove the column from your YAML. SchemaHero will generate:
-
-```sql
-ALTER TABLE users DROP COLUMN phone;
-```
-
-**Warning:** This deletes data. Use [policies](/guides/policies) to catch accidental drops.
-
-## Column Ordering
-
-SchemaHero does not guarantee column order. Columns are added as needed but the database determines physical order.
-
-If column order matters to you, create the table with columns in order initially.
-
-## Renaming Columns
-
-SchemaHero cannot detect renames. If you rename a column in YAML:
-
-```yaml
-# Before
-- name: user_name
-  type: varchar(100)
-
-# After
-- name: username
-  type: varchar(100)
-```
-
-SchemaHero will generate:
-```sql
-ALTER TABLE users DROP COLUMN user_name;
-ALTER TABLE users ADD COLUMN username varchar(100);
-```
-
-**This loses data.** For renames, manually migrate or use database-specific rename commands outside SchemaHero.
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
+  <Tab>
+    Use `serial` or `bigserial` types:
+    ```yaml
+    - name: id
+      type: serial
+    
+    - name: id
+      type: bigserial
+    ```
+  </Tab>
+  <Tab>
+    Use the `autoIncrement` attribute:
+    ```yaml
+    - name: id
+      type: int
+      attributes:
+        autoIncrement: true
+    ```
+  </Tab>
+  <Tab>
+    Use `integer` primary key with `autoIncrement`:
+    ```yaml
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: integer
+        attributes:
+          autoIncrement: true
+    ```
+    
+    **Note:** SQLite AUTOINCREMENT only works on INTEGER PRIMARY KEY.
+  </Tab>
+</Tabs>

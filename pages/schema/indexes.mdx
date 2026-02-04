@@ -3,43 +3,57 @@ title: Indexes
 description: Index definitions in SchemaHero
 ---
 
+import { Tabs, Tab } from 'nextra/components'
+
 # Indexes
 
-Indexes improve query performance on frequently accessed columns.
+Indexes improve query performance. The available options vary by database.
+
+## Index Properties
+
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite', 'CockroachDB']}>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `columns` | array | Columns to index (required) |
+    | `name` | string | Index name (required) |
+    | `isUnique` | bool | Create unique index |
+    | `type` | string | btree, hash, gin, gist |
+  </Tab>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `columns` | array | Columns to index (required) |
+    | `name` | string | Index name (required) |
+    | `isUnique` | bool | Create unique index |
+    | `type` | string | btree, fulltext |
+  </Tab>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `columns` | array | Columns to index (required) |
+    | `name` | string | Index name (required) |
+    | `isUnique` | bool | Create unique index |
+  </Tab>
+  <Tab>
+    | Property | Type | Description |
+    |----------|------|-------------|
+    | `columns` | array | Columns to index (required) |
+    | `name` | string | Index name (required) |
+    | `isUnique` | bool | Create unique index |
+    | `type` | string | btree, hash, gin, gist |
+  </Tab>
+</Tabs>
 
 ## Basic Index
 
 ```yaml
-schema:
-  postgres:
-    primaryKey: [id]
-    columns:
-      - name: id
-        type: serial
-      - name: email
-        type: varchar(255)
-      - name: created_at
-        type: timestamp
-    indexes:
-      - columns: [email]
-        name: idx_users_email
+indexes:
+  - columns: [email]
+    name: idx_users_email
 ```
 
-Generated SQL:
-```sql
-CREATE INDEX idx_users_email ON users (email);
-```
-
-## Index Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `columns` | array | Columns to index (required) |
-| `name` | string | Index name (required) |
-| `isUnique` | boolean | Create unique index |
-| `type` | string | Index type (btree, hash, gin, gist) |
-
-## Unique Indexes
+## Unique Index
 
 ```yaml
 indexes:
@@ -48,14 +62,7 @@ indexes:
     isUnique: true
 ```
 
-Generated SQL:
-```sql
-CREATE UNIQUE INDEX idx_users_email_unique ON users (email);
-```
-
-Unique indexes enforce uniqueness like a UNIQUE constraint but can also be partial or have other options.
-
-## Multi-Column Indexes
+## Multi-Column Index
 
 ```yaml
 indexes:
@@ -63,130 +70,166 @@ indexes:
     name: idx_users_tenant_created
 ```
 
-Column order matters. This index helps queries that:
-- Filter by `tenant_id`
-- Filter by `tenant_id` AND `created_at`
-- Sort by `tenant_id`, then `created_at`
+Column order matters for query optimization.
 
-It does NOT help queries that only filter by `created_at`.
+## Index Types
 
-## Index Types (PostgreSQL)
+<Tabs items={['PostgreSQL', 'MySQL']}>
+  <Tab>
+    ### B-tree (default)
+    Best for equality and range queries:
+    ```yaml
+    indexes:
+      - columns: [created_at]
+        name: idx_created
+        type: btree
+    ```
 
-### B-tree (default)
+    ### Hash
+    For equality-only queries:
+    ```yaml
+    indexes:
+      - columns: [session_id]
+        name: idx_session_hash
+        type: hash
+    ```
 
-Best for equality and range queries:
+    ### GIN
+    For full-text search, arrays, JSONB:
+    ```yaml
+    indexes:
+      - columns: [tags]
+        name: idx_tags_gin
+        type: gin
+    ```
 
-```yaml
-indexes:
-  - columns: [created_at]
-    name: idx_created_at
-    type: btree    # Default, can be omitted
-```
-
-### Hash
-
-For equality-only queries:
-
-```yaml
-indexes:
-  - columns: [session_id]
-    name: idx_session_hash
-    type: hash
-```
-
-### GIN
-
-For full-text search, arrays, JSONB:
-
-```yaml
-indexes:
-  - columns: [tags]
-    name: idx_tags_gin
-    type: gin
-```
-
-### GiST
-
-For geometric data, full-text search:
-
-```yaml
-indexes:
-  - columns: [location]
-    name: idx_location_gist
-    type: gist
-```
-
-## Naming Conventions
-
-Use consistent naming:
-
-```
-idx_{table}_{columns}
-idx_{table}_{columns}_unique
-```
-
-Examples:
-- `idx_users_email`
-- `idx_users_tenant_created`
-- `idx_orders_customer_id`
-- `idx_posts_author_published_unique`
-
-## Adding Indexes
-
-Add to your YAML:
-
-```yaml
-indexes:
-  - columns: [email]
-    name: idx_users_email
-  - columns: [phone]           # New index
-    name: idx_users_phone
-```
-
-SchemaHero generates:
-```sql
-CREATE INDEX idx_users_phone ON users (phone);
-```
-
-## Removing Indexes
-
-Remove from your YAML. SchemaHero generates:
-
-```sql
-DROP INDEX idx_users_phone;
-```
-
-## Modifying Indexes
-
-Changing an index (columns, type, uniqueness) drops and recreates it:
-
-```sql
-DROP INDEX idx_users_email;
-CREATE UNIQUE INDEX idx_users_email ON users (email);
-```
-
-## Concurrent Index Creation (PostgreSQL)
-
-SchemaHero does not currently support `CREATE INDEX CONCURRENTLY`. For large production tables, you may need to create indexes manually to avoid locking.
-
-## Performance Considerations
-
-- Only index columns used in WHERE, JOIN, ORDER BY
-- Multi-column indexes should match query patterns
-- Too many indexes slow down INSERT/UPDATE
-- Monitor index usage with `pg_stat_user_indexes`
-
-## MySQL Index Options
-
-MySQL supports additional index attributes:
-
-```yaml
-schema:
-  mysql:
+    ### GiST
+    For geometric data, full-text search:
+    ```yaml
+    indexes:
+      - columns: [location]
+        name: idx_location_gist
+        type: gist
+    ```
+  </Tab>
+  <Tab>
+    ### B-tree (default)
+    Standard index type:
+    ```yaml
     indexes:
       - columns: [email]
         name: idx_email
+        type: btree
+    ```
+
+    ### Fulltext
+    For text search:
+    ```yaml
+    indexes:
       - columns: [title, body]
-        name: idx_fulltext_content
+        name: idx_content_fulltext
         type: fulltext
+    ```
+  </Tab>
+</Tabs>
+
+## Examples
+
+<Tabs items={['PostgreSQL', 'MySQL', 'SQLite']}>
+  <Tab>
+    ```yaml
+    schema:
+      postgres:
+        primaryKey: [id]
+        columns:
+          - name: id
+            type: serial
+          - name: email
+            type: varchar(255)
+          - name: tags
+            type: text[]
+          - name: data
+            type: jsonb
+          - name: created_at
+            type: timestamp
+        indexes:
+          - columns: [email]
+            name: idx_users_email
+            isUnique: true
+          - columns: [created_at]
+            name: idx_users_created
+          - columns: [tags]
+            name: idx_users_tags
+            type: gin
+          - columns: [data]
+            name: idx_users_data
+            type: gin
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    schema:
+      mysql:
+        primaryKey: [id]
+        columns:
+          - name: id
+            type: int
+            attributes:
+              autoIncrement: true
+          - name: email
+            type: varchar(255)
+          - name: title
+            type: varchar(255)
+          - name: body
+            type: text
+        indexes:
+          - columns: [email]
+            name: idx_users_email
+            isUnique: true
+          - columns: [title, body]
+            name: idx_content_search
+            type: fulltext
+    ```
+  </Tab>
+  <Tab>
+    ```yaml
+    schema:
+      sqlite:
+        primaryKey: [id]
+        columns:
+          - name: id
+            type: integer
+          - name: email
+            type: text
+          - name: created_at
+            type: text
+        indexes:
+          - columns: [email]
+            name: idx_users_email
+            isUnique: true
+          - columns: [created_at]
+            name: idx_users_created
+    ```
+  </Tab>
+</Tabs>
+
+## Cassandra
+
+Cassandra doesn't use traditional indexes in the schema definition. Indexes are implicit from the primary key structure:
+
+```yaml
+schema:
+  cassandra:
+    primaryKey:
+      - [tenant_id]         # Partition key - equality queries
+      - [created_at]        # Clustering key - range queries
+    columns:
+      - name: tenant_id
+        type: uuid
+      - name: created_at
+        type: timestamp
+      - name: data
+        type: text
 ```
+
+For secondary indexes in Cassandra, use CQL directly outside SchemaHero.
