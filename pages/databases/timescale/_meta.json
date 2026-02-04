@@ -1,6 +1,8 @@
 {
   "connecting": "Connecting",
   "tables": "Tables",
+  "column-types": "Column Types",
+  "constraints": "Constraints",
   "hypertables": "Hypertables",
   "versions": "Versions"
 }

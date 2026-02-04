@@ -1,0 +1,47 @@
+---
+title: Constraints
+description: Supported TimescaleDB Constraints in SchemaHero
+---
+
+# Constraints
+
+TimescaleDB supports all PostgreSQL constraints.
+
+| Constraint Type | SchemaHero Version |
+|-----------------|--------------------|
+| PRIMARY KEY | v0.1.0 |
+| FOREIGN KEY | v0.2.0 |
+| UNIQUE | v0.2.0 |
+| NOT NULL | v0.1.0 |
+| CHECK | |
+| EXCLUSION | |
+
+## Hypertable Constraints
+
+When using hypertables, there are some important considerations:
+
+### Primary Keys
+
+Primary keys on hypertables must include the time column:
+
+```yaml
+schema:
+  timescaledb:
+    primaryKey: [time, device_id]  # time column must be included
+```
+
+### Unique Constraints
+
+Unique constraints on hypertables must also include the time column:
+
+```yaml
+indexes:
+  - columns: [time, sensor_id]
+    isUnique: true
+```
+
+### Foreign Keys
+
+Foreign keys referencing hypertables are supported but the referenced columns must include the partitioning column (time).
+
+If there are any constraints missing, [open an issue](https://github.com/schemahero/schemahero/issues/new) to report it.
