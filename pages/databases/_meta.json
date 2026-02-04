@@ -5,5 +5,6 @@
   "cockroachdb": "CockroachDB",
   "timescale": "TimescaleDB",
   "cassandra": "Cassandra",
-  "sqlite": "SQLite"
+  "sqlite": "SQLite",
+  "rqlite": "RQLite"
 }
