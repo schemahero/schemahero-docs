@@ -3,8 +3,9 @@ import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
   logo: (
-    <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>
-      🦸 SchemaHero
+    <span style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, fontSize: '1.2rem' }}>
+      <img src="/images/schemahero-logo.svg" alt="SchemaHero" style={{ height: '28px', width: '28px' }} />
+      SchemaHero
     </span>
   ),
   project: {
