@@ -69,3 +69,58 @@
 :root.dark .landing-hero p {
   color: #e5e7eb;
 }
+
+/* Documentation page heading styles */
+.nextra-content h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.nextra-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #1f2937;
+}
+
+.nextra-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.nextra-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+/* Dark mode heading styles */
+:root.dark .nextra-content h1 {
+  color: #f9fafb;
+}
+
+:root.dark .nextra-content h2 {
+  color: #f3f4f6;
+  border-bottom-color: #374151;
+}
+
+:root.dark .nextra-content h3 {
+  color: #e5e7eb;
+}
+
+:root.dark .nextra-content h4 {
+  color: #d1d5db;
+}
