@@ -1,13 +1,13 @@
 {
-  "install": "install",
-  "get-tables": "get tables",
-  "get-migrations": "get migrations",
-  "describe-migration": "describe migration",
-  "approve-migration": "approve migration",
-  "reject-migration": "reject migration",
-  "shell": "shell",
-  "generate": "generate",
   "plan": "plan",
   "apply": "apply",
-  "version": "version"
+  "generate": "generate",
+  "version": "version",
+  "install": "install (Kubernetes)",
+  "get-tables": "get tables (Kubernetes)",
+  "get-migrations": "get migrations (Kubernetes)",
+  "describe-migration": "describe migration (Kubernetes)",
+  "approve-migration": "approve migration (Kubernetes)",
+  "reject-migration": "reject migration (Kubernetes)",
+  "shell": "shell (Kubernetes)"
 }

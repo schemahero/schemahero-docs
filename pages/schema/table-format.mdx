@@ -1,0 +1,218 @@
+---
+title: Table Format
+description: SchemaHero table definition format
+---
+
+# Table Format
+
+SchemaHero tables are defined in YAML. Here's the complete structure.
+
+## Basic Structure
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: my-table          # Identifier for this definition
+spec:
+  database: my-database   # Database name (for operator) or ignored (for CLI)
+  name: actual_table_name # The actual table name in the database
+  schema:
+    postgres:             # Database type: postgres, mysql, cockroachdb, sqlite, cassandra
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: serial
+      indexes: []
+      foreignKeys: []
+```
+
+## Metadata
+
+```yaml
+metadata:
+  name: users             # Unique identifier for this table definition
+  namespace: default      # Kubernetes namespace (operator only)
+  labels:                 # Optional labels
+    app: myapp
+  annotations:            # Optional annotations
+    description: User accounts table
+```
+
+The `metadata.name` is just an identifier. The actual table name is in `spec.name`.
+
+## Spec Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `database` | No* | Database resource name (operator) |
+| `name` | Yes | Actual table name in the database |
+| `schema` | Yes | Schema definition (database-specific) |
+
+*Required when using the Kubernetes operator.
+
+## Schema Section
+
+The `schema` section is keyed by database type:
+
+```yaml
+schema:
+  postgres:    # PostgreSQL, CockroachDB, TimescaleDB
+    # ...
+```
+
+```yaml
+schema:
+  mysql:       # MySQL, MariaDB
+    # ...
+```
+
+```yaml
+schema:
+  sqlite:      # SQLite
+    # ...
+```
+
+```yaml
+schema:
+  cassandra:   # Cassandra
+    # ...
+```
+
+## Complete Example
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+            unique: true
+        - name: name
+          type: varchar(100)
+        - name: team_id
+          type: uuid
+        - name: role
+          type: varchar(20)
+          default: "'user'"
+        - name: is_active
+          type: boolean
+          default: "true"
+        - name: login_count
+          type: integer
+          default: "0"
+        - name: metadata
+          type: jsonb
+        - name: created_at
+          type: timestamp
+          default: now()
+        - name: updated_at
+          type: timestamp
+      indexes:
+        - columns: [email]
+          name: idx_users_email
+          isUnique: true
+        - columns: [team_id, is_active]
+          name: idx_users_team_active
+        - columns: [created_at]
+          name: idx_users_created
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+          onDelete: SET NULL
+```
+
+## Multiple Tables in One File
+
+Use YAML document separators:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: teams
+spec:
+  name: teams
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: name
+          type: varchar(100)
+---
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+        - name: team_id
+          type: uuid
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+```
+
+## Database-Specific Schemas
+
+Different databases have different type systems:
+
+### PostgreSQL
+```yaml
+schema:
+  postgres:
+    columns:
+      - name: data
+        type: jsonb
+      - name: tags
+        type: text[]
+```
+
+### MySQL
+```yaml
+schema:
+  mysql:
+    collation: utf8mb4_unicode_ci
+    columns:
+      - name: data
+        type: json
+      - name: content
+        type: longtext
+```
+
+### SQLite
+```yaml
+schema:
+  sqlite:
+    columns:
+      - name: data
+        type: text  # SQLite is dynamically typed
+```
+
+See the [Databases](/databases) section for database-specific type references.

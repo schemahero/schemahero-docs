@@ -1,0 +1,233 @@
+---
+title: Foreign Keys
+description: Foreign key relationships in SchemaHero
+---
+
+# Foreign Keys
+
+Foreign keys enforce referential integrity between tables.
+
+## Basic Foreign Key
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: posts
+spec:
+  name: posts
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: serial
+        - name: author_id
+          type: integer
+        - name: title
+          type: varchar(255)
+      foreignKeys:
+        - columns: [author_id]
+          references:
+            table: users
+            columns: [id]
+```
+
+Generated SQL:
+```sql
+ALTER TABLE posts
+ADD CONSTRAINT posts_author_id_fkey
+FOREIGN KEY (author_id) REFERENCES users(id);
+```
+
+## Foreign Key Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `columns` | array | Columns in this table (required) |
+| `references.table` | string | Referenced table (required) |
+| `references.columns` | array | Referenced columns (required) |
+| `onDelete` | string | Delete behavior |
+| `onUpdate` | string | Update behavior |
+| `name` | string | Constraint name |
+
+## ON DELETE Actions
+
+What happens when the referenced row is deleted:
+
+```yaml
+foreignKeys:
+  - columns: [author_id]
+    references:
+      table: users
+      columns: [id]
+    onDelete: CASCADE      # Delete this row too
+```
+
+Options:
+
+| Action | Description |
+|--------|-------------|
+| `CASCADE` | Delete rows that reference the deleted row |
+| `SET NULL` | Set the foreign key column to NULL |
+| `SET DEFAULT` | Set the foreign key column to its default |
+| `RESTRICT` | Prevent deletion if rows reference it |
+| `NO ACTION` | Same as RESTRICT (default) |
+
+### Examples
+
+```yaml
+# Posts deleted when author deleted
+foreignKeys:
+  - columns: [author_id]
+    references:
+      table: users
+      columns: [id]
+    onDelete: CASCADE
+```
+
+```yaml
+# Set author to NULL when deleted (keep post)
+foreignKeys:
+  - columns: [author_id]
+    references:
+      table: users
+      columns: [id]
+    onDelete: SET NULL
+```
+
+```yaml
+# Prevent user deletion while posts exist
+foreignKeys:
+  - columns: [author_id]
+    references:
+      table: users
+      columns: [id]
+    onDelete: RESTRICT
+```
+
+## ON UPDATE Actions
+
+What happens when the referenced row's key is updated:
+
+```yaml
+foreignKeys:
+  - columns: [author_id]
+    references:
+      table: users
+      columns: [id]
+    onUpdate: CASCADE      # Update this row's FK too
+```
+
+Same options as ON DELETE.
+
+## Composite Foreign Keys
+
+Reference multi-column primary keys:
+
+```yaml
+# Assuming orders has composite PK (customer_id, order_id)
+foreignKeys:
+  - columns: [customer_id, order_id]
+    references:
+      table: orders
+      columns: [customer_id, order_id]
+```
+
+## Self-Referential Foreign Keys
+
+Table referencing itself:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: categories
+spec:
+  name: categories
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: serial
+        - name: name
+          type: varchar(100)
+        - name: parent_id
+          type: integer
+      foreignKeys:
+        - columns: [parent_id]
+          references:
+            table: categories
+            columns: [id]
+          onDelete: SET NULL
+```
+
+## Dependency Order
+
+SchemaHero automatically handles table creation order. If `posts` references `users`, SchemaHero creates `users` first.
+
+You don't need to order your YAML files.
+
+## Adding Foreign Keys
+
+Add to your YAML. SchemaHero generates:
+
+```sql
+ALTER TABLE posts
+ADD CONSTRAINT posts_category_id_fkey
+FOREIGN KEY (category_id) REFERENCES categories(id);
+```
+
+**Note:** The column must exist first. If adding both column and FK, SchemaHero handles the order.
+
+## Removing Foreign Keys
+
+Remove from your YAML. SchemaHero generates:
+
+```sql
+ALTER TABLE posts DROP CONSTRAINT posts_category_id_fkey;
+```
+
+## Constraint Names
+
+SchemaHero auto-generates constraint names: `{table}_{column}_fkey`
+
+Specify a custom name:
+
+```yaml
+foreignKeys:
+  - columns: [author_id]
+    references:
+      table: users
+      columns: [id]
+    name: fk_posts_author
+```
+
+## SQLite Foreign Keys
+
+SQLite requires foreign keys to be enabled:
+
+```sql
+PRAGMA foreign_keys = ON;
+```
+
+SchemaHero doesn't enable this pragma automatically. Ensure your application enables it.
+
+## MySQL Foreign Keys
+
+MySQL requires the referenced column to have an index:
+
+```yaml
+schema:
+  mysql:
+    columns:
+      - name: user_id
+        type: int
+    foreignKeys:
+      - columns: [user_id]
+        references:
+          table: users
+          columns: [id]
+    # MySQL auto-creates index on user_id
+```

@@ -1,7 +1,45 @@
 ---
-title: version
-description: kubectl schemahero version
+title: schemahero version
+description: Print the SchemaHero version
 ---
 
-Reports the version of SchemaHero installed on the client.
+# schemahero version
 
+Print the installed SchemaHero version.
+
+## Usage
+
+```bash
+schemahero version
+```
+
+## Output
+
+```
+SchemaHero 0.24.0
+```
+
+## Checking for Updates
+
+Compare with the latest release:
+
+```bash
+# Your version
+schemahero version
+
+# Latest release
+curl -s https://api.github.com/repos/schemahero/schemahero/releases/latest | grep tag_name
+```
+
+## CI Usage
+
+Pin a specific version in CI:
+
+```yaml
+- name: Install SchemaHero
+  run: |
+    SCHEMAHERO_VERSION="0.24.0"
+    curl -sSL "https://github.com/schemahero/schemahero/releases/download/v${SCHEMAHERO_VERSION}/schemahero_linux_amd64.tar.gz" | tar xz
+    sudo mv schemahero /usr/local/bin/
+    schemahero version  # Verify
+```

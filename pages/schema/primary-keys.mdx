@@ -1,0 +1,204 @@
+---
+title: Primary Keys
+description: Primary key definitions in SchemaHero
+---
+
+# Primary Keys
+
+Every table should have a primary key that uniquely identifies each row.
+
+## Basic Primary Key
+
+```yaml
+schema:
+  postgres:
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: serial
+      - name: email
+        type: varchar(255)
+```
+
+Generated SQL:
+```sql
+CREATE TABLE users (
+  id serial,
+  email varchar(255),
+  PRIMARY KEY (id)
+);
+```
+
+## Primary Key Types
+
+### Auto-Increment Integer
+
+```yaml
+# PostgreSQL
+primaryKey: [id]
+columns:
+  - name: id
+    type: serial        # Auto-incrementing int4
+
+  - name: id
+    type: bigserial     # Auto-incrementing int8
+```
+
+```yaml
+# MySQL
+primaryKey: [id]
+columns:
+  - name: id
+    type: int
+    attributes:
+      autoIncrement: true
+```
+
+### UUID
+
+```yaml
+# PostgreSQL
+primaryKey: [id]
+columns:
+  - name: id
+    type: uuid
+    default: gen_random_uuid()
+```
+
+```yaml
+# MySQL
+primaryKey: [id]
+columns:
+  - name: id
+    type: char(36)
+    default: "(uuid())"
+```
+
+### Natural Key
+
+Using existing data as the primary key:
+
+```yaml
+primaryKey: [email]
+columns:
+  - name: email
+    type: varchar(255)
+    constraints:
+      notNull: true
+```
+
+## Composite Primary Keys
+
+Multiple columns:
+
+```yaml
+schema:
+  postgres:
+    primaryKey: [tenant_id, user_id]
+    columns:
+      - name: tenant_id
+        type: uuid
+      - name: user_id
+        type: uuid
+      - name: role
+        type: varchar(20)
+```
+
+Generated SQL:
+```sql
+PRIMARY KEY (tenant_id, user_id)
+```
+
+### Common Patterns
+
+**Many-to-many join table:**
+```yaml
+# user_roles table
+primaryKey: [user_id, role_id]
+columns:
+  - name: user_id
+    type: integer
+  - name: role_id
+    type: integer
+foreignKeys:
+  - columns: [user_id]
+    references:
+      table: users
+      columns: [id]
+  - columns: [role_id]
+    references:
+      table: roles
+      columns: [id]
+```
+
+**Multi-tenant tables:**
+```yaml
+primaryKey: [tenant_id, id]
+columns:
+  - name: tenant_id
+    type: uuid
+  - name: id
+    type: serial
+```
+
+## UUID vs Integer
+
+| | UUID | Integer |
+|-|------|---------|
+| **Size** | 16 bytes | 4-8 bytes |
+| **Generation** | Anywhere (client, DB) | Database only |
+| **Security** | Non-guessable | Sequential, guessable |
+| **Performance** | Slightly slower indexes | Faster indexes |
+| **Distributed** | No coordination needed | Needs sequence coordination |
+
+**Use UUID when:**
+- IDs generated outside the database
+- Distributed systems
+- IDs exposed in URLs and shouldn't be guessable
+
+**Use Integer when:**
+- Single database
+- Performance critical
+- IDs are internal only
+
+## Changing Primary Keys
+
+**Warning:** Changing a primary key on an existing table with data is complex. SchemaHero will attempt it but you may need to:
+
+1. Create a new column
+2. Backfill data
+3. Update foreign keys in other tables
+4. Change the primary key
+5. Drop the old column
+
+Consider the migration path carefully.
+
+## No Primary Key
+
+Tables without primary keys are allowed but discouraged:
+
+```yaml
+schema:
+  postgres:
+    columns:
+      - name: log_message
+        type: text
+      - name: logged_at
+        type: timestamp
+```
+
+This is valid but:
+- No efficient row identification
+- No foreign key references possible
+- Replication may not work
+- Updates/deletes affect all matching rows
+
+Always add a primary key unless you have a specific reason not to.
+
+## Primary Key Naming
+
+PostgreSQL auto-names primary key constraints: `{table}_pkey`
+
+MySQL uses `PRIMARY` as the constraint name (not configurable).
+
+SQLite doesn't expose constraint names.

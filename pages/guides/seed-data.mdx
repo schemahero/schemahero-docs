@@ -1,0 +1,226 @@
+---
+title: Seed Data
+description: Populate tables with initial data
+---
+
+# Seed Data
+
+SchemaHero can insert seed data into tables after they're created or updated.
+
+## Basic Usage
+
+Add a `seedData` section to your table definition:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: roles
+spec:
+  database: myapp
+  name: roles
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: serial
+        - name: name
+          type: varchar(50)
+        - name: description
+          type: text
+  seedData:
+    rows:
+      - id: 1
+        name: admin
+        description: Full system access
+      - id: 2
+        name: editor
+        description: Can edit content
+      - id: 3
+        name: viewer
+        description: Read-only access
+```
+
+## When Seed Data Runs
+
+Seed data is applied:
+- After the table is created (for new tables)
+- After schema changes are applied (for existing tables)
+- Only when there are no schema changes but seed data changed
+
+Seed data uses `INSERT ... ON CONFLICT DO NOTHING` (PostgreSQL) or equivalent, so existing rows are not overwritten.
+
+## Use Cases
+
+### Lookup Tables
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: countries
+spec:
+  database: myapp
+  name: countries
+  schema:
+    postgres:
+      primaryKey: [code]
+      columns:
+        - name: code
+          type: char(2)
+        - name: name
+          type: varchar(100)
+  seedData:
+    rows:
+      - code: US
+        name: United States
+      - code: CA
+        name: Canada
+      - code: GB
+        name: United Kingdom
+      # ... more countries
+```
+
+### Default Configuration
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: settings
+spec:
+  database: myapp
+  name: settings
+  schema:
+    postgres:
+      primaryKey: [key]
+      columns:
+        - name: key
+          type: varchar(100)
+        - name: value
+          type: text
+  seedData:
+    rows:
+      - key: site_name
+        value: My Application
+      - key: max_upload_size
+        value: "10485760"
+      - key: enable_registration
+        value: "true"
+```
+
+### Test Users (Development Only)
+
+For development environments, you might seed test users:
+
+```yaml
+# schema/dev/test-users.yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users-seed
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+        - name: email
+          type: varchar(255)
+        - name: role_id
+          type: int
+  seedData:
+    rows:
+      - id: 00000000-0000-0000-0000-000000000001
+        email: admin@example.com
+        role_id: 1
+      - id: 00000000-0000-0000-0000-000000000002
+        email: test@example.com
+        role_id: 3
+```
+
+Only apply this in dev:
+```bash
+schemahero plan --spec-file ./schema/base/ --spec-file ./schema/dev/ ...
+```
+
+## Data Types
+
+### Strings
+
+```yaml
+seedData:
+  rows:
+    - name: "John Doe"
+      bio: |
+        Multi-line
+        biography text
+```
+
+### Numbers
+
+```yaml
+seedData:
+  rows:
+    - count: 42
+      price: 19.99
+```
+
+### Booleans
+
+```yaml
+seedData:
+  rows:
+    - active: true
+      deleted: false
+```
+
+### NULL Values
+
+Omit the column or use explicit null:
+```yaml
+seedData:
+  rows:
+    - name: Test
+      optional_field: null
+```
+
+### UUIDs
+
+```yaml
+seedData:
+  rows:
+    - id: 550e8400-e29b-41d4-a716-446655440000
+```
+
+### Timestamps
+
+```yaml
+seedData:
+  rows:
+    - created_at: "2024-01-15T10:30:00Z"
+```
+
+## Limitations
+
+- Seed data does not update existing rows (insert only)
+- Seed data does not delete rows removed from the YAML
+- Complex data types (JSON, arrays) may need string encoding
+- Large datasets should use a dedicated data loading tool
+
+## Generating Fixtures
+
+SchemaHero can generate table definitions from an existing database:
+
+```bash
+schemahero generate \
+  --driver postgres \
+  --uri "postgres://..." \
+  --output-dir ./schema/
+```
+
+This creates YAML files for each table but does not include seed data. You'll need to add seed data manually or export it separately.

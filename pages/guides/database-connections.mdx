@@ -1,0 +1,269 @@
+---
+title: Database Connections
+description: Configure database connections for SchemaHero
+---
+
+# Database Connections
+
+SchemaHero needs to connect to your database to plan and apply migrations.
+
+## Connection URI Format
+
+### PostgreSQL
+
+```
+postgres://user:password@host:5432/database?sslmode=require
+```
+
+Options:
+- `sslmode=disable` — No SSL (local dev only)
+- `sslmode=require` — Require SSL but don't verify certificate
+- `sslmode=verify-full` — Require SSL and verify certificate
+
+### MySQL
+
+```
+user:password@tcp(host:3306)/database
+```
+
+With parameters:
+```
+user:password@tcp(host:3306)/database?tls=true&parseTime=true
+```
+
+### CockroachDB
+
+```
+postgres://user:password@host:26257/database?sslmode=verify-full
+```
+
+CockroachDB uses the PostgreSQL wire protocol.
+
+### SQLite
+
+```
+/path/to/database.db
+```
+
+Or for in-memory:
+```
+:memory:
+```
+
+## CLI Usage
+
+Pass the URI directly:
+
+```bash
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://user:password@localhost:5432/mydb?sslmode=disable" \
+  --spec-file ./schema/
+```
+
+### Environment Variables
+
+Keep credentials out of your command history:
+
+```bash
+export DATABASE_URL="postgres://user:password@localhost:5432/mydb"
+
+schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/
+```
+
+## Kubernetes Operator
+
+When using the operator, store credentials in a Secret:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mydb-credentials
+type: Opaque
+stringData:
+  uri: postgres://user:password@host:5432/database?sslmode=require
+```
+
+Reference it in your Database resource:
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: mydb
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: mydb-credentials
+            key: uri
+```
+
+### Separate Parameters
+
+You can also specify connection parameters separately:
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: mydb
+spec:
+  connection:
+    postgres:
+      host:
+        value: postgres.example.com
+      port:
+        value: "5432"
+      user:
+        valueFrom:
+          secretKeyRef:
+            name: mydb-credentials
+            key: username
+      password:
+        valueFrom:
+          secretKeyRef:
+            name: mydb-credentials
+            key: password
+      dbname:
+        value: mydb
+      sslmode:
+        value: require
+```
+
+## HashiCorp Vault
+
+SchemaHero can read credentials from Vault using the Agent Sidecar Injector.
+
+### Prerequisites
+
+- Vault Agent Injector installed in your cluster
+- A Vault secret containing your database credentials
+
+### Configuration
+
+```yaml
+apiVersion: databases.schemahero.io/v1alpha4
+kind: Database
+metadata:
+  name: mydb
+  annotations:
+    vault.hashicorp.com/agent-inject: "true"
+    vault.hashicorp.com/role: "myapp"
+    vault.hashicorp.com/agent-inject-secret-db-creds: "database/creds/myapp"
+    vault.hashicorp.com/agent-inject-template-db-creds: |
+      {{- with secret "database/creds/myapp" -}}
+      postgres://{{ .Data.username }}:{{ .Data.password }}@host:5432/mydb
+      {{- end -}}
+spec:
+  connection:
+    postgres:
+      uri:
+        valueFrom:
+          secretKeyRef:
+            name: db-creds
+            key: uri
+```
+
+## AWS RDS
+
+### IAM Authentication
+
+For RDS with IAM authentication:
+
+```bash
+# Generate auth token
+TOKEN=$(aws rds generate-db-auth-token \
+  --hostname mydb.xxxx.us-east-1.rds.amazonaws.com \
+  --port 5432 \
+  --username myuser)
+
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://myuser:${TOKEN}@mydb.xxxx.us-east-1.rds.amazonaws.com:5432/mydb?sslmode=require" \
+  --spec-file ./schema/
+```
+
+### Secrets Manager
+
+Store your RDS credentials in AWS Secrets Manager, then retrieve them in CI:
+
+```bash
+SECRET=$(aws secretsmanager get-secret-value --secret-id mydb-credentials --query SecretString --output text)
+DB_USER=$(echo $SECRET | jq -r .username)
+DB_PASS=$(echo $SECRET | jq -r .password)
+
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://${DB_USER}:${DB_PASS}@mydb.xxxx.rds.amazonaws.com:5432/mydb" \
+  --spec-file ./schema/
+```
+
+## AWS SSM Parameter Store
+
+```bash
+DB_URI=$(aws ssm get-parameter --name /myapp/database-url --with-decryption --query Parameter.Value --output text)
+
+schemahero plan \
+  --driver postgres \
+  --uri "$DB_URI" \
+  --spec-file ./schema/
+```
+
+## Google Cloud SQL
+
+### Cloud SQL Proxy
+
+For local development or CI:
+
+```bash
+# Start the proxy
+cloud_sql_proxy -instances=project:region:instance=tcp:5432 &
+
+# Connect through localhost
+schemahero plan \
+  --driver postgres \
+  --uri "postgres://user:password@localhost:5432/mydb" \
+  --spec-file ./schema/
+```
+
+### In GKE
+
+Use the Cloud SQL Auth Proxy as a sidecar or use Private IP with Workload Identity.
+
+## Connection Troubleshooting
+
+### Test Connectivity
+
+```bash
+# PostgreSQL
+psql "postgres://user:password@host:5432/mydb?sslmode=require"
+
+# MySQL
+mysql -h host -u user -p database
+```
+
+### Common Issues
+
+**Connection refused:**
+- Check host and port
+- Verify firewall/security group rules
+- Ensure database is running
+
+**Authentication failed:**
+- Verify username and password
+- Check user has access to the database
+
+**SSL errors:**
+- Try `sslmode=require` instead of `verify-full`
+- Ensure CA certificate is available if using `verify-full`
+
+**Timeout:**
+- Check network connectivity
+- Verify VPC/subnet configuration for cloud databases

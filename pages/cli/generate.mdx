@@ -1,20 +1,176 @@
 ---
-title: generate
-description: kubectl schemahero generate
+title: schemahero generate
+description: Generate table YAML from an existing database
 ---
 
-Generate SchemaHero table manifests from a running database instance.
-This is useful when migrating to SchemaHero.
+# schemahero generate
 
-### Usage
-kubectl schemahero generate
+Reverse-engineer a database schema into SchemaHero table definitions.
 
-Flag | Type |	Description
------|------|------------
-`--dbname` | string | The name of the database to write in the YAML manifests
-`--driver` | string | The database driver to connect with. Must be `postgres`, `mysql`, or `cockroachdb`
-`--output-dir` | string | The directory to write the generated table manifests into
-`--uri` | string | The database URI to connect to. Must be accessible from the workstation running the command
-`-h`, `--help`	| |	help for install
+## Usage
 
-In addition to the flags documented above, this command accepts all [shared flags](../kubectl/shared-flags).
+```bash
+schemahero generate [flags]
+```
+
+## Examples
+
+### Generate All Tables
+
+```bash
+schemahero generate \
+  --driver postgres \
+  --uri "postgres://user:pass@localhost:5432/mydb?sslmode=disable" \
+  --output-dir ./schema/
+```
+
+Creates one YAML file per table:
+```
+schema/
+├── users.yaml
+├── posts.yaml
+├── comments.yaml
+└── ...
+```
+
+### MySQL
+
+```bash
+schemahero generate \
+  --driver mysql \
+  --uri "user:pass@tcp(localhost:3306)/mydb" \
+  --output-dir ./schema/
+```
+
+### Single Table
+
+```bash
+schemahero generate \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --output-dir ./schema/ \
+  --table-names users
+```
+
+### Multiple Specific Tables
+
+```bash
+schemahero generate \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --output-dir ./schema/ \
+  --table-names users,posts,comments
+```
+
+### To Stdout
+
+```bash
+schemahero generate \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --table-names users
+```
+
+Without `--output-dir`, outputs to stdout.
+
+## Flags
+
+| Flag | Type | Description |
+|------|------|-------------|
+| `--driver` | string | Database driver: `postgres`, `mysql`, `cockroachdb`, `sqlite` |
+| `--uri` | string | Database connection URI |
+| `--output-dir` | string | Directory to write YAML files |
+| `--table-names` | string | Comma-separated list of tables (default: all) |
+| `--overwrite` | bool | Overwrite existing files (default: false) |
+
+## Output Format
+
+Generated YAML:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: ""
+  name: users
+  schema:
+    postgres:
+      primaryKey:
+        - id
+      columns:
+        - name: id
+          type: serial
+        - name: email
+          type: character varying (255)
+          constraints:
+            notNull: true
+        - name: created_at
+          type: timestamp without time zone
+          default: now()
+      indexes:
+        - columns:
+            - email
+          name: users_email_idx
+          isUnique: true
+      foreignKeys:
+        - columns:
+            - team_id
+          references:
+            table: teams
+            columns:
+              - id
+```
+
+## Use Cases
+
+### Migrating to SchemaHero
+
+1. Generate YAML from existing database:
+   ```bash
+   schemahero generate --driver postgres --uri "$DB" --output-dir ./schema/
+   ```
+
+2. Review and clean up generated files
+
+3. Commit to version control
+
+4. Future changes are made in YAML and applied with `plan` + `apply`
+
+### Documenting a Database
+
+Generate a snapshot of your schema:
+
+```bash
+schemahero generate --driver postgres --uri "$DB" --output-dir ./docs/schema/
+```
+
+### Schema Diff Between Environments
+
+```bash
+# Generate from staging
+schemahero generate --driver postgres --uri "$STAGING_DB" --output-dir ./staging-schema/
+
+# Generate from production  
+schemahero generate --driver postgres --uri "$PROD_DB" --output-dir ./prod-schema/
+
+# Diff
+diff -r staging-schema/ prod-schema/
+```
+
+## Limitations
+
+- **No seed data** — Only schema is generated
+- **Type variations** — Some types may differ slightly from your original DDL
+- **No comments** — Database comments are not captured
+- **Views/functions** — Only tables are generated
+
+## Post-Generation Cleanup
+
+The generated YAML is correct but may need cleanup:
+
+1. **Database name**: Set `spec.database` if using the operator
+2. **Type normalization**: `character varying (255)` → `varchar(255)`
+3. **Default cleanup**: Some defaults may need formatting
+4. **Remove system tables**: Filter out internal tables

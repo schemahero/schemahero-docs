@@ -15,24 +15,16 @@
     "title": "Guides",
     "type": "page"
   },
+  "schema": {
+    "title": "Schema Reference",
+    "type": "page"
+  },
   "databases": {
     "title": "Databases",
     "type": "page"
   },
   "cli": {
     "title": "CLI Reference",
-    "type": "page"
-  },
-  "reference": {
-    "title": "Schema Reference",
-    "type": "page"
-  },
-  "learn": {
-    "title": "Tutorial (Legacy)",
-    "type": "page"
-  },
-  "docs": {
-    "title": "Docs (Legacy)",
     "type": "page"
   },
   "community": {

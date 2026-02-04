@@ -1,18 +1,180 @@
 ---
-title: apply
-description: kubectl schemahero apply
+title: schemahero apply
+description: Execute migration SQL against a database
 ---
 
-Apply a plan (DDL) against a running database.
+# schemahero apply
 
-### Usage
-kubectl schemahero apply
+Execute SQL statements (from `schemahero plan`) against a database.
 
-Flag | Type |	Description
------|------|------------
-`--driver` | string | The database driver to connect with. Must be `postgres`, `mysql`, or `cockroachdb`
-`--ddl` | string | The filename or directory name containing the rendered DDL statements (output of `plan`) to execute
-`--uri` | string | The database URI to connect to. Must be accessible from the workstation running the command
-`-h`, `--help`	| |	help for install
+## Usage
 
-In addition to the flags documented above, this command accepts all [shared flags](../kubectl/shared-flags).
+```bash
+schemahero apply [flags]
+```
+
+## Examples
+
+### Basic Usage
+
+```bash
+schemahero apply \
+  --driver postgres \
+  --uri "postgres://user:pass@localhost:5432/mydb?sslmode=disable" \
+  --ddl ./migrations.sql
+```
+
+### From Plan Output
+
+Save plan output, then apply:
+
+```bash
+# Step 1: Generate plan
+schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/ \
+  --out plan.sql
+
+# Step 2: Review plan.sql
+
+# Step 3: Apply
+schemahero apply \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --ddl plan.sql
+```
+
+### One-Liner (Plan + Apply)
+
+```bash
+schemahero apply \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --ddl <(schemahero plan \
+    --driver postgres \
+    --uri "$DATABASE_URL" \
+    --spec-file ./schema/)
+```
+
+### MySQL
+
+```bash
+schemahero apply \
+  --driver mysql \
+  --uri "user:pass@tcp(localhost:3306)/mydb" \
+  --ddl ./migrations.sql
+```
+
+### From Directory
+
+If you have multiple SQL files:
+
+```bash
+schemahero apply \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --ddl ./migrations/
+```
+
+## Flags
+
+| Flag | Type | Description |
+|------|------|-------------|
+| `--driver` | string | Database driver: `postgres`, `mysql`, `cockroachdb`, `sqlite`, `cassandra`, `timescale` |
+| `--uri` | string | Database connection URI |
+| `--ddl` | string | Path to SQL file or directory |
+
+## Behavior
+
+- Executes all statements in the DDL file
+- Statements are run in order
+- Errors stop execution (no partial applies)
+- No automatic rollback on failure
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | Error (connection failed, SQL error, etc.) |
+
+## Common Patterns
+
+### CI/CD Pipeline
+
+```bash
+#!/bin/bash
+set -e
+
+# Plan
+schemahero plan \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --spec-file ./schema/ \
+  --out plan.sql
+
+# Check if there are changes
+if [ ! -s plan.sql ]; then
+  echo "No schema changes"
+  exit 0
+fi
+
+# Apply
+schemahero apply \
+  --driver postgres \
+  --uri "$DATABASE_URL" \
+  --ddl plan.sql
+
+echo "Schema updated successfully"
+```
+
+### Preview Before Apply
+
+```bash
+# Show what will be applied
+cat plan.sql
+
+# Confirm
+read -p "Apply these changes? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  schemahero apply --driver postgres --uri "$DB" --ddl plan.sql
+fi
+```
+
+### Staging Then Production
+
+```bash
+# Apply to staging
+schemahero apply \
+  --driver postgres \
+  --uri "$STAGING_DB" \
+  --ddl plan.sql
+
+echo "Staging updated. Verify, then apply to production."
+
+# After verification...
+schemahero apply \
+  --driver postgres \
+  --uri "$PRODUCTION_DB" \
+  --ddl plan.sql
+```
+
+## Error Handling
+
+If apply fails:
+
+1. Check the error message for the specific SQL that failed
+2. Fix the issue in your table YAML
+3. Re-run `plan` to generate new DDL
+4. Re-run `apply`
+
+For transactional databases (PostgreSQL, MySQL with InnoDB), a failed statement typically rolls back that statement, leaving the database unchanged.
+
+## Important Notes
+
+- **Always plan before apply** — Don't apply arbitrary SQL
+- **Review the plan** — Especially for destructive changes (DROP)
+- **Test on staging first** — Before production
+- **Back up your database** — Before major migrations

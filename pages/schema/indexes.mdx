@@ -1,0 +1,192 @@
+---
+title: Indexes
+description: Index definitions in SchemaHero
+---
+
+# Indexes
+
+Indexes improve query performance on frequently accessed columns.
+
+## Basic Index
+
+```yaml
+schema:
+  postgres:
+    primaryKey: [id]
+    columns:
+      - name: id
+        type: serial
+      - name: email
+        type: varchar(255)
+      - name: created_at
+        type: timestamp
+    indexes:
+      - columns: [email]
+        name: idx_users_email
+```
+
+Generated SQL:
+```sql
+CREATE INDEX idx_users_email ON users (email);
+```
+
+## Index Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `columns` | array | Columns to index (required) |
+| `name` | string | Index name (required) |
+| `isUnique` | boolean | Create unique index |
+| `type` | string | Index type (btree, hash, gin, gist) |
+
+## Unique Indexes
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email_unique
+    isUnique: true
+```
+
+Generated SQL:
+```sql
+CREATE UNIQUE INDEX idx_users_email_unique ON users (email);
+```
+
+Unique indexes enforce uniqueness like a UNIQUE constraint but can also be partial or have other options.
+
+## Multi-Column Indexes
+
+```yaml
+indexes:
+  - columns: [tenant_id, created_at]
+    name: idx_users_tenant_created
+```
+
+Column order matters. This index helps queries that:
+- Filter by `tenant_id`
+- Filter by `tenant_id` AND `created_at`
+- Sort by `tenant_id`, then `created_at`
+
+It does NOT help queries that only filter by `created_at`.
+
+## Index Types (PostgreSQL)
+
+### B-tree (default)
+
+Best for equality and range queries:
+
+```yaml
+indexes:
+  - columns: [created_at]
+    name: idx_created_at
+    type: btree    # Default, can be omitted
+```
+
+### Hash
+
+For equality-only queries:
+
+```yaml
+indexes:
+  - columns: [session_id]
+    name: idx_session_hash
+    type: hash
+```
+
+### GIN
+
+For full-text search, arrays, JSONB:
+
+```yaml
+indexes:
+  - columns: [tags]
+    name: idx_tags_gin
+    type: gin
+```
+
+### GiST
+
+For geometric data, full-text search:
+
+```yaml
+indexes:
+  - columns: [location]
+    name: idx_location_gist
+    type: gist
+```
+
+## Naming Conventions
+
+Use consistent naming:
+
+```
+idx_{table}_{columns}
+idx_{table}_{columns}_unique
+```
+
+Examples:
+- `idx_users_email`
+- `idx_users_tenant_created`
+- `idx_orders_customer_id`
+- `idx_posts_author_published_unique`
+
+## Adding Indexes
+
+Add to your YAML:
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email
+  - columns: [phone]           # New index
+    name: idx_users_phone
+```
+
+SchemaHero generates:
+```sql
+CREATE INDEX idx_users_phone ON users (phone);
+```
+
+## Removing Indexes
+
+Remove from your YAML. SchemaHero generates:
+
+```sql
+DROP INDEX idx_users_phone;
+```
+
+## Modifying Indexes
+
+Changing an index (columns, type, uniqueness) drops and recreates it:
+
+```sql
+DROP INDEX idx_users_email;
+CREATE UNIQUE INDEX idx_users_email ON users (email);
+```
+
+## Concurrent Index Creation (PostgreSQL)
+
+SchemaHero does not currently support `CREATE INDEX CONCURRENTLY`. For large production tables, you may need to create indexes manually to avoid locking.
+
+## Performance Considerations
+
+- Only index columns used in WHERE, JOIN, ORDER BY
+- Multi-column indexes should match query patterns
+- Too many indexes slow down INSERT/UPDATE
+- Monitor index usage with `pg_stat_user_indexes`
+
+## MySQL Index Options
+
+MySQL supports additional index attributes:
+
+```yaml
+schema:
+  mysql:
+    indexes:
+      - columns: [email]
+        name: idx_email
+      - columns: [title, body]
+        name: idx_fulltext_content
+        type: fulltext
+```

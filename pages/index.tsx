@@ -7,12 +7,12 @@ export default function Home() {
     <>
       <Head>
         <title>SchemaHero - A modern approach to database schema migrations</title>
-        <meta name="description" content="SchemaHero is a Kubernetes Operator for Declarative Schema Management for various databases." />
-        <meta property="og:title" content="SchemaHero - A modern approach to database schema migrations" />
+        <meta name="description" content="SchemaHero is a declarative database schema migration tool. Define your schema in YAML, let SchemaHero figure out the SQL." />
+        <meta property="og:title" content="SchemaHero - Declarative Database Schema Migrations" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://schemahero.io/" />
         <meta property="og:image" content="/images/schemahero-social.jpg" />
-        <meta property="og:description" content="SchemaHero is a Kubernetes Operator for Declarative Schema Management for various databases." />
+        <meta property="og:description" content="SchemaHero is a declarative database schema migration tool. Define your schema in YAML, let SchemaHero figure out the SQL." />
         <link href="https://fonts.googleapis.com/css?family=Ubuntu:500&display=swap" rel="stylesheet" />
       </Head>
 
@@ -52,10 +52,10 @@ export default function Home() {
                   <a className="button border-button" href="https://www.youtube.com/watch?v=_fMmRgThGyA&t=3s">
                     Watch Video
                   </a>
-                  <Link href="/learn/tutorial/introduction" className="button border-button">
+                  <Link href="/getting-started/concepts" className="button border-button">
                     Learn More
                   </Link>
-                  <Link href="/docs/installing/kubectl" className="button primary-button">
+                  <Link href="/getting-started/quickstart" className="button primary-button">
                     Get Started
                   </Link>
                 </div>

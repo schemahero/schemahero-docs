@@ -1,0 +1,259 @@
+---
+title: Columns
+description: Column definitions in SchemaHero
+---
+
+# Columns
+
+Columns define the fields in your table.
+
+## Basic Column
+
+```yaml
+columns:
+  - name: email
+    type: varchar(255)
+```
+
+## Column Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | string | Column name (required) |
+| `type` | string | Data type (required) |
+| `default` | string | Default value |
+| `constraints` | object | Column constraints |
+| `attributes` | object | Database-specific attributes |
+
+## Column Types
+
+Types are database-specific. See:
+- [PostgreSQL Types](/databases/postgresql/column-types)
+- [MySQL Types](/databases/mysql/column-types)
+- [CockroachDB Types](/databases/cockroachdb/connecting)
+- [SQLite Types](/databases/sqlite/tables)
+
+### Common Types
+
+```yaml
+# Integers
+- name: count
+  type: integer
+
+- name: id
+  type: bigint
+
+- name: small_num
+  type: smallint
+
+# Strings
+- name: name
+  type: varchar(100)
+
+- name: code
+  type: char(3)
+
+- name: description
+  type: text
+
+# Numbers
+- name: price
+  type: numeric(10,2)
+
+- name: rate
+  type: decimal(5,4)
+
+- name: score
+  type: float
+
+# Boolean
+- name: is_active
+  type: boolean
+
+# Date/Time
+- name: created_at
+  type: timestamp
+
+- name: birth_date
+  type: date
+
+- name: start_time
+  type: time
+
+# UUID
+- name: id
+  type: uuid
+
+# JSON
+- name: metadata
+  type: jsonb      # PostgreSQL
+  
+- name: data
+  type: json       # MySQL
+```
+
+## Default Values
+
+### Static Defaults
+
+```yaml
+- name: role
+  type: varchar(20)
+  default: "'user'"       # String literal (note the quotes)
+
+- name: count
+  type: integer
+  default: "0"            # Numeric literal
+
+- name: is_active
+  type: boolean
+  default: "true"         # Boolean literal
+```
+
+**Important:** String defaults need inner quotes: `default: "'value'"` not `default: "value"`
+
+### Function Defaults
+
+```yaml
+# PostgreSQL
+- name: id
+  type: uuid
+  default: gen_random_uuid()
+
+- name: created_at
+  type: timestamp
+  default: now()
+
+- name: updated_at
+  type: timestamp
+  default: current_timestamp
+```
+
+```yaml
+# MySQL
+- name: id
+  type: char(36)
+  default: "(uuid())"
+
+- name: created_at
+  type: timestamp
+  default: current_timestamp
+```
+
+### Sequence/Auto-increment
+
+```yaml
+# PostgreSQL
+- name: id
+  type: serial          # Auto-incrementing integer
+
+- name: id
+  type: bigserial       # Auto-incrementing bigint
+```
+
+```yaml
+# MySQL
+- name: id
+  type: int
+  attributes:
+    autoIncrement: true
+```
+
+## Constraints
+
+```yaml
+- name: email
+  type: varchar(255)
+  constraints:
+    notNull: true       # Cannot be NULL
+    unique: true        # Must be unique
+```
+
+See [Constraints](/schema/constraints) for full details.
+
+## Modifying Columns
+
+When you change a column definition, SchemaHero generates `ALTER TABLE` statements.
+
+### Adding a Column
+
+Add a new column to your YAML:
+
+```yaml
+columns:
+  - name: id
+    type: serial
+  - name: email
+    type: varchar(255)
+  - name: phone        # New column
+    type: varchar(20)
+```
+
+Generated SQL:
+```sql
+ALTER TABLE users ADD COLUMN phone varchar(20);
+```
+
+### Changing a Type
+
+```yaml
+- name: email
+  type: varchar(500)   # Was varchar(255)
+```
+
+Generated SQL:
+```sql
+ALTER TABLE users ALTER COLUMN email TYPE varchar(500);
+```
+
+### Adding a Constraint
+
+```yaml
+- name: email
+  type: varchar(255)
+  constraints:
+    notNull: true      # Adding NOT NULL
+```
+
+Generated SQL:
+```sql
+ALTER TABLE users ALTER COLUMN email SET NOT NULL;
+```
+
+### Removing a Column
+
+Remove the column from your YAML. SchemaHero will generate:
+
+```sql
+ALTER TABLE users DROP COLUMN phone;
+```
+
+**Warning:** This deletes data. Use [policies](/guides/policies) to catch accidental drops.
+
+## Column Ordering
+
+SchemaHero does not guarantee column order. Columns are added as needed but the database determines physical order.
+
+If column order matters to you, create the table with columns in order initially.
+
+## Renaming Columns
+
+SchemaHero cannot detect renames. If you rename a column in YAML:
+
+```yaml
+# Before
+- name: user_name
+  type: varchar(100)
+
+# After
+- name: username
+  type: varchar(100)
+```
+
+SchemaHero will generate:
+```sql
+ALTER TABLE users DROP COLUMN user_name;
+ALTER TABLE users ADD COLUMN username varchar(100);
+```
+
+**This loses data.** For renames, manually migrate or use database-specific rename commands outside SchemaHero.
