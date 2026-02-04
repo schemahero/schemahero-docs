@@ -1,6 +1,7 @@
 {
-  "versions": "Versions",
   "connecting": "Connecting",
+  "tables": "Tables",
   "column-types": "Column Types",
-  "constraints": "Constraints"
+  "constraints": "Constraints",
+  "versions": "Versions"
 }

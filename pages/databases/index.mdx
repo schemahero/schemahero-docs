@@ -1,25 +1,46 @@
 ---
-title: Database Support
-description: Understanding Database Support in SchemaHero
+title: Databases
+description: Database-specific documentation for SchemaHero
 ---
 
-# Database Support
+# Databases
 
-SchemaHero includes support for popular open source and commercial database engines.
+SchemaHero supports multiple database engines. Each database section includes connection setup, table schema syntax, and database-specific features.
 
-SchemaHero is not attempting to create a common interface for expressing all possible schemas across all possible databases.
-Instead, each database driver in SchemaHero is extended to support the specific requirements and capabilities of the database engine.
-
-Each supported database is listed in the sidebar, along with notes describing how to connect, which versions are supported, and any limitations or unsupported features.
+Select a database from the sidebar to view its documentation.
 
 ## Supported Databases
 
-| Database | Tested Versions |
-|----------|-----------------|
-| [PostgreSQL](./postgresql/versions) | 14 - 18 |
-| [MySQL](./mysql/versions) | 8.0 - 9.x |
-| [CockroachDB](./cockroachdb/versions) | v24 - v25 |
-| [TimescaleDB](./timescale/versions) | 2.x |
-| [Cassandra](./cassandra/versions) | 4.0 - 5.0 |
-| [SQLite](./sqlite/versions) | 3.x |
-| [RQLite](./rqlite/versions) | 8.x - 9.x |
+| Database | Description |
+|----------|-------------|
+| [PostgreSQL](/databases/postgresql/connecting) | Full-featured with triggers, JSONB, arrays |
+| [MySQL](/databases/mysql/connecting) | Charset/collation support, fulltext indexes |
+| [CockroachDB](/databases/cockroachdb/connecting) | Distributed PostgreSQL-compatible |
+| [TimescaleDB](/databases/timescale/connecting) | Time-series with hypertables |
+| [Cassandra](/databases/cassandra/connecting) | Wide-column with custom types |
+| [SQLite](/databases/sqlite/connecting) | Embedded database |
+| [RQLite](/databases/rqlite/connecting) | Distributed SQLite |
+
+## Schema Definition
+
+Each database has its own schema syntax under the database key:
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:     # or mysql, sqlite, cassandra, cockroachdb, rqlite, timescaledb
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+        - name: email
+          type: varchar(255)
+```
+
+See each database's **Tables** page for complete schema reference.

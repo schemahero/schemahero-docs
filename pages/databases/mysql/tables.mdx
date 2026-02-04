@@ -1,0 +1,221 @@
+---
+title: Tables
+description: MySQL table definitions in SchemaHero
+---
+
+# MySQL Tables
+
+Complete reference for defining MySQL tables in SchemaHero.
+
+## Basic Structure
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    mysql:
+      defaultCharset: utf8mb4
+      collation: utf8mb4_unicode_ci
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: int
+          attributes:
+            autoIncrement: true
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+```
+
+## Table Options
+
+```yaml
+schema:
+  mysql:
+    defaultCharset: utf8mb4           # Table default character set
+    collation: utf8mb4_unicode_ci     # Table collation
+```
+
+## Columns
+
+```yaml
+columns:
+  - name: id
+    type: int                   # Required - MySQL type
+    default: null               # Optional
+    constraints:
+      notNull: true
+    attributes:
+      autoIncrement: true
+    charset: utf8mb4            # Per-column charset
+    collation: utf8mb4_bin      # Per-column collation
+```
+
+### Column Types
+
+| Category | Types |
+|----------|-------|
+| Integer | `tinyint`, `smallint`, `mediumint`, `int`, `bigint` |
+| Numeric | `decimal(p,s)`, `float`, `double` |
+| String | `char(n)`, `varchar(n)`, `text`, `mediumtext`, `longtext` |
+| Boolean | `boolean` (alias for tinyint(1)) |
+| Date/Time | `date`, `time`, `datetime`, `timestamp`, `year` |
+| Binary | `binary`, `varbinary`, `blob`, `mediumblob`, `longblob` |
+| JSON | `json` |
+| Enum | `enum('a','b','c')` |
+| Set | `set('a','b','c')` |
+
+### Default Values
+
+```yaml
+# String literal (note nested quotes)
+- name: status
+  type: varchar(20)
+  default: "'pending'"
+
+# Number
+- name: count
+  type: int
+  default: "0"
+
+# Boolean
+- name: active
+  type: boolean
+  default: "1"
+
+# Timestamp functions
+- name: created_at
+  type: timestamp
+  default: current_timestamp
+
+- name: updated_at
+  type: timestamp
+  default: current_timestamp on update current_timestamp
+
+# UUID (MySQL 8.0+)
+- name: id
+  type: char(36)
+  default: "(uuid())"
+```
+
+### Auto-Increment
+
+```yaml
+columns:
+  - name: id
+    type: int
+    attributes:
+      autoIncrement: true
+```
+
+## Primary Keys
+
+```yaml
+schema:
+  mysql:
+    primaryKey: [id]              # Single column
+    primaryKey: [tenant_id, id]   # Composite key
+```
+
+## Indexes
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email
+    isUnique: true
+    type: btree                   # btree (default) or fulltext
+    
+  - columns: [last_name, first_name]
+    name: idx_users_name
+    
+  - columns: [bio]
+    name: idx_users_bio
+    type: fulltext                # Full-text index
+```
+
+### Index Types
+
+| Type | Use Case |
+|------|----------|
+| `btree` | Default, general purpose |
+| `fulltext` | Full-text search on text columns |
+
+## Foreign Keys
+
+```yaml
+foreignKeys:
+  - columns: [team_id]
+    references:
+      table: teams
+      columns: [id]
+    onDelete: CASCADE
+    onUpdate: NO ACTION
+    name: fk_users_team
+```
+
+**Note:** Foreign keys require InnoDB storage engine.
+
+## Complete Example
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    mysql:
+      defaultCharset: utf8mb4
+      collation: utf8mb4_unicode_ci
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: int
+          attributes:
+            autoIncrement: true
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+        - name: name
+          type: varchar(100)
+        - name: team_id
+          type: int
+        - name: bio
+          type: text
+        - name: metadata
+          type: json
+        - name: status
+          type: enum('active','inactive','pending')
+          default: "'pending'"
+        - name: created_at
+          type: timestamp
+          default: current_timestamp
+        - name: updated_at
+          type: timestamp
+          default: current_timestamp on update current_timestamp
+      indexes:
+        - columns: [email]
+          name: idx_users_email
+          isUnique: true
+        - columns: [team_id]
+          name: idx_users_team
+        - columns: [bio]
+          name: idx_users_bio
+          type: fulltext
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+          onDelete: SET NULL
+```

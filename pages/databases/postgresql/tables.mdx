@@ -1,0 +1,209 @@
+---
+title: Tables
+description: PostgreSQL table definitions in SchemaHero
+---
+
+# PostgreSQL Tables
+
+Complete reference for defining PostgreSQL tables in SchemaHero.
+
+## Basic Structure
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      schema: public              # PostgreSQL schema (optional)
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+      indexes:
+        - columns: [email]
+          isUnique: true
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+```
+
+## Columns
+
+```yaml
+columns:
+  - name: id                    # Required
+    type: uuid                  # Required - PostgreSQL type
+    default: gen_random_uuid()  # Optional - default value or function
+    constraints:                # Optional
+      notNull: true
+    attributes:                 # Optional
+      autoIncrement: true       # For serial types
+```
+
+### Column Types
+
+| Category | Types |
+|----------|-------|
+| Integer | `smallint`, `integer`, `bigint`, `serial`, `bigserial` |
+| Numeric | `numeric(p,s)`, `decimal(p,s)`, `real`, `double precision` |
+| String | `char(n)`, `varchar(n)`, `text` |
+| Boolean | `boolean` |
+| Date/Time | `date`, `time`, `timestamp`, `timestamptz`, `interval` |
+| UUID | `uuid` |
+| JSON | `json`, `jsonb` |
+| Binary | `bytea` |
+| Arrays | `text[]`, `integer[]`, etc. |
+
+### Default Values
+
+```yaml
+# String literal (note nested quotes)
+- name: status
+  type: varchar(20)
+  default: "'pending'"
+
+# Number
+- name: count
+  type: integer
+  default: "0"
+
+# Boolean
+- name: active
+  type: boolean
+  default: "true"
+
+# Functions
+- name: id
+  type: uuid
+  default: gen_random_uuid()
+
+- name: created_at
+  type: timestamptz
+  default: now()
+```
+
+## Primary Keys
+
+```yaml
+schema:
+  postgres:
+    primaryKey: [id]              # Single column
+    primaryKey: [tenant_id, id]   # Composite key
+```
+
+## Indexes
+
+```yaml
+indexes:
+  - columns: [email]
+    name: idx_users_email         # Optional - auto-generated if omitted
+    isUnique: true                # Unique constraint
+    type: btree                   # btree (default), hash, gin, gist
+    
+  - columns: [last_name, first_name]
+    name: idx_users_name          # Multi-column index
+    
+  - columns: [data]
+    type: gin                     # GIN index for JSONB
+```
+
+### Index Types
+
+| Type | Use Case |
+|------|----------|
+| `btree` | Default, general purpose |
+| `hash` | Equality comparisons only |
+| `gin` | Full-text search, JSONB, arrays |
+| `gist` | Geometric data, full-text search |
+
+## Foreign Keys
+
+```yaml
+foreignKeys:
+  - columns: [team_id]
+    references:
+      table: teams
+      columns: [id]
+    onDelete: CASCADE             # CASCADE, SET NULL, SET DEFAULT, RESTRICT, NO ACTION
+    onUpdate: NO ACTION           # Same options
+    name: fk_users_team           # Optional
+```
+
+## Triggers
+
+```yaml
+triggers:
+  - name: update_timestamp
+    events: [UPDATE]              # INSERT, UPDATE, DELETE
+    timing: BEFORE                # BEFORE or AFTER
+    forEach: ROW                  # ROW or STATEMENT
+    execute:
+      type: Function
+      name: update_modified_column
+```
+
+## Complete Example
+
+```yaml
+apiVersion: schemas.schemahero.io/v1alpha4
+kind: Table
+metadata:
+  name: users
+spec:
+  database: myapp
+  name: users
+  schema:
+    postgres:
+      schema: public
+      primaryKey: [id]
+      columns:
+        - name: id
+          type: uuid
+          default: gen_random_uuid()
+        - name: email
+          type: varchar(255)
+          constraints:
+            notNull: true
+        - name: name
+          type: varchar(100)
+        - name: team_id
+          type: uuid
+        - name: metadata
+          type: jsonb
+          default: "'{}'::jsonb"
+        - name: tags
+          type: text[]
+        - name: created_at
+          type: timestamptz
+          default: now()
+        - name: updated_at
+          type: timestamptz
+          default: now()
+      indexes:
+        - columns: [email]
+          name: idx_users_email
+          isUnique: true
+        - columns: [team_id]
+          name: idx_users_team
+        - columns: [metadata]
+          name: idx_users_metadata
+          type: gin
+      foreignKeys:
+        - columns: [team_id]
+          references:
+            table: teams
+            columns: [id]
+          onDelete: SET NULL
+```

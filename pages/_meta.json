@@ -15,10 +15,6 @@
     "title": "Guides",
     "type": "page"
   },
-  "schema": {
-    "title": "Schema Reference",
-    "type": "page"
-  },
   "databases": {
     "title": "Databases",
     "type": "page"

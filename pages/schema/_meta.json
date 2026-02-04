@@ -1,8 +1,0 @@
-{
-  "table-format": "Table Format",
-  "columns": "Columns",
-  "constraints": "Constraints",
-  "indexes": "Indexes",
-  "foreign-keys": "Foreign Keys",
-  "primary-keys": "Primary Keys"
-}

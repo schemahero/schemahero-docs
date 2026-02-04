@@ -1,7 +1,8 @@
 {
-  "versions": "Versions",
   "connecting": "Connecting",
+  "tables": "Tables",
   "column-types": "Column Types",
   "constraints": "Constraints",
-  "attributes": "Attributes"
+  "attributes": "Attributes",
+  "versions": "Versions"
 }

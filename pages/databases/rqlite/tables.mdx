@@ -1,11 +1,11 @@
 ---
 title: Tables
-description: SQLite table definitions in SchemaHero
+description: RQLite table definitions in SchemaHero
 ---
 
-# SQLite Tables
+# RQLite Tables
 
-Complete reference for defining SQLite tables in SchemaHero.
+RQLite is a distributed database built on SQLite. SchemaHero supports RQLite through the `rqlite` schema type, which uses SQLite syntax.
 
 ## Basic Structure
 
@@ -18,8 +18,7 @@ spec:
   database: myapp
   name: users
   schema:
-    sqlite:
-      strict: true              # Enable STRICT mode (SQLite 3.37+)
+    rqlite:
       primaryKey: [id]
       columns:
         - name: id
@@ -32,24 +31,14 @@ spec:
             notNull: true
 ```
 
-## STRICT Mode
-
-SQLite 3.37+ supports STRICT tables that enforce type checking:
-
-```yaml
-schema:
-  sqlite:
-    strict: true
-```
-
-In STRICT mode, columns must use one of: `int`, `integer`, `real`, `text`, `blob`, `any`.
-
 ## Columns
+
+RQLite uses SQLite's type affinity system:
 
 ```yaml
 columns:
   - name: id
-    type: integer               # Type affinity
+    type: integer
     default: null
     constraints:
       notNull: true
@@ -59,55 +48,22 @@ columns:
 
 ### Type Affinity
 
-SQLite uses type affinity, not strict types. The declared type determines how values are stored:
-
 | Affinity | Type Names |
 |----------|------------|
-| INTEGER | `int`, `integer`, `tinyint`, `smallint`, `mediumint`, `bigint` |
+| INTEGER | `int`, `integer`, `tinyint`, `smallint`, `bigint` |
 | TEXT | `text`, `char`, `varchar`, `clob` |
 | REAL | `real`, `float`, `double` |
 | BLOB | `blob` |
 | NUMERIC | `numeric`, `decimal`, `boolean`, `date`, `datetime` |
 
-### Default Values
-
-```yaml
-# String literal
-- name: status
-  type: text
-  default: "'pending'"
-
-# Number
-- name: count
-  type: integer
-  default: "0"
-
-# Current timestamp
-- name: created_at
-  type: text
-  default: current_timestamp
-```
-
-### Auto-Increment
-
-```yaml
-primaryKey: [id]
-columns:
-  - name: id
-    type: integer
-    attributes:
-      autoIncrement: true
-```
-
-**Note:** SQLite AUTOINCREMENT only works on `INTEGER PRIMARY KEY` columns.
-
 ## Primary Keys
 
 ```yaml
 schema:
-  sqlite:
-    primaryKey: [id]              # Single column
-    primaryKey: [tenant_id, id]   # Composite key
+  rqlite:
+    primaryKey: [id]
+    # or composite:
+    primaryKey: [tenant_id, id]
 ```
 
 ## Indexes
@@ -117,9 +73,6 @@ indexes:
   - columns: [email]
     name: idx_users_email
     isUnique: true
-    
-  - columns: [last_name, first_name]
-    name: idx_users_name
 ```
 
 ## Foreign Keys
@@ -131,16 +84,9 @@ foreignKeys:
       table: teams
       columns: [id]
     onDelete: CASCADE
-    onUpdate: NO ACTION
 ```
 
-**Important:** Foreign key enforcement must be enabled in your application:
-
-```sql
-PRAGMA foreign_keys = ON;
-```
-
-This must be set on each connection.
+**Note:** Foreign key enforcement depends on SQLite pragma settings.
 
 ## Complete Example
 
@@ -153,8 +99,7 @@ spec:
   database: myapp
   name: users
   schema:
-    sqlite:
-      strict: true
+    rqlite:
       primaryKey: [id]
       columns:
         - name: id
@@ -189,9 +134,10 @@ spec:
           onDelete: SET NULL
 ```
 
-## Limitations
+## RQLite-Specific Notes
 
-- No `ALTER COLUMN` - columns cannot be modified after creation
-- No `DROP COLUMN` in older SQLite versions (added in 3.35.0)
-- Foreign keys disabled by default
-- Limited data types compared to other databases
+- Uses SQLite syntax and type system
+- Distributed and replicated automatically
+- Supports leader-follower architecture
+- Queries are executed on the leader node
+- Read consistency levels available via API
